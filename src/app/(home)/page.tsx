@@ -1,4 +1,4 @@
-import Slideshow from "@/components/heroSlides";
+import UserForm from "@/components/forms/userForm";
 import {
   BarChart3Icon,
   DumbbellIcon,
@@ -9,26 +9,51 @@ import {
   VideoIcon,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col bg-zinc-50 xl:h-screen xl:gap-y-16 dark:bg-zinc-800">
-      <div className="h-full grid-flow-col gap-x-0 bg-zinc-50 xl:h-5/6 xl:columns-2 dark:bg-zinc-800">
-        <div className="flex h-full flex-col items-center justify-center pt-10 xl:col-span-1 xl:pt-0">
-          oi
+    <div className="flex flex-col bg-neutral-50 xl:h-screen xl:gap-y-16 dark:bg-neutral-900">
+      <div className="h-full grid-flow-col gap-x-0 bg-neutral-50 xl:h-5/6 xl:columns-2 dark:bg-neutral-900">
+        <div className="flex h-full w-full flex-col items-center justify-center pb-10 pt-10 xl:col-span-1 xl:pb-0 xl:pt-0">
+          <div className="flex w-3/4 flex-col items-start justify-center gap-y-4 p-4">
+            <div className="flex flex-row items-center gap-x-4">
+              <Image
+                src="/logo/logo.png"
+                alt="logo"
+                width={52}
+                height={52}
+                quality={100}
+              />
+              <h1 className="text-5xl font-medium tracking-wide dark:text-neutral-200">
+                Ignis
+              </h1>
+            </div>
+
+            <UserForm />
+
+            <div className="text-14 flex w-full justify-between">
+              <p className="justify-items-end xl:text-left dark:text-neutral-200">
+                © {new Date().getFullYear()} Ignis
+              </p>
+              <Link href="/?admin=true" className="text-cyan-500">
+                Admin
+              </Link>
+            </div>
+          </div>
         </div>
 
         <div className="flex h-full w-full flex-col items-center justify-center xl:pt-10">
           {" "}
-          <h1 className="h-fill w-full text-center text-3xl font-medium text-slate-800 md:text-4xl xl:text-2xl dark:text-zinc-100">
+          <h1 className="h-fill w-full text-center text-3xl font-medium text-slate-800 md:text-4xl xl:text-2xl dark:text-neutral-100">
             Tracking your{" "}
-            <span className="bg-sky-600/80 px-1 font-semibold text-white dark:text-zinc-100">
+            <span className="bg-cyan-400/80 px-1 font-semibold text-white dark:text-neutral-100">
               progress
             </span>{" "}
             was never this easy!
           </h1>
-          <h2 className="h-fill mt-4 w-full px-4 text-center text-xl font-medium text-slate-800 md:text-2xl xl:mt-2 xl:text-base dark:text-zinc-100">
-            <span className="bg-sky-600/80 px-1 font-semibold tracking-widest text-white dark:text-zinc-100">
+          <h2 className="h-fill mt-4 w-full px-4 text-center text-xl font-medium text-slate-800 md:text-2xl xl:mt-2 xl:text-base dark:text-neutral-100">
+            <span className="bg-cyan-400/80 px-1 font-semibold tracking-widest text-white dark:text-neutral-100">
               IGNIS
             </span>{" "}
             let you plan all your trainig days and weeks at a buttons touch,
@@ -37,9 +62,9 @@ export default function Home() {
             <span className="font-semibold underline">COACH</span> can review it
             later and keep track of everything.
           </h2>
-          <div className="grid h-full w-full grid-cols-2 grid-rows-3 gap-y-4 py-16 lg:grid-cols-3 lg:grid-rows-2 xl:py-0 dark:text-zinc-100">
+          <div className="grid h-full w-full grid-cols-2 grid-rows-3 gap-y-4 py-16 lg:grid-cols-3 lg:grid-rows-2 xl:py-0 dark:text-neutral-100">
             <div className="flex flex-col items-center justify-start gap-y-2 xl:gap-y-0.5 xl:pt-6">
-              <VideoIcon className="size-16 rounded-full bg-sky-500/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-sky-600/90" />
+              <VideoIcon className="size-16 rounded-full bg-cyan-400/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-cyan-400/90" />
               <h4 className="w-full text-center text-xl font-medium xl:text-base">
                 Form checks
               </h4>
@@ -48,7 +73,7 @@ export default function Home() {
               </span>
             </div>
             <div className="flex flex-col items-center justify-start gap-y-2 xl:gap-y-0.5 xl:pt-6">
-              <MessagesSquareIcon className="size-16 rounded-full bg-sky-500/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-sky-600/90" />
+              <MessagesSquareIcon className="size-16 rounded-full bg-cyan-400/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-cyan-400/90" />
               <h4 className="w-full text-center text-xl font-medium xl:text-base">
                 Chat & share
               </h4>
@@ -58,7 +83,7 @@ export default function Home() {
               </span>
             </div>
             <div className="flex flex-col items-center justify-start gap-y-2 xl:gap-y-0.5 xl:pt-6">
-              <BarChart3Icon className="size-16 rounded-full bg-sky-500/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-sky-600/90" />
+              <BarChart3Icon className="size-16 rounded-full bg-cyan-400/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-cyan-400/90" />
               <h4 className="w-full text-center text-xl font-medium xl:text-base">
                 Tracking progress
               </h4>
@@ -67,7 +92,7 @@ export default function Home() {
               </span>
             </div>
             <div className="flex flex-col items-center justify-start gap-y-2 xl:gap-y-0.5">
-              <DumbbellIcon className="size-16 rounded-full bg-sky-500/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-sky-600/90" />
+              <DumbbellIcon className="size-16 rounded-full bg-cyan-400/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-cyan-400/90" />
               <h4 className="w-full text-center text-xl font-medium xl:text-base">
                 Exercise creation
               </h4>
@@ -77,7 +102,7 @@ export default function Home() {
               </span>
             </div>
             <div className="flex flex-col items-center justify-start gap-y-2 xl:gap-y-0.5">
-              <LayoutListIcon className="size-16 rounded-full bg-sky-500/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-sky-600/90" />
+              <LayoutListIcon className="size-16 rounded-full bg-cyan-400/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-cyan-400/90" />
               <h4 className="w-full text-center text-xl font-medium xl:text-base">
                 Periodization
               </h4>
@@ -87,7 +112,7 @@ export default function Home() {
               </span>
             </div>
             <div className="flex flex-col items-center justify-start gap-y-2 xl:gap-y-0.5">
-              <PlusIcon className="size-16 rounded-full bg-sky-500/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-sky-600/90" />
+              <PlusIcon className="size-16 rounded-full bg-cyan-400/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-cyan-400/90" />
               <h4 className="w-full text-center text-xl font-medium xl:text-base">
                 And much more...
               </h4>
@@ -142,13 +167,13 @@ export default function Home() {
           </div>
           <div className="mt-2 flex flex-col items-center justify-between sm:items-start xl:gap-y-0.5">
             <div className="flex w-full items-center justify-center gap-0.5">
-              <Star className="size-4 fill-sky-600 text-sky-600 dark:text-sky-600/70" />
-              <Star className="size-4 fill-sky-600 text-sky-600 dark:text-sky-600/70" />
-              <Star className="size-4 fill-sky-600 text-sky-600 dark:text-sky-600/70" />
-              <Star className="size-4 fill-sky-600 text-sky-600 dark:text-sky-600/70" />
-              <Star className="size-4 fill-sky-600 text-sky-600 dark:text-sky-600/70" />
+              <Star className="size-4 fill-cyan-400 text-cyan-400 dark:text-cyan-400/70" />
+              <Star className="size-4 fill-cyan-400 text-cyan-400 dark:text-cyan-400/70" />
+              <Star className="size-4 fill-cyan-400 text-cyan-400 dark:text-cyan-400/70" />
+              <Star className="size-4 fill-cyan-400 text-cyan-400 dark:text-cyan-400/70" />
+              <Star className="size-4 fill-cyan-400 text-cyan-400 dark:text-cyan-400/70" />
             </div>
-            <p className="dark:text-zinc-100">
+            <p className="dark:text-neutral-100">
               More than <span className="font-semibold">5.175</span> trainees
               using it
             </p>
