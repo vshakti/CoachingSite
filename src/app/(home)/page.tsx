@@ -1,57 +1,102 @@
 import Slideshow from "@/components/heroSlides";
-import { Check, Star } from "lucide-react";
+import {
+  BarChart3Icon,
+  DumbbellIcon,
+  LayoutListIcon,
+  MessagesSquareIcon,
+  PlusIcon,
+  Star,
+  VideoIcon,
+} from "lucide-react";
 import Image from "next/image";
 
 export default function Home() {
-  const images = [
-    "/placeholders/1.jpg",
-    "/placeholders/1.jpg",
-    "/placeholders/1.jpg",
-    "/placeholders/1.jpg",
-  ];
-
   return (
-    <div className="flex flex-col bg-zinc-50 xl:h-screen">
-      <div className="h-max xl:h-full bg-zinc-50 grid-flow-col xl:columns-2 gap-x-0">
-        <div className="flex flex-col items-center justify-start pt-16 xl:col-span-1 gap-y-2 h-screen xl:h-full">
-          <h1 className="text-slate-800 font-medium h-fill text-3xl w-4/5 md:text-4xl xl:text-4xl">
+    <div className="flex flex-col bg-zinc-50 xl:h-screen xl:gap-y-16 dark:bg-zinc-800">
+      <div className="h-full grid-flow-col gap-x-0 bg-zinc-50 xl:h-5/6 xl:columns-2 dark:bg-zinc-800">
+        <div className="flex h-full flex-col items-center justify-center pt-10 xl:col-span-1 xl:pt-0">
+          oi
+        </div>
+
+        <div className="flex h-full w-full flex-col items-center justify-center xl:pt-10">
+          {" "}
+          <h1 className="h-fill w-full text-center text-3xl font-medium text-slate-800 md:text-4xl xl:text-2xl dark:text-zinc-100">
             Tracking your{" "}
-            <span className="bg-red-600/80 px-1 text-white font-semibold">
+            <span className="bg-sky-600/80 px-1 font-semibold text-white dark:text-zinc-100">
               progress
             </span>{" "}
             was never this easy!
           </h1>
-
-          <h2 className="text-slate-800 mt-4 xl:mt-0 font-medium h-fill text-xl w-4/5 md:text-2xl xl:text-xl">
-            The “training” let you plan all your trainig days and weeks at a
-            buttons touch, saving all your reps, sets, weights and much more so{" "}
+          <h2 className="h-fill mt-4 w-full px-4 text-center text-xl font-medium text-slate-800 md:text-2xl xl:mt-2 xl:text-base dark:text-zinc-100">
+            <span className="bg-sky-600/80 px-1 font-semibold tracking-widest text-white dark:text-zinc-100">
+              IGNIS
+            </span>{" "}
+            let you plan all your trainig days and weeks at a buttons touch,
+            saving all your reps, sets, weights and much more so{" "}
             <span className="font-semibold underline">YOU</span> or your{" "}
             <span className="font-semibold underline">COACH</span> can review it
             later and keep track of everything.
           </h2>
-
-          <div className="pt-2 mt-4 xl:mt-0 flex flex-col items-start justify-start w-4/5">
-            <div className="flex flex-row w-full">
-              <Check className="size-5 h-full flex items-center text-red-600 md:size-10 xl:size-8" />
-              <p className="text-base md:text-xl h-full flex items-center">
-                Create custom templates for yourself or your clients
-              </p>
+          <div className="grid h-full w-full grid-cols-2 grid-rows-3 gap-y-4 py-16 lg:grid-cols-3 lg:grid-rows-2 xl:py-0 dark:text-zinc-100">
+            <div className="flex flex-col items-center justify-start gap-y-2 xl:gap-y-0.5 xl:pt-6">
+              <VideoIcon className="size-16 rounded-full bg-sky-500/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-sky-600/90" />
+              <h4 className="w-full text-center text-xl font-medium xl:text-base">
+                Form checks
+              </h4>
+              <span className="w-3/4 text-center text-xs">
+                Save videos and commentaries of your exercises
+              </span>
             </div>
-            <div className="flex flex-row w-full">
-              <Check className="size-5 h-full flex items-center text-red-600 md:size-10 xl:size-8" />
-              <p className="text-base md:text-xl h-full flex items-center">
-                Share your progress with your friends or your coach
-              </p>
+            <div className="flex flex-col items-center justify-start gap-y-2 xl:gap-y-0.5 xl:pt-6">
+              <MessagesSquareIcon className="size-16 rounded-full bg-sky-500/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-sky-600/90" />
+              <h4 className="w-full text-center text-xl font-medium xl:text-base">
+                Chat & share
+              </h4>
+              <span className="w-3/4 text-center text-xs">
+                Chat with your coach or friends and share your best lifts and
+                your progression
+              </span>
             </div>
-            <div className="flex flex-row w-full">
-              <Check className="size-5 h-full flex items-center text-red-600 md:size-10 xl:size-8" />
-              <p className="text-base md:text-xl h-full flex items-center">
-                Save everything from sets and reps to video recordings
-              </p>
+            <div className="flex flex-col items-center justify-start gap-y-2 xl:gap-y-0.5 xl:pt-6">
+              <BarChart3Icon className="size-16 rounded-full bg-sky-500/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-sky-600/90" />
+              <h4 className="w-full text-center text-xl font-medium xl:text-base">
+                Tracking progress
+              </h4>
+              <span className="w-3/4 text-center text-xs">
+                Every rep and weight added is saved in easy to read charts
+              </span>
+            </div>
+            <div className="flex flex-col items-center justify-start gap-y-2 xl:gap-y-0.5">
+              <DumbbellIcon className="size-16 rounded-full bg-sky-500/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-sky-600/90" />
+              <h4 className="w-full text-center text-xl font-medium xl:text-base">
+                Exercise creation
+              </h4>
+              <span className="w-3/4 text-center text-xs">
+                Exercise creation is as easy and intuitive as in a piece of
+                paper
+              </span>
+            </div>
+            <div className="flex flex-col items-center justify-start gap-y-2 xl:gap-y-0.5">
+              <LayoutListIcon className="size-16 rounded-full bg-sky-500/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-sky-600/90" />
+              <h4 className="w-full text-center text-xl font-medium xl:text-base">
+                Periodization
+              </h4>
+              <span className="w-3/4 text-center text-xs">
+                Organizing your training is just as easy as draging and dropping
+                your exercises around
+              </span>
+            </div>
+            <div className="flex flex-col items-center justify-start gap-y-2 xl:gap-y-0.5">
+              <PlusIcon className="size-16 rounded-full bg-sky-500/75 p-4 text-white xl:size-8 xl:p-1 dark:bg-sky-600/90" />
+              <h4 className="w-full text-center text-xl font-medium xl:text-base">
+                And much more...
+              </h4>
+              <span className="w-3/4 text-center text-xs">
+                Track your own bodyweight, your form, your RPE and more...
+              </span>
             </div>
           </div>
-
-          <div className="flex mt-4 xl:mt-0 flex-col sm:flex-row items-center sm:items-start gap-5">
+          <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start">
             <div className="flex -space-x-4">
               <Image
                 className="inline-block size-10 rounded-full ring-2 ring-slate-100"
@@ -95,37 +140,21 @@ export default function Home() {
               />
             </div>
           </div>
-
-          <div className="flex flex-col justify-between items-center sm:items-start">
+          <div className="mt-2 flex flex-col items-center justify-between sm:items-start xl:gap-y-0.5">
             <div className="flex w-full items-center justify-center gap-0.5">
-              <Star className="size-4 text-red-600 fill-red-600" />
-              <Star className="size-4 text-red-600 fill-red-600" />
-              <Star className="size-4 text-red-600 fill-red-600" />
-              <Star className="size-4 text-red-600 fill-red-600" />
-              <Star className="size-4 text-red-600 fill-red-600" />
+              <Star className="size-4 fill-sky-600 text-sky-600 dark:text-sky-600/70" />
+              <Star className="size-4 fill-sky-600 text-sky-600 dark:text-sky-600/70" />
+              <Star className="size-4 fill-sky-600 text-sky-600 dark:text-sky-600/70" />
+              <Star className="size-4 fill-sky-600 text-sky-600 dark:text-sky-600/70" />
+              <Star className="size-4 fill-sky-600 text-sky-600 dark:text-sky-600/70" />
             </div>
-            <p>
+            <p className="dark:text-zinc-100">
               More than <span className="font-semibold">5.175</span> trainees
               using it
             </p>
           </div>
         </div>
-
-        <div className="xl:col-span-2 flex-col flex items-center gap-y-6 justify-start pt-16 px-4 h-screen xl:h-full">
-          <Slideshow images={images} interval={3500} />
-          <div>
-            <button className="bg-red-600/80 md:text-5xl text-4xl px-4 pt-1 rounded-lg font-semibold text-white">
-              JOIN NOW FOR FREE
-            </button>
-          </div>
-        </div>
       </div>
-
-      <footer className="w-full h-16 bg-zinc-200 flex flex-row items-center justify-evenly text-zinc-500">
-        <span>POLICY</span>
-        <span>POLICY</span>
-        <span>POLICY</span>
-      </footer>
     </div>
   );
 }
