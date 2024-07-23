@@ -11,7 +11,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FormFieldType } from "../forms/userForm";
-import Image from "next/image";
+
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
+import { E164Number } from "libphonenumber-js/core";
 
 interface CustomProps {
   control: Control<any>;
@@ -34,7 +37,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="flex rounded-md border border-neutral-200 bg-white pl-2 ring-cyan-300 focus-within:ring-2">
+        <div className="flex h-8 items-center rounded-md border border-neutral-200 bg-white pl-2 ring-cyan-300 focus-within:ring-2 dark:bg-neutral-700">
           {iconSrc && (
             <div className="flex items-center justify-center">{iconSrc}</div>
           )}
@@ -42,10 +45,40 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
             <Input
               placeholder={placeholder}
               {...field}
-              className="border-0 focus:outline-none"
+              className="h-full border-0 focus:bg-none focus:outline-none dark:bg-neutral-700"
             />
           </FormControl>
         </div>
+      );
+    case FormFieldType.PASSWORD_INPUT:
+      return (
+        <div className="flex h-8 items-center rounded-md border border-neutral-200 bg-white pl-2 ring-cyan-300 focus-within:ring-2 dark:bg-neutral-700">
+          {iconSrc && (
+            <div className="flex items-center justify-center">{iconSrc}</div>
+          )}
+          <FormControl>
+            <Input
+              type="password"
+              placeholder={placeholder}
+              {...field}
+              className="h-full border-0 focus:bg-none focus:outline-none dark:bg-neutral-700"
+            />
+          </FormControl>
+        </div>
+      );
+    case FormFieldType.PHONE_INPUT:
+      return (
+        <FormControl>
+          <PhoneInput
+            className="flex h-8 w-full items-center rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-cyan-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-700 dark:text-neutral-200"
+            defaultCountry="US"
+            placeholder={placeholder}
+            international
+            withCountryCallingCode
+            value={field.value as E164Number | undefined}
+            onChange={field.onChange}
+          />
+        </FormControl>
       );
 
     default:
@@ -68,7 +101,7 @@ const CustomFormField = (props: CustomProps) => {
 
           <RenderField field={field} props={props} />
 
-          <FormMessage />
+          <FormMessage className="text-xs" />
         </FormItem>
       )}
     />

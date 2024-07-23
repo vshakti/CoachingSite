@@ -1,3 +1,4 @@
+import Auth from "@/components/auth";
 import UserForm from "@/components/forms/userForm";
 import {
   BarChart3Icon,
@@ -16,31 +17,7 @@ export default function Home() {
     <div className="flex flex-col bg-neutral-50 xl:h-screen xl:gap-y-16 dark:bg-neutral-900">
       <div className="h-full grid-flow-col gap-x-0 bg-neutral-50 xl:h-5/6 xl:columns-2 dark:bg-neutral-900">
         <div className="flex h-full w-full flex-col items-center justify-center pb-10 pt-10 xl:col-span-1 xl:pb-0 xl:pt-0">
-          <div className="flex w-3/4 flex-col items-start justify-center gap-y-4 p-4">
-            <div className="flex flex-row items-center gap-x-4">
-              <Image
-                src="/logo/logo.png"
-                alt="logo"
-                width={52}
-                height={52}
-                quality={100}
-              />
-              <h1 className="text-5xl font-medium tracking-wide dark:text-neutral-200">
-                Ignis
-              </h1>
-            </div>
-
-            <UserForm />
-
-            <div className="text-14 flex w-full justify-between">
-              <p className="justify-items-end xl:text-left dark:text-neutral-200">
-                © {new Date().getFullYear()} Ignis
-              </p>
-              <Link href="/?admin=true" className="text-cyan-500">
-                Admin
-              </Link>
-            </div>
-          </div>
+          <Auth />
         </div>
 
         <div className="flex h-full w-full flex-col items-center justify-center xl:pt-10">

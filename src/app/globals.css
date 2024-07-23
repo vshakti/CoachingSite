@@ -3,6 +3,27 @@
 @tailwind utilities;
 
 @layer base {
+  /* Remove scrollbar */
+  .remove-scrollbar::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    border-radius: 0px;
+  }
+
+  .remove-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .remove-scrollbar::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 0px;
+  }
+
+  .remove-scrollbar::-webkit-scrollbar-thumb:hover {
+    /* background: #1e2238; */
+    background: transparent;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
@@ -66,4 +87,20 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.PhoneInput {
+  @apply flex items-center;
+}
+
+.PhoneInputInput {
+  @apply w-full rounded-md bg-transparent p-2 focus:outline-none;
+}
+
+.PhoneInputCountry {
+  @apply pr-2 dark:text-neutral-200;
+}
+
+.PhoneInputCountrySelect {
+  @apply remove-scrollbar bg-neutral-100 pr-4 backdrop-blur-sm dark:bg-neutral-700 dark:text-neutral-200;
 }

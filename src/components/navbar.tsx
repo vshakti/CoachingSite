@@ -1,50 +1,98 @@
-import Link from "next/link";
 import Image from "next/image";
+import ProfileOptions from "@/components/profileOptions";
 
-const Navbar = async () => {
+import {
+  BarChart3Icon,
+  DumbbellIcon,
+  LayoutListIcon,
+  MessageSquareIcon,
+  UserIcon,
+  UsersRoundIcon,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { getLoggedInUser, LogOut } from "@/lib/actions/user.actions";
+import React, { useEffect, useState } from "react";
+import { LogOutBtn } from "./logOutBtn";
+
+interface ShowNavbarProps {
+  showNavbar: string;
+}
+
+const Navbar = ({ showNavbar }: ShowNavbarProps) => {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const newUser = await getLoggedInUser();
+        setUser(newUser);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
+  }, [showNavbar]);
+
   return (
-    <nav className="sticky inset-x-0 top-0 z-[100] h-14 w-full border-b bg-white/75 backdrop-blur-lg transition-all dark:bg-neutral-900">
-      <div className="flex h-14 items-center justify-between border-b border-neutral-200 px-4 dark:border-neutral-400">
-        <Link href="/" className="z-40 flex items-center gap-x-2 font-semibold">
+    <div className="flex-col items-center">
+      <div className="flex w-full flex-col items-center justify-center gap-y-1 pb-2 pt-5">
+        <div className="relative size-[5rem] md:size-[6rem] 2xl:size-[10rem]">
           <Image
-            src="/logo/logo.png"
-            width={26}
-            height={26}
+            className="rounded-full border-2 border-neutral-800 dark:border-white"
+            src="/hero-users/user-1.png"
+            alt="profile image"
+            layout="fill"
             quality={100}
-            alt="logo"
           />
-          <span className="text-xl font-bold tracking-widest text-cyan-500 dark:text-white">
-            ignis
+        </div>
+        <div className="flex w-full flex-col items-center justify-center text-center text-xs font-medium md:text-base xl:text-lg 2xl:text-3xl">
+          <span className="dark:text-neutral-300">
+            {!user ? (
+              <div>loading</div>
+            ) : (
+              <p className="text-pink-600">{user.$id}</p>
+            )}
           </span>
-        </Link>
-
-        <div className="flex h-full items-center space-x-3">
-          <Link
-            href={"/user/control-panel"}
-            className="rounded-md px-1.5 py-0.5 hover:bg-neutral-200 hover:font-medium dark:text-neutral-300 dark:hover:bg-neutral-950"
-          >
-            Control Panel
-          </Link>
-
-          <Link
-            href={"/api/auth/logout"}
-            className="rounded-md px-1.5 py-0.5 hover:bg-neutral-200 hover:font-medium dark:text-neutral-300 dark:hover:bg-neutral-950"
-          >
-            Log in
-          </Link>
-
-          <div className="hidden h-8 w-px bg-neutral-200 sm:block dark:bg-slate-400" />
-
-          <Link
-            href={"/donation"}
-            className="rounded-md bg-cyan-400/75 px-5 py-2 font-medium text-white hover:bg-cyan-400 dark:bg-cyan-500/90 dark:text-neutral-200 dark:hover:bg-cyan-500/80"
-          >
-            Donate
-          </Link>
+          <div className="dark:text-neutral-300">
+            Coaching: {""}
+            <span className="tracking-wide text-green-600 dark:text-green-400">
+              ACTIVE
+            </span>
+          </div>
         </div>
       </div>
-    </nav>
+
+      <div className="h-px w-full bg-neutral-200 dark:bg-slate-400"></div>
+
+      <ul className="mt-2 grid w-full items-center justify-center gap-y-6 py-2.5 2xl:gap-y-10">
+        <ProfileOptions
+          icon={<MessageSquareIcon className="size-5 xl:size-6 2xl:size-8" />}
+          text={"Chat"}
+        />
+        <ProfileOptions
+          icon={<UsersRoundIcon className="size-5 xl:size-6 2xl:size-8" />}
+          text={"Clients"}
+        />
+        <ProfileOptions
+          icon={<DumbbellIcon className="size-5 xl:size-6 2xl:size-8" />}
+          text={"Exercises"}
+        />
+        <ProfileOptions
+          icon={<UserIcon className="size-5 xl:size-6 2xl:size-8" />}
+          text={"Profile"}
+        />
+        <ProfileOptions
+          icon={<BarChart3Icon className="size-5 xl:size-6 2xl:size-8" />}
+          text={"Progress"}
+        />
+        <ProfileOptions
+          icon={<LayoutListIcon className="size-5 xl:size-6 2xl:size-8" />}
+          text={"Templates"}
+        />
+        <LogOutBtn />
+      </ul>
+    </div>
   );
 };
-
 export default Navbar;
