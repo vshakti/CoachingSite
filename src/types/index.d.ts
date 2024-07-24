@@ -11,34 +11,24 @@ declare interface UserAuth {
   password: string;
 }
 
-declare interface User extends UserAuth {
-  $id?: string;
-  name?: string;
-  userId?: string;
-  birthDate?: Date;
-  gender?: Gender;
-  isCoaching?: boolean;
-  avatar?: string;
-  privacyConsent?: boolean;
-}
-
-declare interface UserId {
+declare interface getUserInfo {
   userId: string;
 }
 
-// declare type CreateAppointmentParams = {
-//   userId: string;
-//   patient: string;
-//   primaryPhysician: string;
-//   reason: string;
-//   schedule: Date;
-//   status: Status;
-//   note: string | undefined;
-// };
+declare interface User extends Omit<UserAuth, "password"> {
+  $id?: string;
+  name: string;
+  userId: string;
+  birthDate: Date;
+  gender: Gender;
+  description: string;
+}
 
-// declare type UpdateAppointmentParams = {
-//   appointmentId: string;
-//   userId: string;
-//   appointment: Appointment;
-//   type: string;
-// };
+declare interface showUser {
+  $id?: string;
+  name: string;
+  userId: string;
+  birthDate: Date;
+  gender: Gender;
+  description: string;
+}

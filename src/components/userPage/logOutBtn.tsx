@@ -5,9 +5,9 @@ import { LogOut } from "@/lib/actions/user.actions";
 export const LogOutBtn = () => {
   const router = useRouter();
 
-  const handleLogOut = () => {
-    LogOut();
-    router.push(`/sign-in`);
+  const handleLogOut = async () => {
+    await LogOut();
+    router.push("/");
   };
 
   return (

@@ -1,5 +1,5 @@
 import Auth from "@/components/auth";
-import UserForm from "@/components/forms/userForm";
+
 import {
   BarChart3Icon,
   DumbbellIcon,
@@ -10,7 +10,6 @@ import {
   VideoIcon,
 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function Home() {
   return (

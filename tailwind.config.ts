@@ -18,6 +18,10 @@ const config = {
       },
     },
     extend: {
+      boxShadow: {
+        "right-only": "15px 0px 20px rgba(0, 0, 0, 0.18)",
+        "right-only-dark": "15px 0px 10px rgba(0, 0, 0, 0.4)",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

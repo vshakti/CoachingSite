@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { UserHeadbar } from "./userHeadbar";
 
 const Headbar = async () => {
   return (
@@ -20,10 +21,10 @@ const Headbar = async () => {
 
         <div className="flex h-full items-center space-x-3">
           <Link
-            href={"/user/control-panel"}
+            href={"/user"}
             className="rounded-md px-1.5 py-0.5 hover:bg-neutral-200 hover:font-medium dark:text-neutral-300 dark:hover:bg-neutral-950"
           >
-            Control Panel
+            <UserHeadbar />
           </Link>
 
           <div className="hidden h-8 w-px bg-neutral-200 sm:block dark:bg-slate-400" />

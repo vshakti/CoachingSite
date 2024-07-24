@@ -1,5 +1,5 @@
 import Image from "next/image";
-import ProfileOptions from "@/components/profileOptions";
+import ProfileOptions from "@/components/userPage/profileOptions";
 
 import {
   BarChart3Icon,
@@ -12,34 +12,21 @@ import {
 import { useRouter } from "next/navigation";
 import { getLoggedInUser, LogOut } from "@/lib/actions/user.actions";
 import React, { useEffect, useState } from "react";
-import { LogOutBtn } from "./logOutBtn";
+import { LogOutBtn } from "@/components/userPage/logOutBtn";
+import { useUser } from "@/lib/context/user";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/lib/redux/reduxStore";
+import { setUser } from "@/lib/redux/reduxSlice";
 
-interface ShowNavbarProps {
-  showNavbar: string;
-}
-
-const Navbar = ({ showNavbar }: ShowNavbarProps) => {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const newUser = await getLoggedInUser();
-        setUser(newUser);
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    };
-
-    fetchUser();
-  }, [showNavbar]);
+const Navbar = () => {
+  const { user } = useUser();
 
   return (
     <div className="flex-col items-center">
       <div className="flex w-full flex-col items-center justify-center gap-y-1 pb-2 pt-5">
         <div className="relative size-[5rem] md:size-[6rem] 2xl:size-[10rem]">
           <Image
-            className="rounded-full border-2 border-neutral-800 dark:border-white"
+            className="rounded-full border-2 border-neutral-800 dark:border-neutral-300"
             src="/hero-users/user-1.png"
             alt="profile image"
             layout="fill"
@@ -51,7 +38,7 @@ const Navbar = ({ showNavbar }: ShowNavbarProps) => {
             {!user ? (
               <div>loading</div>
             ) : (
-              <p className="text-pink-600">{user.$id}</p>
+              <p className="text-pink-600">{user.name}</p>
             )}
           </span>
           <div className="dark:text-neutral-300">

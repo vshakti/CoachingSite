@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Headbar from "@/components/headbar";
-import { GetLoggedInUser } from "@/lib/actions/user.actions";
-import { redirect } from "next/navigation";
+import { UserProvider } from "@/lib/context/user";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +21,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`remove-scrollbar ${inter.className}`}>
-        <Headbar />
+        <UserProvider>
+          <Headbar />
+        </UserProvider>
         {children}
       </body>
     </html>

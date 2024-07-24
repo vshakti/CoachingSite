@@ -6,42 +6,51 @@ import { parseStringify } from "../utils";
 import { createAdminClient, createSessionClient } from "../appwrite.config";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import store from "../redux/reduxStore";
+import { setUser } from "../redux/reduxSlice";
 
 const {
   APPWRITE_DATABASE_ID: DATABASE_ID,
-  APPWRITE_USER_COLLECTION_ID: USERS_COLLECTION_ID,
+  APPWRITE_USERS_COLLECTION_ID: USERS_COLLECTION_ID,
 } = process.env;
 
-// export const getUserInfo = async ({ userId }: getUserInfoProps) => {
-//   try {
-//     const { database } = await createAdminClient();
-
-//     const user = await database.listDocuments(
-//       DATABASE_ID!,
-//       USERS_COLLECTION_ID!,
-//       [Query.equal("userId", [userId])],
-//     );
-
-//     return parseStringify(user.documents[0]);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-export const Register = async (user: UserAuth) => {
+export const getUserInfo = async ({ userId }: getUserInfo) => {
   try {
-    const { account } = await createAdminClient();
-    const newUser = await account.create(
+    const { database } = await createAdminClient();
+
+    const user = await database.listDocuments(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      [Query.equal("userId", [userId])],
+    );
+
+    return parseStringify(user.documents[0]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const Register = async ({ password, email }: UserAuth) => {
+  try {
+    const { account, database } = await createAdminClient();
+    const newUserAccount = await account.create(
       ID.unique(),
-      user.email,
-      user.password,
+      email,
+      password,
       undefined,
     );
 
-    const session = await account.createEmailPasswordSession(
-      user.email,
-      user.password,
+    const newUser = await database.createDocument(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      ID.unique(),
+      {
+        email,
+        userId: newUserAccount.$id,
+      },
     );
+
+    const session = await account.createEmailPasswordSession(email, password);
 
     cookies().set("my-custom-session", session.secret, {
       path: "/",
@@ -49,10 +58,10 @@ export const Register = async (user: UserAuth) => {
       sameSite: "strict",
       secure: true,
     });
-    console.log(newUser);
+
     return parseStringify(newUser);
   } catch (error: any) {
-    console.error("An error occurred while creating a new user:", error);
+    console.error(error);
   }
 };
 
@@ -69,9 +78,11 @@ export const LogIn = async ({ email, password }: UserAuth) => {
       secure: true,
     });
 
-    return parseStringify(account);
+    const user = await getUserInfo({ userId: session.userId });
+
+    return parseStringify(session);
   } catch (error) {
-    console.log("Error:", error);
+    console.log(error);
   }
 };
 
@@ -80,7 +91,9 @@ export async function getLoggedInUser() {
     const { account } = await createSessionClient();
     const result = await account.get();
 
-    return parseStringify(result);
+    const user = await getUserInfo({ userId: result.$id });
+
+    return parseStringify(user);
   } catch (error) {
     console.log(error);
     return null;
@@ -97,3 +110,33 @@ export async function LogOut() {
     return null;
   }
 }
+
+export const UpdateUser = async ({
+  name,
+  userId,
+  birthDate,
+  gender,
+  description,
+}: showUser) => {
+  try {
+    const { database } = await createAdminClient();
+    const newUser = await database.updateDocument(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      userId,
+      {
+        name,
+        birthDate,
+        gender,
+        description,
+      },
+    );
+
+    const parsedNewUser = parseStringify(newUser);
+    store.dispatch(setUser(parsedNewUser));
+
+    return parsedNewUser;
+  } catch (error) {
+    console.log(error);
+  }
+};

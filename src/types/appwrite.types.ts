@@ -2,6 +2,7 @@ import { Models } from "node-appwrite";
 
 export interface Users extends Models.Document {
   userId: string;
+  description: string;
   name: string;
   email: string;
   phone: string;

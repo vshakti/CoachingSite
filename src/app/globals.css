@@ -104,3 +104,70 @@
 .PhoneInputCountrySelect {
   @apply remove-scrollbar bg-neutral-100 pr-4 backdrop-blur-sm dark:bg-neutral-700 dark:text-neutral-200;
 }
+
+.data-table {
+  @apply z-10 w-full overflow-hidden rounded-lg border border-neutral-400 shadow-lg;
+}
+
+.table-actions {
+  @apply flex w-full items-center justify-between space-x-2 p-4;
+}
+
+.date-picker {
+  @apply w-full overflow-hidden rounded-md text-base outline-none placeholder:text-neutral-600 !important;
+}
+
+.react-datepicker-wrapper.date-picker {
+}
+
+.react-datepicker,
+.react-datepicker__time,
+.react-datepicker__header,
+.react-datepicker__current-month,
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker-time__header {
+  @apply bg-neutral-200 text-black dark:bg-neutral-800 dark:text-neutral-300 !important;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name,
+.react-datepicker-time__header {
+  @apply bg-neutral-200 text-black dark:bg-neutral-800 dark:text-neutral-300 !important;
+}
+
+.react-datepicker__triangle {
+  @apply fill-neutral-200 stroke-neutral-400 text-neutral-200 dark:fill-neutral-900 dark:stroke-neutral-400 dark:text-neutral-900 !important;
+}
+
+.react-datepicker__time-list-item:hover {
+  @apply bg-neutral-950 !important;
+}
+
+.react-datepicker__day--selected {
+  @apply bg-neutral-600 text-white dark:bg-neutral-950 dark:text-neutral-200 !important;
+  border-radius: 4px;
+}
+
+.react-datepicker__time-list-item--selected {
+  @apply bg-neutral-600 dark:bg-neutral-950 !important;
+}
+
+.react-datepicker__time-container {
+  border-left: 1px !important;
+}
+
+.react-datepicker__time-list-item {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* =====  REACT PHONE NUMBER INPUT OVERRIDES */
+
+.PhoneInputInput {
+  outline: none;
+  margin-left: 4px;
+  background: #0000;
+  font-size: 14px;
+  font-weight: 500;
+}

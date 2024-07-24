@@ -1,39 +1,37 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useState } from "react";
+import { Form, FormControl } from "@/components/ui/form";
+import { Label } from "@radix-ui/react-label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Form } from "@/components/ui/form";
+import "react-datepicker/dist/react-datepicker.css";
+import "react-phone-number-input/style.css";
 
-import CustomFormField from "../ui/customFormField";
-import { AtSignIcon, LockKeyholeIcon, UserIcon } from "lucide-react";
-import SubmitButton from "../submitButton";
-import { useState } from "react";
-import { UserFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
-import { Register } from "@/lib/actions/user.actions";
-
-export enum FormFieldType {
-  INPUT = "input",
-  TEXTAREA = "textarea",
-  PHONE_INPUT = "phoneInput",
-  PASSWORD_INPUT = "password",
-  CHECKBOX = "checkbox",
-  DATE_PICKER = "datePicker",
-  SELECT = "select",
-  SKELETON = "skeleton",
-}
+import { LogIn, UpdateUser } from "@/lib/actions/user.actions";
+import { AtSignIcon, LockKeyholeIcon, User, UserRoundIcon } from "lucide-react";
+import SubmitButton from "@/components/submitButton";
+import CustomFormField from "@/components/ui/customFormField";
+import Image from "next/image";
+import { UserFormValidation } from "@/lib/validation";
+import { FormFieldType } from "@/lib/exports/exports";
+import { UserFormDefaultValues, GenderOptions } from "@/constants";
+import { useUser } from "@/lib/context/user";
 
 const UserForm = () => {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const { user } = useUser();
 
   const form = useForm<z.infer<typeof UserFormValidation>>({
     resolver: zodResolver(UserFormValidation),
     defaultValues: {
-      email: "",
-      password: "",
+      ...UserFormDefaultValues,
     },
   });
 
@@ -42,14 +40,18 @@ const UserForm = () => {
 
     try {
       const userData = {
-        email: values.email,
-        password: values.password,
+        userId: user?.$id ?? "",
+        name: values.name,
+        phone: values.phone,
+        birthDate: new Date(values.birthDate),
+        gender: values.gender,
+        description: values.description,
       };
-      const user = await Register(userData);
-
-      if (user) router.push(`/lol`);
+      const newUser = await UpdateUser(userData);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -58,36 +60,81 @@ const UserForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
         <CustomFormField
           fieldType={FormFieldType.INPUT}
-          name="email"
-          label={<span className="dark:text-neutral-200">Email</span>}
-          placeholder="johdoe@gmail.com"
+          name="name"
+          label={<span className="dark:text-neutral-200">Name</span>}
+          placeholder="Example"
           iconSrc={
-            <AtSignIcon className="text-cyan-600 dark:text-neutral-200" />
+            <UserRoundIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
           }
           control={form.control}
         />
-        <CustomFormField
-          fieldType={FormFieldType.PASSWORD_INPUT}
-          name="password"
-          label={<span className="dark:text-neutral-200">Password</span>}
-          placeholder="********"
-          iconSrc={
-            <LockKeyholeIcon className="text-cyan-600 dark:text-neutral-200" />
-          }
-          control={form.control}
-        />
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomFormField
+            fieldType={FormFieldType.PHONE_INPUT}
+            name="phone"
+            label={<span className="dark:text-neutral-200">Phone number</span>}
+            placeholder="(555) 123-4567"
+            control={form.control}
+          />
+        </div>
 
-        {/* <CustomFormField
-          fieldType={FormFieldType.PHONE_INPUT}
-          name="phone"
-          label={<span className="dark:text-neutral-200">Phone number</span>}
-          placeholder="(555) 123-4567"
-          control={form.control}
-        /> */}
-        <SubmitButton isLoading={isLoading}>REGISTER FOR FREE</SubmitButton>
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomFormField
+            iconSrc={
+              <AtSignIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
+            }
+            fieldType={FormFieldType.DATE_PICKER}
+            control={form.control}
+            name="birthDate"
+            label="Date of birth"
+          />
+          <CustomFormField
+            fieldType={FormFieldType.SKELETON}
+            control={form.control}
+            name="gender"
+            label="Gender"
+            renderSkeleton={(field) => (
+              <FormControl>
+                <RadioGroup
+                  className="flex h-8 w-full items-center rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-cyan-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-700 dark:text-neutral-200"
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  {GenderOptions.map((option, i) => (
+                    <div key={option + i} className="radio-group">
+                      <RadioGroupItem value={option} id={option} />
+                      <Label htmlFor={option} className="cursor-pointer">
+                        {option}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              </FormControl>
+            )}
+          />
+        </div>
+
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomFormField
+            fieldType={FormFieldType.TEXTAREA}
+            control={form.control}
+            name="description"
+            label="Description"
+            placeholder="..."
+          />
+        </div>
+
+        <SubmitButton
+          className="w-full bg-cyan-500 tracking-widest hover:bg-cyan-600"
+          isLoading={isLoading}
+          click={() => {
+            window.location.reload();
+          }}
+        >
+          CHANGE
+        </SubmitButton>
       </form>
     </Form>
   );
 };
-
 export default UserForm;
