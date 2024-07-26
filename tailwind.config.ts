@@ -19,8 +19,10 @@ const config = {
     },
     extend: {
       boxShadow: {
-        "right-only": "15px 0px 20px rgba(0, 0, 0, 0.18)",
-        "right-only-dark": "15px 0px 10px rgba(0, 0, 0, 0.4)",
+        "right-only": "5px 0px 20px rgba(0, 0, 0, 0.18)",
+        "right-only-dark": "15px 0px 8px rgba(0, 0, 0, 0.4)",
+        "bottom-only": "0 4px 6px rgba(0, 0, 0, 0.18)",
+        "bottom-only-dark": "0 6px 8px rgba(0, 0, 0, 0.4)",
       },
       colors: {
         border: "hsl(var(--border))",

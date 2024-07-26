@@ -9,4 +9,9 @@ export const UserFormDefaultValues = {
   description: "",
   clients: [],
   isCoaching: false,
+  picture: "",
+};
+
+export const UserPictureDefaultValue = {
+  imageBlob: [],
 };

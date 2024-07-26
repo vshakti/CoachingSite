@@ -1,3 +1,5 @@
+"use client";
+
 import Auth from "@/components/auth";
 
 import {
@@ -10,13 +12,44 @@ import {
   VideoIcon,
 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { getLoggedInUser } from "@/lib/actions/user.actions";
+import { useUser } from "@/lib/context/user";
 
 export default function Home() {
+  const { user } = useUser();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const newUser = await getLoggedInUser();
+
+        if (newUser) {
+          console.log(newUser);
+          router.push(`/user/${user!.$id}/profile`);
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
+  }, [router]);
+
   return (
     <div className="flex flex-col bg-neutral-50 xl:h-screen xl:gap-y-16 dark:bg-neutral-900">
       <div className="h-full grid-flow-col gap-x-0 bg-neutral-50 xl:h-5/6 xl:columns-2 dark:bg-neutral-900">
         <div className="flex h-full w-full flex-col items-center justify-center pb-10 pt-10 xl:col-span-1 xl:pb-0 xl:pt-0">
-          <Auth />
+          {!user ? (
+            <>
+              <Auth />
+            </>
+          ) : (
+            <div className="dark:text-white">redirecting</div>
+          )}
         </div>
 
         <div className="flex h-full w-full flex-col items-center justify-center xl:pt-10">

@@ -36,7 +36,7 @@ const LogInForm = () => {
       };
       const user = await LogIn(userData);
 
-      if (user) router.push(`/user/${user.$id}`);
+      if (user) router.push(`/user/${user.$id}/profile`);
     } catch (error) {
       console.log(error);
     } finally {
@@ -69,7 +69,9 @@ const LogInForm = () => {
           control={form.control}
         />
 
-        <SubmitButton isLoading={isLoading}>LOG IN</SubmitButton>
+        <SubmitButton click={() => {}} isLoading={isLoading}>
+          LOG IN
+        </SubmitButton>
       </form>
     </Form>
   );

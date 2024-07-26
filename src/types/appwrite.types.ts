@@ -9,17 +9,6 @@ export interface Users extends Models.Document {
   birthDate: Date;
   gender: Gender;
   isCoaching: boolean;
-  avatar: string;
-  privacyConsent: boolean;
+  pictureUrl: string;
+  pictureId: string;
 }
-
-// export interface Appointment extends Models.Document {
-//   client: User;
-//   schedule: Date;
-//   status: Status;
-//   primaryPhysician: string;
-//   reason: string;
-//   note: string;
-//   userId: string;
-//   cancellationReason: string | null;
-// }

@@ -13,22 +13,32 @@ declare interface UserAuth {
 
 declare interface getUserInfo {
   userId: string;
+  pictureId?: string;
 }
 
-declare interface User extends Omit<UserAuth, "password"> {
+declare interface User extends Omit<UserAuth, "password">, UserPicture {
   $id?: string;
   name: string;
+  userId: string;
+  phone: string;
+  birthDate: Date;
+  gender: Gender;
+  description: string;
+  pictureUrl: string;
+  pictureId: string;
+}
+
+declare interface showUser extends UserPicture {
+  $id?: string;
+  name: string;
+  phone: string;
   userId: string;
   birthDate: Date;
   gender: Gender;
   description: string;
+  pictureUrl: string;
 }
 
-declare interface showUser {
-  $id?: string;
-  name: string;
-  userId: string;
-  birthDate: Date;
-  gender: Gender;
-  description: string;
+declare interface UserPicture {
+  imageBlob: any;
 }

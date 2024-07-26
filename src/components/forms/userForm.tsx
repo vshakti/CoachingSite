@@ -86,13 +86,13 @@ const UserForm = () => {
             fieldType={FormFieldType.DATE_PICKER}
             control={form.control}
             name="birthDate"
-            label="Date of birth"
+            label={<span className="dark:text-neutral-200">Birth Date</span>}
           />
           <CustomFormField
             fieldType={FormFieldType.SKELETON}
             control={form.control}
             name="gender"
-            label="Gender"
+            label={<span className="dark:text-neutral-200">Gender</span>}
             renderSkeleton={(field) => (
               <FormControl>
                 <RadioGroup
@@ -119,7 +119,7 @@ const UserForm = () => {
             fieldType={FormFieldType.TEXTAREA}
             control={form.control}
             name="description"
-            label="Description"
+            label={<span className="dark:text-neutral-200">Bio</span>}
             placeholder="..."
           />
         </div>
@@ -127,9 +127,7 @@ const UserForm = () => {
         <SubmitButton
           className="w-full bg-cyan-500 tracking-widest hover:bg-cyan-600"
           isLoading={isLoading}
-          click={() => {
-            window.location.reload();
-          }}
+          click={() => {}}
         >
           CHANGE
         </SubmitButton>

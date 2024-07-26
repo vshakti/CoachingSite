@@ -9,18 +9,24 @@ export default function Auth() {
   const [auth, setAuth] = useState("Register");
 
   return (
-    <div className="flex w-3/4 flex-col items-start justify-center gap-y-2 p-4">
-      <div className="flex w-full flex-row items-center justify-center gap-x-1">
-        <Image
-          src="/logo/logo.png"
-          alt="logo"
-          width={30}
-          height={30}
-          quality={100}
-        />
-        <h1 className="text-5xl font-medium tracking-wide text-cyan-500 dark:text-neutral-200">
-          Ignis
-        </h1>
+    <div className="flex w-3/4 flex-col items-start justify-center gap-y-2 rounded-md border border-neutral-300 p-4 shadow-md shadow-neutral-300 dark:border-neutral-700 dark:shadow-neutral-800">
+      <div className="flex w-full gap-x-2 py-1">
+        <button
+          onClick={() => {
+            setAuth("Register");
+          }}
+          className="w-1/2 rounded-sm bg-cyan-500 py-1 font-medium text-neutral-300 hover:bg-cyan-600"
+        >
+          REGISTER
+        </button>
+        <button
+          onClick={() => {
+            setAuth("Login");
+          }}
+          className="w-1/2 rounded-sm bg-cyan-500 py-1 font-medium text-neutral-300 hover:bg-cyan-600"
+        >
+          LOGIN
+        </button>
       </div>
 
       {auth === "Register" ? <RegisterForm /> : <LogInForm />}
@@ -29,36 +35,6 @@ export default function Auth() {
         <p className="justify-items-end xl:text-left dark:text-neutral-200">
           © {new Date().getFullYear()} Ignis
         </p>
-
-        {auth === "Register" ? (
-          <div className="flex gap-x-2">
-            <span className="dark:text-neutral-200">
-              Got an account already?{" "}
-            </span>
-            <button
-              onClick={() => {
-                setAuth("Login");
-              }}
-              className="text-cyan-500"
-            >
-              Log in
-            </button>
-          </div>
-        ) : (
-          <div className="flex gap-x-2">
-            <span className="dark:text-neutral-200">
-              Do not have an account?{" "}
-            </span>
-            <button
-              onClick={() => {
-                setAuth("Register");
-              }}
-              className="text-cyan-500"
-            >
-              Register
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
