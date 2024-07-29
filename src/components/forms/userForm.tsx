@@ -48,6 +48,14 @@ const UserForm = () => {
         description: values.description,
       };
       const newUser = await UpdateUser(userData);
+
+      const dialog = document.getElementById(
+        "user_update_modal",
+      ) as HTMLDialogElement;
+      router.refresh();
+      if (dialog) {
+        dialog.close();
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -127,9 +135,8 @@ const UserForm = () => {
         <SubmitButton
           className="w-full bg-cyan-500 tracking-widest hover:bg-cyan-600"
           isLoading={isLoading}
-          click={() => {}}
         >
-          CHANGE
+          UPDATE PROFILE
         </SubmitButton>
       </form>
     </Form>

@@ -51,7 +51,7 @@ const LogInForm = () => {
           fieldType={FormFieldType.INPUT}
           name="email"
           label={<span className="dark:text-neutral-200">Email</span>}
-          placeholder="johdoe@gmail.com"
+          placeholder="example@example.com"
           iconSrc={
             <AtSignIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
           }
@@ -69,9 +69,7 @@ const LogInForm = () => {
           control={form.control}
         />
 
-        <SubmitButton click={() => {}} isLoading={isLoading}>
-          LOG IN
-        </SubmitButton>
+        <SubmitButton isLoading={isLoading}>LOG IN</SubmitButton>
       </form>
     </Form>
   );

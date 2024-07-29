@@ -39,7 +39,7 @@ export const Register = async ({ password, email }: UserAuth) => {
   try {
     let file;
 
-    const { account, database, storage } = await createAdminClient();
+    const { account, database } = await createAdminClient();
     const newUserAccount = await account.create(
       ID.unique(),
       email,
@@ -165,9 +165,9 @@ export const ShowUserPicture = async (pictureId: string) => {
   try {
     const { storage } = await createAdminClient();
 
-    const pic = await storage.getFilePreview(BUCKET_ID!, pictureId);
+    const avatar = await storage.getFile(BUCKET_ID!, pictureId);
 
-    return parseStringify(pic);
+    return avatar;
   } catch (error) {
     console.log(error);
   }
@@ -178,18 +178,29 @@ interface UserImageData {
   userId: string | undefined;
 }
 
-export const UpdateUserProfilePicture = async (
-  { imageBlob, userId }: UserImageData,
-  pictureId: string | undefined,
-) => {
+// export const teste = async () => {
+//   const foo = await createAdminClient();
+//   console.log("foo", foo);
+//   console.log("STRING foo", JSON.stringify(foo, null, 2));
+// };
+
+export const UpdateUserProfilePicture = async ({
+  imageBlob,
+  userId,
+}: UserImageData) => {
   try {
     const { database, storage } = await createAdminClient();
 
-    const fileName = "profile-picture.png";
-    const fileType = "image/png";
-    const file = new File([imageBlob], fileName, { type: fileType });
+    let file;
 
-    if (!pictureId) {
+    if (imageBlob) {
+      const blobFile = new Blob([imageBlob], {
+        type: "image/jpeg",
+      });
+      const fileName = "profile/pic" as string;
+
+      file = InputFile.fromBuffer(blobFile, fileName);
+
       const upload = await storage.createFile(BUCKET_ID!, ID.unique(), file);
 
       const newPicture = await database.updateDocument(
@@ -207,29 +218,6 @@ export const UpdateUserProfilePicture = async (
       if (!newPicture) throw Error;
 
       const parsedNewUser = parseStringify(newPicture);
-      store.dispatch(setUser(parsedNewUser));
-
-      return parsedNewUser;
-    } else {
-      const upload = await storage.updateFile(BUCKET_ID!, pictureId);
-
-      const newPicture = await database.updateDocument(
-        DATABASE_ID!,
-        USERS_COLLECTION_ID!,
-        userId!,
-        {
-          pictureId: upload.$id,
-          pictureUrl: upload?.$id
-            ? `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${upload.$id}/view??project=${PROJECT_ID}`
-            : null,
-        },
-      );
-
-      if (!newPicture) throw Error;
-
-      const parsedNewUser = parseStringify(newPicture);
-
-      store.dispatch(setUser(parsedNewUser));
 
       return parsedNewUser;
     }

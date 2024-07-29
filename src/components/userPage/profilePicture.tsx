@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useRef } from "react";
 import AvatarEditor from "react-avatar-editor";
 import Image from "next/image";
@@ -55,10 +57,7 @@ const ProfilePicture: React.FC = () => {
 
         const picId = user?.pictureId;
 
-        const newUserPicture = await UpdateUserProfilePicture(
-          userPicture,
-          picId,
-        );
+        const newUserPicture = await UpdateUserProfilePicture(userPicture);
       } catch (error) {
         console.log(error);
       }
@@ -99,7 +98,7 @@ const ProfilePicture: React.FC = () => {
 
                 <label
                   form="doc"
-                  className={`absolute bottom-10 right-0 flex cursor-pointer items-center gap-1 rounded-full border-cyan-600 bg-neutral-300/90 p-2 dark:border-neutral-400 dark:bg-neutral-700/90`}
+                  className={`absolute bottom-10 right-0 flex cursor-pointer items-center gap-1 rounded-full border-cyan-600 bg-neutral-400/60 p-2 dark:border-neutral-400 dark:bg-neutral-700/90`}
                 >
                   <ArrowDownToLineIcon className="size-8 text-cyan-600" />
 
@@ -116,7 +115,7 @@ const ProfilePicture: React.FC = () => {
                 <SubmitButton
                   click={() => {}}
                   isLoading={isLoading}
-                  className={`absolute bottom-10 left-0 flex h-12 cursor-pointer items-center rounded-full border-cyan-600 bg-neutral-300/90 p-2 dark:border-neutral-400 dark:bg-neutral-700/90`}
+                  className={`absolute bottom-10 left-0 flex h-12 cursor-pointer items-center rounded-full border-cyan-600 bg-neutral-400/60 p-2 dark:border-neutral-400 dark:bg-neutral-700/90`}
                 >
                   <CloudUploadIcon className="size-8 text-cyan-600" />
                 </SubmitButton>
@@ -129,7 +128,7 @@ const ProfilePicture: React.FC = () => {
 
                 <label
                   form="doc"
-                  className={`absolute bottom-0 right-0 flex cursor-pointer items-center gap-1 rounded-full border-cyan-600 bg-neutral-300/90 p-2 dark:border-neutral-400 dark:bg-neutral-700/90`}
+                  className={`absolute bottom-0 right-0 flex cursor-pointer items-center gap-1 rounded-full border-cyan-600 bg-neutral-400/60 p-2 dark:border-neutral-400 dark:bg-neutral-700/90`}
                 >
                   <ArrowDownToLineIcon className="size-8 text-cyan-600" />
 

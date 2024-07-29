@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 
 import RegisterForm from "@/components/forms/registerForm";
 import { useState } from "react";
@@ -10,22 +9,24 @@ export default function Auth() {
 
   return (
     <div className="flex w-3/4 flex-col items-start justify-center gap-y-2 rounded-md border border-neutral-300 p-4 shadow-md shadow-neutral-300 dark:border-neutral-700 dark:shadow-neutral-800">
-      <div className="flex w-full gap-x-2 py-1">
+      <div className="flex w-full gap-x-2 rounded-lg">
         <button
+          disabled={auth === "Register"}
           onClick={() => {
             setAuth("Register");
           }}
-          className="w-1/2 rounded-sm bg-cyan-500 py-1 font-medium text-neutral-300 hover:bg-cyan-600"
+          className={`${auth === "Login" ? "bg-cyan-500 hover:bg-cyan-600" : "bg-neutral-200 dark:bg-neutral-800"} w-1/2 rounded-sm py-1 font-medium text-neutral-300`}
         >
           REGISTER
         </button>
         <button
+          disabled={auth === "Login"}
           onClick={() => {
             setAuth("Login");
           }}
-          className="w-1/2 rounded-sm bg-cyan-500 py-1 font-medium text-neutral-300 hover:bg-cyan-600"
+          className={`${auth === "Register" ? "bg-cyan-500 hover:bg-cyan-600" : "bg-neutral-200 dark:bg-neutral-800"} w-1/2 rounded-sm py-1 font-medium text-neutral-300`}
         >
-          LOGIN
+          LOG IN
         </button>
       </div>
 

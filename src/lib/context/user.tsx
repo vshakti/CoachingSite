@@ -20,25 +20,19 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const router = useRouter();
-  const pathname = usePathname();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const newUser = await getLoggedInUser();
         setUser(newUser);
-
-        if (!newUser) {
-          router.push("/");
-        }
       } catch (error) {
         console.error("Error fetching user:", error);
       }
     };
 
     fetchUser();
-  }, [router, pathname]);
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

@@ -162,12 +162,29 @@
   align-items: center !important;
 }
 
-/* =====  REACT PHONE NUMBER INPUT OVERRIDES */
-
 .PhoneInputInput {
   outline: none;
   margin-left: 4px;
-  background: #0000;
-  font-size: 14px;
+  @apply bg-transparent;
   font-weight: 500;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: @apply bg-transparent;
+  transition: 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px #23232329;
+}
+
+PhoneInputInput:-webkit-autofill,
+PhoneInputInput:-webkit-autofill:hover,
+PhoneInputInput:-webkit-autofill:focus,
+PhoneInputInput:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: @apply bg-transparent;
+  transition: 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px #23232329;
 }

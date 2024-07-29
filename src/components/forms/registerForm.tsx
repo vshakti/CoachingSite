@@ -50,7 +50,7 @@ const RegisterForm = () => {
           fieldType={FormFieldType.INPUT}
           name="email"
           label={<span className="dark:text-neutral-200">Email</span>}
-          placeholder="johdoe@gmail.com"
+          placeholder="example@example.com"
           iconSrc={
             <AtSignIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
           }
@@ -67,7 +67,7 @@ const RegisterForm = () => {
           control={form.control}
         />
 
-        <SubmitButton isLoading={isLoading}>REGISTER FOR FREE</SubmitButton>
+        <SubmitButton isLoading={isLoading}>GET STARTED FOR FREE</SubmitButton>
       </form>
     </Form>
   );
