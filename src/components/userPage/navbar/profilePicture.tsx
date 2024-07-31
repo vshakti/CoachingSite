@@ -2,14 +2,12 @@
 
 import React, { useState, useRef } from "react";
 import AvatarEditor from "react-avatar-editor";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { Form, FormControl } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserPictureValidation } from "@/lib/validation";
-import { UserPictureDefaultValue } from "@/constants";
-import SubmitButton from "../submitButton";
+import SubmitButton from "@/components/submitButton";
 import { useUser } from "@/lib/context/user";
 import { UpdateUserProfilePicture } from "@/lib/actions/user.actions";
 import {
@@ -113,7 +111,6 @@ const ProfilePicture: React.FC = () => {
                 </label>
 
                 <SubmitButton
-                  click={() => {}}
                   isLoading={isLoading}
                   className={`absolute bottom-10 left-0 flex h-12 cursor-pointer items-center rounded-full border-cyan-600 bg-neutral-400/60 p-2 dark:border-neutral-400 dark:bg-neutral-700/90`}
                 >

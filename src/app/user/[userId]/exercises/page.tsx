@@ -1,9 +1,9 @@
-import Profile from "@/components/userPage/profile/profile";
 import { UserProvider } from "@/lib/context/user";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
+import Exercises from "@/components/userPage/exercises/exercises";
 
-const UserProfile = async () => {
+const UserExercises = async () => {
   const userResponse = await getLoggedInUser();
 
   const user: User = userResponse;
@@ -15,9 +15,9 @@ const UserProfile = async () => {
   return (
     <UserProvider>
       <div className="flex h-full">
-        <Profile />
+        <Exercises />
       </div>
     </UserProvider>
   );
 };
-export default UserProfile;
+export default UserExercises;

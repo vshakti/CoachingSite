@@ -12,12 +12,10 @@ export const UserHeadbar = async () => {
     <div>
       {user ? (
         <div className="flex flex-row gap-x-1">
-          <Link
-            href={`/user/${user?.$id}/profile`}
-            className="rounded-md px-1.5 py-0.5 hover:bg-neutral-100 hover:font-medium dark:text-neutral-300 dark:hover:bg-neutral-800"
-          >
-            <p>{user?.name.split(" ")[0]}</p>
-          </Link>
+          <p className="font-medium tracking-wide text-neutral-800 antialiased dark:text-neutral-200">
+            {user?.name.split(" ")[0]}
+          </p>
+
           <LogOutBtn />
         </div>
       ) : null}

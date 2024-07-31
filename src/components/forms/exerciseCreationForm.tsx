@@ -9,48 +9,53 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import "react-datepicker/dist/react-datepicker.css";
-import "react-phone-number-input/style.css";
-
 import { useRouter } from "next/navigation";
-import { LogIn, UpdateUser } from "@/lib/actions/user.actions";
-import { AtSignIcon, LockKeyholeIcon, User, UserRoundIcon } from "lucide-react";
+import { ExerciseCreationFunction } from "@/lib/actions/user.actions";
+import { DumbbellIcon, PlayIcon } from "lucide-react";
 import SubmitButton from "@/components/submitButton";
 import CustomFormField from "@/components/ui/customFormField";
-import Image from "next/image";
-import { UserFormValidation } from "@/lib/validation";
-import { FormFieldType } from "@/lib/exports/exports";
-import { UserFormDefaultValues, GenderOptions } from "@/constants";
-import { useUser } from "@/lib/context/user";
 
-const UserForm = () => {
+import { ExerciseCreationValidation } from "@/lib/validation";
+import { FormFieldType } from "@/lib/exports/exports";
+import { ExerciseFormDefaultValues, MuscleOptions } from "@/constants";
+
+interface ExerciseCreationFormProps {
+  user: User;
+}
+
+const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
+  user,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { user } = useUser();
 
-  const form = useForm<z.infer<typeof UserFormValidation>>({
-    resolver: zodResolver(UserFormValidation),
+  const form = useForm<z.infer<typeof ExerciseCreationValidation>>({
+    resolver: zodResolver(ExerciseCreationValidation),
     defaultValues: {
-      ...UserFormDefaultValues,
+      ...ExerciseFormDefaultValues,
     },
   });
 
-  async function onSubmit(values: z.infer<typeof UserFormValidation>) {
+  console.log(user.$id);
+
+  async function onSubmit(values: z.infer<typeof ExerciseCreationValidation>) {
     setIsLoading(true);
 
     try {
-      const userData = {
-        userId: user?.$id ?? "",
+      const exerciseData = {
         name: values.name,
-        phone: values.phone,
-        birthDate: new Date(values.birthDate),
-        gender: values.gender,
+        muscles: values.muscle,
+        video: values.video,
         description: values.description,
+        exerciseId: user.$id + "/" + user.exercises.length.toString(),
       };
-      const newUser = await UpdateUser(userData);
+
+      const userId = user.$id;
+
+      const newUser = await ExerciseCreationFunction(exerciseData, userId!);
 
       const dialog = document.getElementById(
-        "user_update_modal",
+        "exercise_creation_modal",
       ) as HTMLDialogElement;
       router.refresh();
       if (dialog) {
@@ -70,45 +75,38 @@ const UserForm = () => {
           fieldType={FormFieldType.INPUT}
           name="name"
           label={<span className="dark:text-neutral-200">Name</span>}
-          placeholder={`${user?.name ? `${user.name}` : "Example"}`}
+          placeholder={`Exercise name`}
           iconSrc={
-            <UserRoundIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
+            <DumbbellIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
           }
           control={form.control}
         />
-        <div className="flex flex-col gap-6 xl:flex-row">
-          <CustomFormField
-            fieldType={FormFieldType.PHONE_INPUT}
-            name="phone"
-            label={<span className="dark:text-neutral-200">Phone number</span>}
-            placeholder={`${user?.phone ? `${user.phone}` : "(55) 123 4567"}`}
-            control={form.control}
-          />
-        </div>
+
+        <CustomFormField
+          fieldType={FormFieldType.INPUT}
+          name="video"
+          label={<span className="dark:text-neutral-200">Video</span>}
+          placeholder={`https://youtu.be/example`}
+          iconSrc={
+            <PlayIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
+          }
+          control={form.control}
+        />
 
         <div className="flex flex-col gap-6 xl:flex-row">
           <CustomFormField
-            iconSrc={
-              <AtSignIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
-            }
-            fieldType={FormFieldType.DATE_PICKER}
-            control={form.control}
-            name="birthDate"
-            label={<span className="dark:text-neutral-200">Birth Date</span>}
-          />
-          <CustomFormField
             fieldType={FormFieldType.SKELETON}
             control={form.control}
-            name="gender"
-            label={<span className="dark:text-neutral-200">Gender</span>}
+            name="muscle"
+            label={<span className="dark:text-neutral-200">Muscles</span>}
             renderSkeleton={(field) => (
               <FormControl>
                 <RadioGroup
-                  className="flex h-8 w-full items-center rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-cyan-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-700 dark:text-neutral-200"
+                  className="grid w-96 grid-cols-3 items-center rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-cyan-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-700 dark:text-neutral-200"
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
-                  {GenderOptions.map((option, i) => (
+                  {MuscleOptions.map((option, i) => (
                     <div key={option + i} className="radio-group">
                       <RadioGroupItem value={option} id={option} />
                       <Label htmlFor={option} className="cursor-pointer">
@@ -127,8 +125,8 @@ const UserForm = () => {
             fieldType={FormFieldType.TEXTAREA}
             control={form.control}
             name="description"
-            label={<span className="dark:text-neutral-200">Bio</span>}
-            placeholder={`${user?.description ? `${user.description}` : "..."}`}
+            label={<span className="dark:text-neutral-200">Description</span>}
+            placeholder={`...`}
           />
         </div>
 
@@ -136,10 +134,10 @@ const UserForm = () => {
           className="w-full bg-cyan-500 tracking-widest hover:bg-cyan-600"
           isLoading={isLoading}
         >
-          UPDATE PROFILE
+          CREATE EXERCISE
         </SubmitButton>
       </form>
     </Form>
   );
 };
-export default UserForm;
+export default ExerciseCreationForm;

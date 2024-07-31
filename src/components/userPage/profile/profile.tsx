@@ -1,6 +1,5 @@
 import { UserProvider } from "@/lib/context/user";
-import UserForm from "../../forms/userForm";
-import ProfilePicture from "../profilePicture";
+import ProfilePicture from "@/components/userPage/navbar/profilePicture";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import UserUpdateModal from "./userUpdateModal";
 import OpenModalButton from "../openModalButton";
@@ -31,7 +30,7 @@ const Profile = async () => {
 
   return (
     <UserProvider>
-      <div className="flex h-max w-full flex-col gap-y-4 bg-neutral-50 text-neutral-600 antialiased dark:bg-neutral-800">
+      <div className="flex h-max w-full flex-col gap-y-4 bg-neutral-50 text-neutral-800 antialiased dark:bg-neutral-800">
         <header className="grid justify-evenly gap-x-2 gap-y-6 bg-neutral-100 px-4 py-4 md:grid-cols-3 dark:bg-neutral-900">
           <ProfilePicture />
           <div className="flex flex-col items-center justify-center gap-y-6 py-2 pb-2 md:items-start md:justify-start dark:text-neutral-200">
@@ -45,8 +44,11 @@ const Profile = async () => {
               </div>
             </div>
 
-            <OpenModalButton className="rounded-md bg-cyan-500 px-4 py-2 font-medium hover:bg-cyan-600 md:hidden">
-              <div className="flex flex-row gap-x-2 text-neutral-300">
+            <OpenModalButton
+              modalId="user_update_modal"
+              className="rounded-md bg-cyan-400 px-4 py-2 font-medium hover:bg-cyan-500 md:hidden"
+            >
+              <div className="flex flex-row gap-x-2 text-neutral-100">
                 <PenIcon />
                 <span>EDIT PROFILE</span>
               </div>
@@ -54,8 +56,11 @@ const Profile = async () => {
           </div>
 
           <div className="flex items-center justify-center">
-            <OpenModalButton className="hidden rounded-md bg-cyan-500 px-4 py-2 font-medium hover:bg-cyan-600 md:block">
-              <div className="flex flex-row gap-x-2 text-neutral-300">
+            <OpenModalButton
+              modalId="user_update_modal"
+              className="hidden rounded-md bg-cyan-400 px-4 py-2 font-medium hover:bg-cyan-500 md:block"
+            >
+              <div className="flex flex-row gap-x-2 text-neutral-100">
                 <PenIcon />
                 <span>EDIT PROFILE</span>
               </div>

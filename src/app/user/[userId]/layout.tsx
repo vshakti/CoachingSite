@@ -1,5 +1,5 @@
-import NavbarLayout from "@/components/userPage/navbarLayout";
-import NavbarProfile from "@/components/userPage/navbarProfile";
+import NavbarLayout from "@/components/userPage/navbar/navbarLayout";
+import NavbarContent from "@/components/userPage/navbar/navbarContent";
 
 export default function UserLayout({
   children,
@@ -9,7 +9,7 @@ export default function UserLayout({
   return (
     <div>
       <NavbarLayout>
-        <NavbarProfile />
+        <NavbarContent />
       </NavbarLayout>
       {children}
     </div>

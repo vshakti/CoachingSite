@@ -8,10 +8,7 @@ const Headbar = () => {
     <UserProvider>
       <nav className="sticky inset-x-0 top-0 z-[100] h-14 w-full border-b bg-white/75 backdrop-blur-lg transition-all dark:bg-neutral-900/75">
         <div className="flex h-14 items-center justify-between border-b border-neutral-200 px-4 dark:border-neutral-400">
-          <Link
-            href="/"
-            className="z-40 flex items-center gap-x-2 font-semibold"
-          >
+          <div className="z-40 flex items-center gap-x-2 font-semibold">
             <Image
               src="/logo/logo.png"
               width={26}
@@ -20,9 +17,9 @@ const Headbar = () => {
               alt="logo"
             />
             <span className="text-xl font-bold tracking-widest text-cyan-500 dark:text-white">
-              ignis
+              Ignis
             </span>
-          </Link>
+          </div>
 
           <div className="flex h-full items-center space-x-3">
             <div className="">

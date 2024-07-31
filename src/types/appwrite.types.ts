@@ -11,4 +11,5 @@ export interface Users extends Models.Document {
   isCoaching: boolean;
   pictureUrl: string;
   pictureId: string;
+  exercises: [];
 }

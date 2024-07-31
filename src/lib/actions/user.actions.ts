@@ -8,8 +8,6 @@ import { parseStringify } from "../utils";
 import { createAdminClient, createSessionClient } from "../appwrite.config";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import store from "../redux/reduxStore";
-import { setUser } from "../redux/reduxSlice";
 
 const {
   APPWRITE_DATABASE_ID: DATABASE_ID,
@@ -17,6 +15,7 @@ const {
   NEXT_PUBLIC_APPWRITE_BUCKET_ID: BUCKET_ID,
   NEXT_PUBLIC_APPWRITE_ENDPOINT: ENDPOINT,
   NEXT_PUBLIC_APPWRITE_PROJECT: PROJECT_ID,
+  APPWRITE_EXERCISES_COLLECTION_ID: EXERCISES_COLLECTION_ID,
 } = process.env;
 
 export const getUserInfo = async ({ userId }: getUserInfo) => {
@@ -35,10 +34,38 @@ export const getUserInfo = async ({ userId }: getUserInfo) => {
   }
 };
 
+interface CoachingStatusProps {
+  isCoaching: boolean;
+  userId: string;
+}
+
+export const CoachingStatus = async ({
+  isCoaching,
+  userId,
+}: CoachingStatusProps) => {
+  try {
+    const { database } = await createAdminClient();
+    const newUser = await database.updateDocument(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      userId,
+      {
+        isCoaching,
+      },
+    );
+
+    if (!newUser) throw Error;
+
+    const parsedNewUser = parseStringify(newUser);
+
+    return parsedNewUser;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const Register = async ({ password, email }: UserAuth) => {
   try {
-    let file;
-
     const { account, database } = await createAdminClient();
     const newUserAccount = await account.create(
       ID.unique(),
@@ -137,6 +164,7 @@ export const UpdateUser = async ({
 }: UpdateUser) => {
   try {
     const { database } = await createAdminClient();
+
     const newUser = await database.updateDocument(
       DATABASE_ID!,
       USERS_COLLECTION_ID!,
@@ -153,7 +181,6 @@ export const UpdateUser = async ({
     if (!newUser) throw Error;
 
     const parsedNewUser = parseStringify(newUser);
-    store.dispatch(setUser(parsedNewUser));
 
     return parsedNewUser;
   } catch (error) {
@@ -177,12 +204,6 @@ interface UserImageData {
   imageBlob: any;
   userId: string | undefined;
 }
-
-// export const teste = async () => {
-//   const foo = await createAdminClient();
-//   console.log("foo", foo);
-//   console.log("STRING foo", JSON.stringify(foo, null, 2));
-// };
 
 export const UpdateUserProfilePicture = async ({
   imageBlob,
@@ -221,6 +242,61 @@ export const UpdateUserProfilePicture = async ({
 
       return parsedNewUser;
     }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const ExerciseCreationFunction = async (
+  { name, video, description, exerciseId, muscles }: Exercise,
+  userId: string,
+) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const newExercise = await database.createDocument(
+      DATABASE_ID!,
+      EXERCISES_COLLECTION_ID!,
+      ID.unique(),
+      { name, video, description, muscles, exerciseId },
+    );
+
+    const user = await getLoggedInUser();
+
+    const currentExercises = user.exercises || [];
+
+    const updatedExercises = [...currentExercises, newExercise];
+
+    const newUser = await database.updateDocument(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      userId,
+      {
+        exercises: updatedExercises,
+      },
+    );
+
+    if (!newUser) throw Error;
+
+    const parsedNewUser = parseStringify(newUser);
+
+    return parsedNewUser;
+  } catch (error: any) {
+    console.error(error);
+  }
+};
+
+export const ShowExercise = async () => {
+  try {
+    const { database } = await createAdminClient();
+
+    const user = await database.listDocuments(
+      DATABASE_ID!,
+      EXERCISES_COLLECTION_ID!,
+      // [Query.equal("userId", [userId])],
+    );
+
+    return parseStringify(user.documents);
   } catch (error) {
     console.log(error);
   }

@@ -3,17 +3,20 @@
 interface OpenModalButtonProps {
   className: string;
   children: React.ReactNode;
+  modalId: string;
 }
 
-const OpenModalButton = ({ className, children }: OpenModalButtonProps) => {
+const OpenModalButton = ({
+  className,
+  children,
+  modalId,
+}: OpenModalButtonProps) => {
   return (
     <>
       <button
         className={className}
         onClick={() => {
-          const dialog = document.getElementById(
-            "user_update_modal",
-          ) as HTMLDialogElement;
+          const dialog = document.getElementById(modalId) as HTMLDialogElement;
           if (dialog) {
             dialog.showModal();
           }

@@ -7,9 +7,7 @@ import React, {
   useState,
   ReactNode,
 } from "react";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
-import { getLoggedInUser, UpdateUser } from "../actions/user.actions";
+import { getLoggedInUser } from "../actions/user.actions";
 
 interface UserContextType {
   user: User | null;

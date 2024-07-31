@@ -20,13 +20,15 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`remove-scrollbar ${inter.className} dark:bg-neutral-900`}
-      >
-        <Headbar />
+      <UserProvider>
+        <body
+          className={`remove-scrollbar ${inter.className} dark:bg-neutral-900`}
+        >
+          <Headbar />
 
-        {children}
-      </body>
+          {children}
+        </body>
+      </UserProvider>
     </html>
   );
 }

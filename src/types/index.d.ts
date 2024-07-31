@@ -4,7 +4,21 @@ declare type SearchParamProps = {
 };
 
 declare type Gender = "Male" | "Female" | "Other";
-declare type Status = "pending" | "scheduled" | "cancelled";
+declare type Muscles =
+  | "Cardio"
+  | "Biceps"
+  | "Calves"
+  | "Chest"
+  | "Core"
+  | "Erectors"
+  | "Forearms"
+  | "Glutes"
+  | "Hamstrings"
+  | "Latissimus"
+  | "Quadriceps"
+  | "Shoulders"
+  | "Trapezius"
+  | "Triceps";
 
 declare interface UserAuth {
   email: string;
@@ -26,6 +40,8 @@ declare interface User extends Omit<UserAuth, "password">, UserPicture {
   description: string;
   pictureUrl: string;
   pictureId: string;
+  isCoaching: boolean;
+  exercises: [];
 }
 
 declare interface showUser extends UserPicture {
@@ -41,4 +57,12 @@ declare interface showUser extends UserPicture {
 
 declare interface UserPicture {
   imageBlob: any;
+}
+
+declare interface Exercise {
+  exerciseId: string;
+  name: string;
+  description: string;
+  video?: string;
+  muscles: Muscles;
 }
