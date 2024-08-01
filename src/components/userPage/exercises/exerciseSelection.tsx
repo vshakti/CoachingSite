@@ -72,13 +72,13 @@ const ExerciseSelection: React.FC<ExerciseTagProps> = ({ user }) => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 ></input>
-                <SearchIcon className="absolute -bottom-3 -right-2 size-11 rounded-full bg-neutral-100 dark:bg-neutral-900" />
+                <SearchIcon className="pointer-events-none absolute -bottom-3 -right-2 size-11 rounded-full bg-neutral-100 dark:bg-neutral-900" />
               </div>
             </div>
 
             <div className="relative w-full">
-              <div className="absolute top-0 h-10 w-full bg-gradient-to-b from-neutral-50 to-transparent dark:from-neutral-900" />
-              <div className="remove-scrollbar flex max-h-[470px] w-full flex-col items-start justify-center overflow-auto overscroll-contain">
+              <div className="pointer-events-none absolute top-0 h-10 w-full bg-gradient-to-b from-neutral-50 to-transparent dark:from-neutral-900" />
+              <div className="remove-scrollbar overflow-show flex h-[470px] w-full flex-col items-start justify-start overscroll-contain">
                 <ExerciseTag
                   user={user}
                   filterFunction={(exercise) =>
@@ -88,7 +88,7 @@ const ExerciseSelection: React.FC<ExerciseTagProps> = ({ user }) => {
                   }
                 />
               </div>
-              <div className="absolute bottom-0 h-10 w-full bg-gradient-to-t from-neutral-50 to-transparent dark:from-neutral-900" />
+              <div className="pointer-events-none absolute bottom-0 h-10 w-full bg-gradient-to-t from-neutral-50 to-transparent dark:from-neutral-900" />
             </div>
           </div>
         ) : (
@@ -98,8 +98,8 @@ const ExerciseSelection: React.FC<ExerciseTagProps> = ({ user }) => {
             </h3>
 
             <div className="relative w-full">
-              <div className="absolute top-0 h-10 w-full bg-gradient-to-b from-neutral-50 to-transparent dark:from-neutral-900" />
-              <div className="remove-scrollbar flex max-h-[470px] w-full flex-col items-start justify-center overflow-auto overscroll-contain py-4">
+              <div className="pointer-events-none absolute top-0 h-10 w-full bg-gradient-to-b from-neutral-50 to-transparent dark:from-neutral-900" />
+              <div className="remove-scrollbar overflow-show flex h-[470px] w-full flex-col items-start justify-start overscroll-contain py-4">
                 <ExerciseTag
                   filterFunction={(exercise: Exercise) =>
                     exercise.muscles === select

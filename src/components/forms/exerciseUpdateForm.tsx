@@ -10,7 +10,10 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useRouter } from "next/navigation";
-import { ExerciseCreationFunction } from "@/lib/actions/user.actions";
+import {
+  ExerciseCreationFunction,
+  UpdateExercise,
+} from "@/lib/actions/user.actions";
 import { DumbbellIcon, PlayIcon } from "lucide-react";
 import SubmitButton from "@/components/submitButton";
 import CustomFormField from "@/components/ui/customFormField";
@@ -19,12 +22,12 @@ import { ExerciseCreationValidation } from "@/lib/validation";
 import { FormFieldType } from "@/lib/exports/exports";
 import { ExerciseFormDefaultValues, MuscleOptions } from "@/constants";
 
-interface ExerciseCreationFormProps {
-  user: User;
+interface ExerciseUpdateFormProps {
+  exercise: Exercise | undefined;
 }
 
-const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
-  user,
+const ExerciseUpdateForm: React.FC<ExerciseUpdateFormProps> = ({
+  exercise,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -32,37 +35,41 @@ const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
   const form = useForm<z.infer<typeof ExerciseCreationValidation>>({
     resolver: zodResolver(ExerciseCreationValidation),
     defaultValues: {
-      ...ExerciseFormDefaultValues,
+      name: exercise?.name,
+      description: exercise?.description,
+      video: exercise?.video?.toString(),
+      muscle: exercise?.muscles,
     },
   });
 
   async function onSubmit(values: z.infer<typeof ExerciseCreationValidation>) {
     setIsLoading(true);
+    if (exercise) {
+      try {
+        const exerciseData = {
+          name: values.name,
+          muscles: values.muscle,
+          video: values.video ? new URL(values.video) : undefined,
+          description: values.description,
+          exerciseId: exercise.$id,
+        };
 
-    try {
-      const exerciseData = {
-        name: values.name,
-        muscles: values.muscle,
-        video: values.video ? new URL(values.video) : undefined,
-        description: values.description,
-        exerciseId: user.$id + "/" + user.exercises.length.toString(),
-      };
+        console.log(exerciseData);
 
-      const userId = user.$id;
+        const updateExercise = await UpdateExercise(exerciseData);
 
-      const newUser = await ExerciseCreationFunction(exerciseData, userId!);
-
-      const dialog = document.getElementById(
-        "exercise_creation_modal",
-      ) as HTMLDialogElement;
-      router.refresh();
-      if (dialog) {
-        dialog.close();
+        const dialog = document.getElementById(
+          "exercise_update_modal",
+        ) as HTMLDialogElement;
+        router.refresh();
+        if (dialog) {
+          dialog.close();
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
     }
   }
 
@@ -73,7 +80,7 @@ const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
           fieldType={FormFieldType.INPUT}
           name="name"
           label={<span className="dark:text-neutral-200">Name</span>}
-          placeholder={`Exercise name`}
+          placeholder={`${exercise?.name ? `${exercise?.name}` : "Exercise name"}`}
           iconSrc={
             <DumbbellIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
           }
@@ -84,7 +91,7 @@ const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
           fieldType={FormFieldType.INPUT}
           name="video"
           label={<span className="dark:text-neutral-200">Video</span>}
-          placeholder={`https://youtu.be/example`}
+          placeholder={`${exercise?.video ? `${exercise?.video}` : "https://youtu.be/example"}`}
           iconSrc={
             <PlayIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
           }
@@ -102,7 +109,7 @@ const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
                 <RadioGroup
                   className="grid w-96 grid-cols-3 items-center rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-cyan-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-700 dark:text-neutral-200"
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  value={exercise?.muscles}
                 >
                   {MuscleOptions.map((option, i) => (
                     <div key={option + i} className="radio-group">
@@ -124,7 +131,7 @@ const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
             control={form.control}
             name="description"
             label={<span className="dark:text-neutral-200">Description</span>}
-            placeholder={`...`}
+            placeholder={`${exercise?.description ? `${exercise?.description}` : "..."}`}
           />
         </div>
 
@@ -132,10 +139,10 @@ const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
           className="w-full bg-cyan-500 tracking-widest hover:bg-cyan-600"
           isLoading={isLoading}
         >
-          CREATE EXERCISE
+          UPDATE {exercise?.name.toUpperCase()}
         </SubmitButton>
       </form>
     </Form>
   );
 };
-export default ExerciseCreationForm;
+export default ExerciseUpdateForm;

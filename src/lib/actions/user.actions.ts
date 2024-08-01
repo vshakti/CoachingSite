@@ -258,7 +258,7 @@ export const ExerciseCreationFunction = async (
       DATABASE_ID!,
       EXERCISES_COLLECTION_ID!,
       ID.unique(),
-      { name, video, description, muscles, exerciseId },
+      { name, video, description, muscles, exerciseId: ID.unique() },
     );
 
     const user = await getLoggedInUser();
@@ -286,18 +286,49 @@ export const ExerciseCreationFunction = async (
   }
 };
 
-export const ShowExercise = async () => {
+export const UpdateExercise = async ({
+  name,
+  video,
+  description,
+  exerciseId,
+  muscles,
+}: Exercise) => {
   try {
     const { database } = await createAdminClient();
 
-    const user = await database.listDocuments(
+    console.log("oiii");
+
+    const newExercise = await database.updateDocument(
       DATABASE_ID!,
       EXERCISES_COLLECTION_ID!,
-      // [Query.equal("userId", [userId])],
+      exerciseId!,
+      { name, video, description, muscles, exerciseId },
     );
 
-    return parseStringify(user.documents);
-  } catch (error) {
-    console.log(error);
+    console.log(newExercise);
+
+    if (!newExercise) throw Error;
+
+    const parsednewExercise = parseStringify(newExercise);
+
+    return parsednewExercise;
+  } catch (error: any) {
+    console.error(error);
   }
 };
+
+// export const ShowExercise = async () => {
+//   try {
+//     const { database } = await createAdminClient();
+
+//     const user = await database.listDocuments(
+//       DATABASE_ID!,
+//       EXERCISES_COLLECTION_ID!,
+//       // [Query.equal("userId", [userId])],
+//     );
+
+//     return parseStringify(user.documents);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };

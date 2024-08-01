@@ -60,9 +60,10 @@ declare interface UserPicture {
 }
 
 declare interface Exercise {
-  exerciseId: string;
+  $id?: string;
+  exerciseId: string | undefined;
   name: string;
   description: string;
-  video?: string;
+  video?: URL;
   muscles: Muscles;
 }

@@ -13,14 +13,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-number-input/style.css";
 
 import { useRouter } from "next/navigation";
-import { LogIn, UpdateUser } from "@/lib/actions/user.actions";
-import { AtSignIcon, LockKeyholeIcon, User, UserRoundIcon } from "lucide-react";
+import { UpdateUser } from "@/lib/actions/user.actions";
+import { AtSignIcon, UserRoundIcon } from "lucide-react";
 import SubmitButton from "@/components/submitButton";
 import CustomFormField from "@/components/ui/customFormField";
-import Image from "next/image";
 import { UserFormValidation } from "@/lib/validation";
 import { FormFieldType } from "@/lib/exports/exports";
-import { UserFormDefaultValues, GenderOptions } from "@/constants";
+import { GenderOptions } from "@/constants";
 import { useUser } from "@/lib/context/user";
 
 const UserForm = () => {
@@ -28,10 +27,18 @@ const UserForm = () => {
   const router = useRouter();
   const { user } = useUser();
 
+  const defaultValues = {
+    name: user?.name ?? "",
+    phone: user?.phone ?? "",
+    birthDate: user?.birthDate ?? new Date(Date.now()),
+    gender: user?.gender ?? "Male",
+    description: user?.description ?? "",
+  };
+
   const form = useForm<z.infer<typeof UserFormValidation>>({
     resolver: zodResolver(UserFormValidation),
     defaultValues: {
-      ...UserFormDefaultValues,
+      ...defaultValues,
     },
   });
 
@@ -42,7 +49,7 @@ const UserForm = () => {
       const userData = {
         userId: user?.$id ?? "",
         name: values.name,
-        phone: values.phone,
+        phone: values.phone ?? "",
         birthDate: new Date(values.birthDate),
         gender: values.gender,
         description: values.description,

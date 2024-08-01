@@ -36,5 +36,5 @@ export const ExerciseFormDefaultValues = {
   name: "",
   muscle: "Cardio" as Muscles,
   description: "",
-  video: "",
+  video: undefined,
 };
