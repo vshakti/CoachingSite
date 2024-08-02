@@ -12,7 +12,7 @@ export const UserHeadbar = async () => {
     <div>
       {user ? (
         <div className="flex flex-row gap-x-1">
-          <p className="font-medium tracking-wide text-neutral-800 antialiased dark:text-neutral-200">
+          <p className="font-medium tracking-wide text-white antialiased">
             {user?.name.split(" ")[0]}
           </p>
 

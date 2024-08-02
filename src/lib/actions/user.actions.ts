@@ -248,7 +248,7 @@ export const UpdateUserProfilePicture = async ({
 };
 
 export const ExerciseCreationFunction = async (
-  { name, video, description, exerciseId, muscles }: Exercise,
+  { name, video, description, muscles, exerciseOwner, exerciseId }: Exercise,
   userId: string,
 ) => {
   try {
@@ -257,8 +257,15 @@ export const ExerciseCreationFunction = async (
     const newExercise = await database.createDocument(
       DATABASE_ID!,
       EXERCISES_COLLECTION_ID!,
-      ID.unique(),
-      { name, video, description, muscles, exerciseId: ID.unique() },
+      ID.custom(exerciseId!),
+      {
+        name,
+        video,
+        description,
+        muscles,
+        exerciseId,
+        exerciseOwner,
+      },
     );
 
     const user = await getLoggedInUser();
@@ -296,16 +303,32 @@ export const UpdateExercise = async ({
   try {
     const { database } = await createAdminClient();
 
-    console.log("oiii");
-
     const newExercise = await database.updateDocument(
       DATABASE_ID!,
       EXERCISES_COLLECTION_ID!,
       exerciseId!,
-      { name, video, description, muscles, exerciseId },
+      { name, video, description, muscles },
     );
 
-    console.log(newExercise);
+    if (!newExercise) throw Error;
+
+    const parsednewExercise = parseStringify(newExercise);
+
+    return parsednewExercise;
+  } catch (error: any) {
+    console.error(error);
+  }
+};
+
+export const DeleteExercise = async ({ exerciseId }: Exercise) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const newExercise = await database.deleteDocument(
+      DATABASE_ID!,
+      EXERCISES_COLLECTION_ID!,
+      exerciseId!,
+    );
 
     if (!newExercise) throw Error;
 

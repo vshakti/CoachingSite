@@ -27,15 +27,15 @@ const NavbarOptions: React.FC<NavbarOptionsProps> = ({
       }
     >
       <div
-        className={`${pathname === `/user/${user.$id}/${text.toLowerCase()}` ? "group flex h-8 w-full flex-col items-center justify-start gap-x-1.5 border-b border-cyan-500 px-3 py-1 md:flex-row md:gap-x-5 md:border-b-0 lg:gap-x-6 2xl:gap-x-8 dark:text-neutral-300" : "group flex h-8 w-full cursor-pointer flex-col items-center justify-start gap-x-1.5 rounded-md px-3 py-1 text-neutral-800 hover:bg-neutral-200 md:flex-row md:gap-x-5 lg:gap-x-6 2xl:gap-x-8 dark:text-neutral-300/75 dark:hover:bg-neutral-800"} transition-colors`}
+        className={`${pathname === `/user/${user.$id}/${text.toLowerCase()}` ? "group flex h-8 w-full flex-col items-center justify-start gap-x-1.5 border-b border-violet-500 px-3 py-1 text-white md:flex-row md:gap-x-5 md:border-b-0 lg:gap-x-6 2xl:gap-x-8" : "group flex h-8 w-full cursor-pointer flex-col items-center justify-start gap-x-1.5 rounded-md px-3 py-1 text-white hover:bg-violet-950 md:flex-row md:gap-x-5 lg:gap-x-6 2xl:gap-x-8"} transition-colors`}
       >
         <div
-          className={`${pathname === `/user/${user.$id}/${text.toLowerCase()}` ? "text-cyan-500" : ""}`}
+          className={`${pathname === `/user/${user.$id}/${text.toLowerCase()}` ? "text-violet-500" : ""}`}
         >
           {icon}
         </div>
         <span
-          className={`${pathname === `/user/${user.$id}/${text.toLowerCase()}` ? "text-cyan-500" : ""} hidden text-base font-medium md:block md:text-2xl`}
+          className={`${pathname === `/user/${user.$id}/${text.toLowerCase()}` ? "text-violet-500" : ""} hidden text-base font-medium md:block md:text-2xl`}
         >
           {text}
         </span>

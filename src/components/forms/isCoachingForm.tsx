@@ -69,7 +69,7 @@ const IsCoachingForm = () => {
           <div className="flex h-5 w-12 items-center rounded-full bg-neutral-500 px-1">
             <div className="size-4 rounded-full bg-neutral-400"></div>
           </div>
-          <LoaderCircleIcon className="size-5 animate-spin dark:text-neutral-300" />
+          <LoaderCircleIcon className="size-5 animate-spin text-neutral-300" />
         </div>
       ) : (
         <>
@@ -95,7 +95,7 @@ const IsCoachingForm = () => {
                   </FormItem>
                 )}
               />
-              <span className="flex h-full items-center justify-center text-xl font-medium antialiased dark:text-neutral-300">
+              <span className="flex h-full items-center justify-center text-xl font-medium text-white antialiased">
                 <>
                   {!isCoaching ? (
                     <span>Not coaching </span>

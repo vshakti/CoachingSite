@@ -47,7 +47,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="flex h-8 items-center rounded-md border border-neutral-200 bg-white pl-2 ring-cyan-300 focus-within:ring-2 dark:bg-neutral-700">
+        <div className="flex h-8 items-center rounded-md border border-slate-700 bg-slate-950 p-2 pl-2 ring-violet-700 ring-offset-0 focus-within:ring-1">
           {iconSrc && (
             <div className="flex items-center justify-center">{iconSrc}</div>
           )}
@@ -55,14 +55,14 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
             <Input
               placeholder={placeholder}
               {...field}
-              className="h-full border-0 focus:bg-none focus:outline-none dark:bg-neutral-700"
+              className="h-full border-0 bg-transparent focus:bg-none focus:outline-none"
             />
           </FormControl>
         </div>
       );
     case FormFieldType.PASSWORD_INPUT:
       return (
-        <div className="flex h-8 items-center rounded-md border border-neutral-200 bg-white pl-2 ring-cyan-300 focus-within:ring-2 dark:bg-neutral-700">
+        <div className="flex h-8 items-center rounded-md border border-slate-700 bg-slate-950 p-2 pl-2 ring-violet-700 ring-offset-0 focus-within:ring-1">
           {iconSrc && (
             <div className="flex items-center justify-center">{iconSrc}</div>
           )}
@@ -71,7 +71,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
               type="password"
               placeholder={placeholder}
               {...field}
-              className="h-full border-0 focus:bg-none focus:outline-none dark:bg-neutral-700"
+              className="h-full border-0 bg-transparent focus:bg-none focus:outline-none"
             />
           </FormControl>
         </div>
@@ -80,7 +80,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
       return (
         <FormControl>
           <PhoneInput
-            className="flex h-8 w-full items-center rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-cyan-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-700 dark:text-neutral-200"
+            className="flex h-8 items-center rounded-md border border-slate-700 bg-slate-950 p-2 pl-2 ring-violet-700 ring-offset-0 focus-within:ring-1"
             defaultCountry="US"
             placeholder={placeholder}
             international
@@ -94,7 +94,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
       return (
         <FormControl>
           <Textarea
-            className="flex h-8 w-full items-center rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-cyan-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-700 dark:text-neutral-200"
+            className="flex h-8 items-center rounded-md border border-slate-700 bg-slate-950 p-2 pl-2 ring-violet-700 ring-offset-0 focus-within:ring-1"
             placeholder={props.placeholder}
             {...field}
             disabled={props.disabled}
@@ -104,9 +104,9 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
     case FormFieldType.CHECKBOX:
       return (
         <FormControl>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <Checkbox
-              className="flex h-8 w-full items-center rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-cyan-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-700 dark:text-neutral-200"
+              className="flex h-6 w-6 items-center justify-center rounded-md border-input border-neutral-300 bg-background bg-neutral-100 p-2 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-cyan-300 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-500 dark:bg-neutral-800 dark:text-neutral-200"
               id={props.name}
               checked={field.value}
               onCheckedChange={field.onChange}
@@ -119,11 +119,11 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
       );
     case FormFieldType.DATE_PICKER:
       return (
-        <div className="flex items-center rounded-md border px-2 ring-offset-background focus-within:ring-2 focus-within:ring-cyan-300 dark:bg-neutral-700">
+        <div className="flex items-center rounded-md border border-slate-700 bg-slate-950 p-2 ring-violet-700 ring-offset-0 focus-within:ring-1">
           <CalendarDaysIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
           <FormControl>
             <ReactDatePicker
-              className="flex h-8 w-full items-center bg-transparent px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus:ring-0 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-700 dark:text-neutral-200"
+              className="flex h-8 w-full items-center bg-slate-950 bg-transparent px-3 py-2 text-sm text-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus:ring-0 disabled:cursor-not-allowed disabled:opacity-50"
               showTimeSelect={props.showTimeSelect ?? false}
               selected={field.value}
               onChange={(date: Date | null) => {
@@ -149,7 +149,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
                 <SelectValue placeholder={props.placeholder} />
               </SelectTrigger>
             </FormControl>
-            <SelectContent className="flex h-8 w-full items-center rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-cyan-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-700 dark:text-neutral-200">
+            <SelectContent className="flex h-8 w-full items-center rounded-md border border-input bg-background bg-slate-950 px-3 py-2 text-sm text-white ring-offset-0 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-violet-700 disabled:cursor-not-allowed disabled:opacity-50">
               {props.children}
             </SelectContent>
           </Select>

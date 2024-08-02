@@ -8,19 +8,17 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import CustomSwitchGroup from "../ui/customSwitch";
 
 import { useRouter } from "next/navigation";
-import {
-  ExerciseCreationFunction,
-  UpdateExercise,
-} from "@/lib/actions/user.actions";
+import { UpdateExercise } from "@/lib/actions/user.actions";
 import { DumbbellIcon, PlayIcon } from "lucide-react";
 import SubmitButton from "@/components/submitButton";
 import CustomFormField from "@/components/ui/customFormField";
 
 import { ExerciseCreationValidation } from "@/lib/validation";
 import { FormFieldType } from "@/lib/exports/exports";
-import { ExerciseFormDefaultValues, MuscleOptions } from "@/constants";
+import { MuscleOptions } from "@/constants";
 
 interface ExerciseUpdateFormProps {
   exercise: Exercise | undefined;
@@ -38,7 +36,7 @@ const ExerciseUpdateForm: React.FC<ExerciseUpdateFormProps> = ({
       name: exercise?.name,
       description: exercise?.description,
       video: exercise?.video?.toString(),
-      muscle: exercise?.muscles,
+      muscles: exercise?.muscles,
     },
   });
 
@@ -48,7 +46,7 @@ const ExerciseUpdateForm: React.FC<ExerciseUpdateFormProps> = ({
       try {
         const exerciseData = {
           name: values.name,
-          muscles: values.muscle,
+          muscles: values.muscles,
           video: values.video ? new URL(values.video) : undefined,
           description: values.description,
           exerciseId: exercise.$id,
@@ -98,29 +96,22 @@ const ExerciseUpdateForm: React.FC<ExerciseUpdateFormProps> = ({
           control={form.control}
         />
 
-        <div className="flex flex-col gap-6 xl:flex-row">
+        <div className="flex w-full flex-col gap-6">
           <CustomFormField
             fieldType={FormFieldType.SKELETON}
             control={form.control}
-            name="muscle"
-            label={<span className="dark:text-neutral-200">Muscles</span>}
-            renderSkeleton={(field) => (
-              <FormControl>
-                <RadioGroup
-                  className="grid w-96 grid-cols-3 items-center rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-cyan-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-700 dark:text-neutral-200"
-                  onValueChange={field.onChange}
-                  value={exercise?.muscles}
-                >
-                  {MuscleOptions.map((option, i) => (
-                    <div key={option + i} className="radio-group">
-                      <RadioGroupItem value={option} id={option} />
-                      <Label htmlFor={option} className="cursor-pointer">
-                        {option}
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </FormControl>
+            name="muscles"
+            label={
+              <span className="text-neutral-800 dark:text-neutral-300">
+                Muscles
+              </span>
+            }
+            renderSkeleton={() => (
+              <CustomSwitchGroup
+                name="muscles"
+                options={MuscleOptions}
+                control={form.control}
+              />
             )}
           />
         </div>

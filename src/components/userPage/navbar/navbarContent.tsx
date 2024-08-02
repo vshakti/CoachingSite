@@ -36,7 +36,7 @@ const NavbarContent = async () => {
                 width={260}
                 height={260}
                 src={`/hero-users/user-1.png`}
-                className=""
+                className="rounded-full border-2 border-white"
                 quality={100}
                 alt=""
               />
@@ -46,13 +46,11 @@ const NavbarContent = async () => {
           )}
         </div>
         <div className="flex flex-col items-center justify-center gap-y-4 text-center text-xs font-medium md:w-full md:gap-y-1 md:text-base xl:text-lg 2xl:text-2xl">
-          <span className="dark:text-neutral-300">
+          <span className="text-white">
             {!user ? (
               <div>loading</div>
             ) : (
-              <p className="text-3xl md:text-xl dark:text-neutral-300">
-                {user.name}
-              </p>
+              <p className="text-3xl text-white md:text-xl">{user.name}</p>
             )}
           </span>
 

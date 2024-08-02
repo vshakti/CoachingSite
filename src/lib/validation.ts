@@ -54,21 +54,24 @@ export const ExerciseCreationValidation = z.object({
   video: z.string().url().optional(),
   description: z
     .string()
-    .max(500, "Your description must be at most 500 characters"),
-  muscle: z.enum([
-    "Cardio",
-    "Biceps",
-    "Calves",
-    "Chest",
-    "Core",
-    "Erectors",
-    "Forearms",
-    "Glutes",
-    "Hamstrings",
-    "Latissimus",
-    "Quadriceps",
-    "Shoulders",
-    "Trapezius",
-    "Triceps",
-  ]),
+    .max(500, "Your description must be at most 500 characters")
+    .optional(),
+  muscles: z.array(
+    z.enum([
+      "Cardio",
+      "Biceps",
+      "Calves",
+      "Chest",
+      "Core",
+      "Erectors",
+      "Forearms",
+      "Glutes",
+      "Hamstrings",
+      "Latissimus",
+      "Quadriceps",
+      "Shoulders",
+      "Trapezius",
+      "Triceps",
+    ]),
+  ),
 });

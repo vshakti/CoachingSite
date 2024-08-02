@@ -20,6 +20,8 @@ declare type Muscles =
   | "Trapezius"
   | "Triceps";
 
+declare type MusclesArray = Muscles[];
+
 declare interface UserAuth {
   email: string;
   password: string;
@@ -41,7 +43,7 @@ declare interface User extends Omit<UserAuth, "password">, UserPicture {
   pictureUrl: string;
   pictureId: string;
   isCoaching: boolean;
-  exercises: [];
+  exercises: Exercise[];
 }
 
 declare interface showUser extends UserPicture {
@@ -61,9 +63,10 @@ declare interface UserPicture {
 
 declare interface Exercise {
   $id?: string;
-  exerciseId: string | undefined;
+  exerciseId?: string | undefined;
   name: string;
-  description: string;
+  description?: string;
   video?: URL;
-  muscles: Muscles;
+  muscles: MusclesArray;
+  exerciseOwner?: string;
 }

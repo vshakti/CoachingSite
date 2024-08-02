@@ -8,6 +8,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import CustomSwitchGroup from "../ui/customSwitch";
 
 import { useRouter } from "next/navigation";
 import { ExerciseCreationFunction } from "@/lib/actions/user.actions";
@@ -42,10 +43,11 @@ const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
     try {
       const exerciseData = {
         name: values.name,
-        muscles: values.muscle,
+        muscles: values.muscles,
         video: values.video ? new URL(values.video) : undefined,
         description: values.description,
-        exerciseId: user.$id + "/" + user.exercises.length.toString(),
+        exerciseOwner: user.email,
+        exerciseId: user.$id + user.exercises.length.toString(),
       };
 
       const userId = user.$id;
@@ -72,48 +74,35 @@ const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
         <CustomFormField
           fieldType={FormFieldType.INPUT}
           name="name"
-          label={<span className="dark:text-neutral-200">Name</span>}
+          label={<span className="text-white">Name</span>}
           placeholder={`Exercise name`}
-          iconSrc={
-            <DumbbellIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
-          }
+          iconSrc={<DumbbellIcon className="size-4 text-white" />}
           control={form.control}
         />
 
         <CustomFormField
           fieldType={FormFieldType.INPUT}
           name="video"
-          label={<span className="dark:text-neutral-200">Video</span>}
+          label={<span className="text-white">Video</span>}
           placeholder={`https://youtu.be/example`}
           iconSrc={
-            <PlayIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
+            <PlayIcon className="size-4 text-neutral-800 dark:text-neutral-200" />
           }
           control={form.control}
         />
 
-        <div className="flex flex-col gap-6 xl:flex-row">
+        <div className="flex w-full flex-col gap-6">
           <CustomFormField
             fieldType={FormFieldType.SKELETON}
             control={form.control}
-            name="muscle"
-            label={<span className="dark:text-neutral-200">Muscles</span>}
-            renderSkeleton={(field) => (
-              <FormControl>
-                <RadioGroup
-                  className="grid w-96 grid-cols-3 items-center rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-cyan-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-700 dark:text-neutral-200"
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  {MuscleOptions.map((option, i) => (
-                    <div key={option + i} className="radio-group">
-                      <RadioGroupItem value={option} id={option} />
-                      <Label htmlFor={option} className="cursor-pointer">
-                        {option}
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </FormControl>
+            name="muscles"
+            label={<span className="text-white">Muscles</span>}
+            renderSkeleton={() => (
+              <CustomSwitchGroup
+                name="muscles"
+                options={MuscleOptions}
+                control={form.control}
+              />
             )}
           />
         </div>
@@ -123,13 +112,13 @@ const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
             fieldType={FormFieldType.TEXTAREA}
             control={form.control}
             name="description"
-            label={<span className="dark:text-neutral-200">Description</span>}
+            label={<span className="text-white">Description</span>}
             placeholder={`...`}
           />
         </div>
 
         <SubmitButton
-          className="w-full bg-cyan-500 tracking-widest hover:bg-cyan-600"
+          className="w-full border border-slate-700 bg-slate-950 tracking-widest hover:bg-slate-950"
           isLoading={isLoading}
         >
           CREATE EXERCISE

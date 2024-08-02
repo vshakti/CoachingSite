@@ -34,7 +34,7 @@ export const UserPictureDefaultValue = {
 
 export const ExerciseFormDefaultValues = {
   name: "",
-  muscle: "Cardio" as Muscles,
+  muscles: [],
   description: "",
   video: undefined,
 };

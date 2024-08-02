@@ -19,7 +19,7 @@ const NavbarLayout = ({ children }: { children: ReactNode }) => {
         className={`relative ${showNavbar === "HIDE" ? "hidden" : ""} col-span-2 flex h-full flex-row justify-center md:col-span-1 2xl:gap-y-3`}
       >
         {showNavbar === "SHOW" ? (
-          <div className="flex flex-col bg-neutral-50/75 backdrop-blur-lg md:bg-white md:pl-4 dark:bg-neutral-900/75 md:dark:bg-neutral-900">
+          <div className="flex flex-col bg-gradient-to-b from-gray-950/75 via-gray-950/75 to-zinc-950/75 backdrop-blur-lg md:bg-gradient-to-r md:from-zinc-950 md:via-neutral-950 md:to-zinc-950 md:pl-4">
             {children}
           </div>
         ) : (
@@ -28,7 +28,7 @@ const NavbarLayout = ({ children }: { children: ReactNode }) => {
       </div>
 
       <div
-        className={`${showNavbar === "SHOW" ? "flex-row bg-neutral-50/75 backdrop-blur-lg md:bg-neutral-100 dark:bg-neutral-900/75 md:dark:bg-neutral-900" : "bg-white/75 backdrop-blur-lg md:bg-neutral-100 dark:bg-neutral-900/75 md:dark:bg-neutral-900"} flex h-8 w-full items-center border-b border-neutral-300 shadow-bottom-only backdrop-blur-lg transition-all sm:border-r-0 md:h-full md:w-6 md:border-b-0 md:border-r md:shadow-right-only dark:shadow-bottom-only-dark md:dark:shadow-right-only-dark`}
+        className={`${showNavbar === "SHOW" ? "flex-row bg-zinc-950/75 backdrop-blur-lg md:bg-zinc-950" : "bg-zinc-950/75 backdrop-blur-lg"} flex h-8 w-full items-center border-b border-neutral-300 shadow-bottom-only-dark transition-all sm:border-r-0 md:h-full md:w-6 md:border-b-0 md:border-r md:shadow-right-only-dark`}
       >
         <div className="flex w-full items-center justify-center md:hidden">
           {showNavbar === "HIDE" ? (
@@ -36,7 +36,7 @@ const NavbarLayout = ({ children }: { children: ReactNode }) => {
               onClick={() => {
                 setShowNavbar("SHOW");
               }}
-              className="text-neutral-900 dark:text-zinc-200"
+              className="text-white"
             >
               <ChevronDownIcon className="size-5" />
             </button>
@@ -45,7 +45,7 @@ const NavbarLayout = ({ children }: { children: ReactNode }) => {
               onClick={() => {
                 setShowNavbar("HIDE");
               }}
-              className="text-neutral-900 dark:text-zinc-200"
+              className="text-white"
             >
               <ChevronUpIcon className="size-5" />
             </button>
@@ -57,7 +57,7 @@ const NavbarLayout = ({ children }: { children: ReactNode }) => {
               onClick={() => {
                 setShowNavbar("SHOW");
               }}
-              className="text-neutral-900 dark:text-zinc-200"
+              className="text-white"
             >
               <ChevronRightIcon className="size-5" />
             </button>
@@ -66,7 +66,7 @@ const NavbarLayout = ({ children }: { children: ReactNode }) => {
               onClick={() => {
                 setShowNavbar("HIDE");
               }}
-              className="text-neutral-900 dark:text-zinc-200"
+              className="text-white"
             >
               <ChevronLeftIcon className="size-5" />
             </button>
