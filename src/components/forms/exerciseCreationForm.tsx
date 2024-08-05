@@ -85,9 +85,7 @@ const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
           name="video"
           label={<span className="text-white">Video</span>}
           placeholder={`https://youtu.be/example`}
-          iconSrc={
-            <PlayIcon className="size-4 text-neutral-800 dark:text-neutral-200" />
-          }
+          iconSrc={<PlayIcon className="size-4 text-white" />}
           control={form.control}
         />
 
@@ -118,7 +116,7 @@ const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
         </div>
 
         <SubmitButton
-          className="w-full border border-slate-700 bg-slate-950 tracking-widest hover:bg-slate-950"
+          className="w-full border border-slate-700 bg-slate-950 tracking-widest text-white hover:border-yellow-400 hover:bg-slate-950 hover:text-yellow-400"
           isLoading={isLoading}
         >
           CREATE EXERCISE

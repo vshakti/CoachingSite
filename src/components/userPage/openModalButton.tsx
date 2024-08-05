@@ -4,12 +4,14 @@ interface OpenModalButtonProps {
   className: string;
   children: React.ReactNode;
   modalId: string;
+  onClick: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const OpenModalButton = ({
   className,
   children,
   modalId,
+  onClick,
 }: OpenModalButtonProps) => {
   return (
     <>
@@ -19,6 +21,9 @@ const OpenModalButton = ({
           const dialog = document.getElementById(modalId) as HTMLDialogElement;
           if (dialog) {
             dialog.showModal();
+          }
+          if (onClick) {
+            onClick("");
           }
         }}
       >

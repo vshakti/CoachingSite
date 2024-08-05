@@ -22,7 +22,7 @@ export default async function RootLayout({
     <html lang="en">
       <UserProvider>
         <body
-          className={`remove-scrollbar ${inter.className} bg-gradient-to-bl from-zinc-950 via-neutral-950 to-zinc-950`}
+          className={`remove-scrollbar ${inter.className} bg-gradient-to-br from-neutral-950 via-zinc-950 to-violet-950`}
         >
           <Headbar />
 

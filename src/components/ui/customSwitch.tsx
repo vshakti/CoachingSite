@@ -39,9 +39,7 @@ const CustomSwitchGroup: React.FC<CustomSwitchGroupProps> = ({
                   }
                 }}
               />
-              <Label className="ml-2 text-neutral-800 dark:text-neutral-300">
-                {option}
-              </Label>
+              <Label className="ml-2 text-white">{option}</Label>
             </div>
           ))}
         </div>

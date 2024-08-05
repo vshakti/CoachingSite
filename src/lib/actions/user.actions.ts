@@ -1,13 +1,14 @@
 "use server";
 import { convertFileToUrl } from "./../utils";
 
-import { ID, Query } from "node-appwrite";
+import { ID, Permission, Query, Role } from "node-appwrite";
 import { InputFile } from "node-appwrite/file";
 
 import { parseStringify } from "../utils";
 import { createAdminClient, createSessionClient } from "../appwrite.config";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { permission } from "process";
 
 const {
   APPWRITE_DATABASE_ID: DATABASE_ID,
@@ -16,6 +17,8 @@ const {
   NEXT_PUBLIC_APPWRITE_ENDPOINT: ENDPOINT,
   NEXT_PUBLIC_APPWRITE_PROJECT: PROJECT_ID,
   APPWRITE_EXERCISES_COLLECTION_ID: EXERCISES_COLLECTION_ID,
+  APPWRITE_TRAINING_DAYS_COLLECTION_ID: TRAINING_DAYS_COLLECTION_ID,
+  APPWRITE_EXERCISE_SPECIFICS_COLLECTION_ID: EXERCISE_SPECIFICS_COLLECTION_ID,
 } = process.env;
 
 export const getUserInfo = async ({ userId }: getUserInfo) => {
@@ -355,3 +358,76 @@ export const DeleteExercise = async ({ exerciseId }: Exercise) => {
 //     console.log(error);
 //   }
 // };
+
+export const TemplateDayCreation = async (
+  { name, description, type, exerciseSpecifics, creator }: TrainingDays,
+  userId: string,
+) => {
+  try {
+    const { database } = await createAdminClient();
+    const user = await getLoggedInUser();
+    const exerciseSpecificsIds = [];
+
+    console.log("ids:", exerciseSpecifics);
+
+    if (exerciseSpecifics) {
+      for (let i = 0; i < exerciseSpecifics.length; i++) {
+        const newExerciseSpecific = await database.createDocument(
+          DATABASE_ID!,
+          EXERCISE_SPECIFICS_COLLECTION_ID!,
+          ID.unique(),
+          {
+            targetSets: exerciseSpecifics[i].targetSets,
+            targetReps: exerciseSpecifics[i].targetReps,
+            targetRpe: exerciseSpecifics[i].targetRpe,
+            exercises: {
+              name: exerciseSpecifics[i].exercises.name,
+              video: exerciseSpecifics[i].exercises.video,
+              description: exerciseSpecifics[i].exercises.description,
+              muscles: exerciseSpecifics[i].exercises.muscles,
+              exerciseId: exerciseSpecifics[i].exercises.exerciseId,
+              exerciseOwner: exerciseSpecifics[i].exercises.exerciseOwner,
+            },
+          },
+        );
+        exerciseSpecificsIds.push(newExerciseSpecific.$id);
+      }
+    }
+
+    const newTrainingDay = await database.createDocument(
+      DATABASE_ID!,
+      TRAINING_DAYS_COLLECTION_ID!,
+      ID.unique(),
+      {
+        name,
+        description,
+        type,
+        creator,
+        exerciseSpecifics: exerciseSpecificsIds.map(
+          (exerciseSpecific) => exerciseSpecific,
+        ),
+      },
+    );
+
+    const currentTrainingDays = user.trainingDays || [];
+
+    const updatedTrainingDays = [...currentTrainingDays, newTrainingDay];
+
+    const newUser = await database.updateDocument(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      userId,
+      {
+        trainingDays: updatedTrainingDays,
+      },
+    );
+
+    if (!newUser) throw Error;
+
+    const parsedNewUser = parseStringify(newUser);
+
+    return parsedNewUser;
+  } catch (error: any) {
+    console.error(error);
+  }
+};

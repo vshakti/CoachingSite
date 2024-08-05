@@ -52,8 +52,6 @@ const ExerciseUpdateForm: React.FC<ExerciseUpdateFormProps> = ({
           exerciseId: exercise.$id,
         };
 
-        console.log(exerciseData);
-
         const updateExercise = await UpdateExercise(exerciseData);
 
         const dialog = document.getElementById(
@@ -77,22 +75,18 @@ const ExerciseUpdateForm: React.FC<ExerciseUpdateFormProps> = ({
         <CustomFormField
           fieldType={FormFieldType.INPUT}
           name="name"
-          label={<span className="dark:text-neutral-200">Name</span>}
+          label={<span className="text-white">Name</span>}
           placeholder={`${exercise?.name ? `${exercise?.name}` : "Exercise name"}`}
-          iconSrc={
-            <DumbbellIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
-          }
+          iconSrc={<DumbbellIcon className="size-4 text-white" />}
           control={form.control}
         />
 
         <CustomFormField
           fieldType={FormFieldType.INPUT}
           name="video"
-          label={<span className="dark:text-neutral-200">Video</span>}
+          label={<span className="text-white">Video</span>}
           placeholder={`${exercise?.video ? `${exercise?.video}` : "https://youtu.be/example"}`}
-          iconSrc={
-            <PlayIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
-          }
+          iconSrc={<PlayIcon className="size-4 text-white" />}
           control={form.control}
         />
 
@@ -101,11 +95,7 @@ const ExerciseUpdateForm: React.FC<ExerciseUpdateFormProps> = ({
             fieldType={FormFieldType.SKELETON}
             control={form.control}
             name="muscles"
-            label={
-              <span className="text-neutral-800 dark:text-neutral-300">
-                Muscles
-              </span>
-            }
+            label={<span className="text-white">Muscles</span>}
             renderSkeleton={() => (
               <CustomSwitchGroup
                 name="muscles"
@@ -121,13 +111,13 @@ const ExerciseUpdateForm: React.FC<ExerciseUpdateFormProps> = ({
             fieldType={FormFieldType.TEXTAREA}
             control={form.control}
             name="description"
-            label={<span className="dark:text-neutral-200">Description</span>}
+            label={<span className="text-white">Description</span>}
             placeholder={`${exercise?.description ? `${exercise?.description}` : "..."}`}
           />
         </div>
 
         <SubmitButton
-          className="w-full bg-cyan-500 tracking-widest hover:bg-cyan-600"
+          className="w-full border border-slate-700 bg-slate-950 tracking-widest text-white hover:border-yellow-400 hover:bg-slate-950 hover:text-yellow-400"
           isLoading={isLoading}
         >
           UPDATE {exercise?.name.toUpperCase()}

@@ -33,6 +33,12 @@ interface CustomProps {
   label?: React.ReactNode;
   placeholder?: string;
   iconSrc?: React.ReactNode;
+  value?: string | number | boolean | object;
+  type?: string;
+  onChange?: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
+  className?: string;
 
   disabled?: boolean;
   dateFormat?: string;
@@ -42,12 +48,13 @@ interface CustomProps {
 }
 
 const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
-  const { fieldType, iconSrc, placeholder } = props;
+  const { fieldType, iconSrc, placeholder, value, type, onChange, className } =
+    props;
 
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="flex h-8 items-center rounded-md border border-slate-700 bg-slate-950 p-2 pl-2 ring-violet-700 ring-offset-0 focus-within:ring-1">
+        <div className="flex h-8 items-center rounded-md border border-slate-700 bg-slate-950 p-2 pl-2 text-white ring-yellow-500 ring-offset-0 focus-within:ring-1">
           {iconSrc && (
             <div className="flex items-center justify-center">{iconSrc}</div>
           )}
@@ -62,7 +69,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
       );
     case FormFieldType.PASSWORD_INPUT:
       return (
-        <div className="flex h-8 items-center rounded-md border border-slate-700 bg-slate-950 p-2 pl-2 ring-violet-700 ring-offset-0 focus-within:ring-1">
+        <div className="flex h-8 items-center rounded-md border border-slate-700 bg-slate-950 p-2 pl-2 text-white ring-yellow-500 ring-offset-0 focus-within:ring-1">
           {iconSrc && (
             <div className="flex items-center justify-center">{iconSrc}</div>
           )}
@@ -71,7 +78,25 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
               type="password"
               placeholder={placeholder}
               {...field}
-              className="h-full border-0 bg-transparent focus:bg-none focus:outline-none"
+              className="h-full border-0 bg-transparent text-white focus:bg-none focus:outline-none"
+            />
+          </FormControl>
+        </div>
+      );
+    case FormFieldType.TEMPLATE_DAY:
+      return (
+        <div className="flex w-full items-end justify-end rounded-md text-white">
+          {iconSrc && (
+            <div className="flex items-center justify-center">{iconSrc}</div>
+          )}
+          <FormControl>
+            <Input
+              onChange={onChange}
+              type={JSON.stringify(type)}
+              value={value}
+              placeholder={placeholder}
+              {...field}
+              className="h-full border-0 bg-transparent text-base focus:bg-none focus:outline-none"
             />
           </FormControl>
         </div>
@@ -80,7 +105,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
       return (
         <FormControl>
           <PhoneInput
-            className="flex h-8 items-center rounded-md border border-slate-700 bg-slate-950 p-2 pl-2 ring-violet-700 ring-offset-0 focus-within:ring-1"
+            className="flex h-8 items-center rounded-md border border-slate-700 bg-slate-950 p-2 pl-2 text-white ring-yellow-500 ring-offset-0 focus-within:ring-1"
             defaultCountry="US"
             placeholder={placeholder}
             international
@@ -94,7 +119,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
       return (
         <FormControl>
           <Textarea
-            className="flex h-8 items-center rounded-md border border-slate-700 bg-slate-950 p-2 pl-2 ring-violet-700 ring-offset-0 focus-within:ring-1"
+            className={`flex h-8 items-center rounded-md border border-slate-700 bg-slate-950 p-2 pl-2 text-white ring-yellow-500 ring-offset-0 focus:ring-1 ${className} `}
             placeholder={props.placeholder}
             {...field}
             disabled={props.disabled}
@@ -119,8 +144,8 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
       );
     case FormFieldType.DATE_PICKER:
       return (
-        <div className="flex items-center rounded-md border border-slate-700 bg-slate-950 p-2 ring-violet-700 ring-offset-0 focus-within:ring-1">
-          <CalendarDaysIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
+        <div className="flex items-center rounded-md border border-slate-700 bg-slate-950 p-2 ring-yellow-500 ring-offset-0 focus-within:ring-1">
+          <CalendarDaysIcon className="size-4 text-white" />
           <FormControl>
             <ReactDatePicker
               className="flex h-8 w-full items-center bg-slate-950 bg-transparent px-3 py-2 text-sm text-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus:ring-0 disabled:cursor-not-allowed disabled:opacity-50"
@@ -149,7 +174,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
                 <SelectValue placeholder={props.placeholder} />
               </SelectTrigger>
             </FormControl>
-            <SelectContent className="flex h-8 w-full items-center rounded-md border border-input bg-background bg-slate-950 px-3 py-2 text-sm text-white ring-offset-0 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-violet-700 disabled:cursor-not-allowed disabled:opacity-50">
+            <SelectContent className="flex h-8 w-full items-center rounded-md border border-input bg-background bg-slate-950 px-3 py-2 text-sm text-white ring-offset-0 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-yellow-500 disabled:cursor-not-allowed disabled:opacity-50">
               {props.children}
             </SelectContent>
           </Select>

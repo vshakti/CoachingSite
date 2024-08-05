@@ -14,10 +14,10 @@ const Switch: React.FC<SwitchProps> = ({
   return (
     <div
       onClick={() => onCheckedChange(!checked)}
-      className={`relative inline-flex h-5 w-11 cursor-pointer items-center rounded-full border transition-colors ${className} ${checked ? "bg-violet-900" : "bg-transparent"}`}
+      className={`relative inline-flex h-5 w-11 cursor-pointer items-center rounded-full border transition-colors ${className} ${checked ? "border-slate-950 bg-yellow-400" : "bg-transparent"}`}
     >
       <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${checked ? "translate-x-6" : "translate-x-0.5"}`}
+        className={`inline-block h-4 w-4 transform rounded-full transition-transform ${checked ? "translate-x-6 bg-slate-950" : "translate-x-0.5 bg-white"}`}
       />
     </div>
   );

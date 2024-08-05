@@ -1,4 +1,10 @@
-import { BookOpenIcon, PlayIcon, SettingsIcon, Trash2Icon } from "lucide-react";
+import {
+  BookOpenIcon,
+  ChevronsRightIcon,
+  PlayIcon,
+  SettingsIcon,
+  Trash2Icon,
+} from "lucide-react";
 import Image from "next/image";
 import ExerciseVideoModal from "./exerciseVideoModal";
 import { useState } from "react";
@@ -7,6 +13,7 @@ import ExerciseDescriptionModal from "./exerciseDescriptionModal";
 import { DeleteExercise } from "@/lib/actions/user.actions";
 import { useRouter } from "next/navigation";
 import Toast from "@/components/ui/toast";
+import { useExerciseContext } from "@/lib/context/exerciseAdd";
 
 interface ShowToastParams {
   message: React.ReactNode;
@@ -17,6 +24,8 @@ interface ExerciseTagProps {
   user: User;
   searchFunction?: (exercise: Exercise) => boolean;
   filterFunction?: (exercise: Exercise) => boolean;
+  targetPiece: string;
+  setTargetPiece: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface ExerciseTagCoordProps {
@@ -37,6 +46,8 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
   user,
   filterFunction,
   searchFunction,
+  targetPiece,
+  setTargetPiece,
 }) => {
   const filteredAndSearchedExercises = user.exercises.filter((exercise) => {
     const matchesFilter = filterFunction ? filterFunction(exercise) : true;
@@ -49,7 +60,8 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
   const [exerciseDescription, setExerciseDescription] = useState("");
   const [exercise, setExercise] = useState<Exercise>();
 
-  const [targetPiece, setTargetPiece] = useState("");
+  const { exerciseList, setExerciseList, setTemplateDay, isAdding } =
+    useExerciseContext();
 
   const [isDeleting, setIsDeleting] = useState(false);
   const [toast, setToast] = useState<{
@@ -80,14 +92,14 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
   };
 
   return (
-    <div className="relative flex h-96 w-full flex-col gap-y-2">
+    <>
       {filteredAndSearchedExercises.length > 0 ? (
         <>
           {filteredAndSearchedExercises
             .sort((a: Exercise, b: Exercise) => a.name.localeCompare(b.name))
             .map((exercise: Exercise, i) => (
               <Piece
-                className={`${isDeleting && exercise.name === targetPiece ? "opacity-30" : ""} flex w-full flex-shrink-0 flex-row items-center justify-between rounded-full border border-neutral-300 px-2 py-1 text-neutral-800 shadow-md shadow-neutral-300 transition-transform hover:scale-105 dark:border-neutral-700 dark:text-neutral-300 dark:shadow-neutral-950`}
+                className={`${isDeleting && exercise.name === targetPiece ? "opacity-30" : ""} ${exerciseList.some((item) => item.name === exercise.name) ? "opacity-40" : ""} flex w-full flex-shrink-0 flex-row items-center justify-between rounded-full border border-slate-700 bg-gradient-to-r from-gray-900 via-violet-950 to-gray-900 px-2 py-1 text-white shadow-sm shadow-black`}
                 key={i}
               >
                 <div className="flex w-full flex-row items-center justify-start gap-x-3">
@@ -97,7 +109,7 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
                       exercise.muscles.map((muscle, i) => (
                         <div
                           key={i}
-                          className="flex-row items-center justify-center rounded-full bg-neutral-100 p-1 dark:bg-neutral-900"
+                          className="flex-row items-center justify-center"
                         >
                           <Image
                             draggable="false"
@@ -113,93 +125,150 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
                   </div>
 
                   <div className="flex w-full flex-row items-center gap-x-4">
-                    <span className="max-w-24 truncate text-lg md:max-w-56 md:text-xl lg:max-w-56">
+                    <span
+                      className={`${isAdding ? "max-w-64 md:w-5/6" : "max-w-24 md:max-w-56 lg:max-w-56"} truncate text-lg md:text-xl`}
+                    >
                       {exercise.name}
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-center gap-x-1 md:gap-x-2.5">
-                  <button
-                    onClick={async () => {
-                      if (exercise) {
-                        await setExercise(exercise);
-                        setTargetPiece(exercise.name);
-                        setIsDeleting(true);
-                        showToast({
-                          message: (
-                            <span>
-                              Are you sure you want to delete{" "}
-                              <span className="max-w-36 truncate text-violet-500">
-                                {exercise.name}
-                              </span>
-                              ?
-                            </span>
-                          ),
-                          type: "action",
-                        });
-                      }
-                    }}
-                  >
-                    <Trash2Icon className="size-4 text-neutral-800 md:size-6 dark:text-neutral-200" />
-                  </button>
+                <>
+                  {isAdding ? (
+                    <div className="flex flex-row">
+                      <button
+                        disabled={exerciseList.some(
+                          (item) => item.name === exercise.name,
+                        )}
+                        onClick={async () => {
+                          const isExerciseInList = exerciseList.some(
+                            (item) => item.$id === exercise.$id,
+                          );
 
-                  <button
-                    onClick={async () => {
-                      const dialog = document.getElementById(
-                        "exercise_update_modal",
-                      ) as HTMLDialogElement;
-                      if (exercise) {
-                        await setExercise(exercise);
-                      }
-                      if (dialog) {
-                        dialog.showModal();
-                      }
-                    }}
-                  >
-                    <SettingsIcon className="size-4 text-neutral-800 md:size-6 dark:text-neutral-200" />
-                  </button>
+                          if (!isExerciseInList) {
+                            await setExerciseList((prevList) => [
+                              ...prevList,
+                              exercise,
+                            ]);
+                            const newExerciseSpecific = {
+                              exercises: {
+                                ...exercise,
+                              },
+                              targetRpe: "",
+                              targetSets: "",
+                              targetReps: "",
+                              description: exercise.description || "",
+                              id: { i }.toString(),
+                            };
 
-                  <button
-                    onClick={async () => {
-                      const dialog = document.getElementById(
-                        "exercise_description_modal",
-                      ) as HTMLDialogElement;
-                      if (exercise.description) {
-                        await setExerciseDescription(exercise.description);
-                      }
-                      if (dialog) {
-                        dialog.showModal();
-                      }
-                    }}
-                    disabled={!exercise.description}
-                  >
-                    <BookOpenIcon className="size-4 text-neutral-800 md:size-6 dark:text-neutral-300" />
-                  </button>
+                            await setTemplateDay((prevDay) => ({
+                              ...prevDay,
+                              exerciseSpecifics: [
+                                ...prevDay.exerciseSpecifics!,
+                                newExerciseSpecific,
+                              ],
+                            }));
+                          }
+                        }}
+                      >
+                        <ChevronsRightIcon />
+                      </button>
+                      {exerciseList.some(
+                        (item) => item.name === exercise.name,
+                      ) ? (
+                        <>
+                          {exerciseList.findIndex(
+                            (item) => item.name === exercise.name,
+                          ) + 1}
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center gap-x-1 md:gap-x-3">
+                      <button
+                        onClick={async () => {
+                          if (exercise) {
+                            await setExercise(exercise);
+                            setTargetPiece(exercise.name);
+                            setIsDeleting(true);
+                            showToast({
+                              message: (
+                                <span>
+                                  Are you sure you want to delete{" "}
+                                  <span className="max-w-36 truncate text-yellow-400">
+                                    {exercise.name}
+                                  </span>
+                                  ?
+                                </span>
+                              ),
+                              type: "action",
+                            });
+                          }
+                        }}
+                      >
+                        <Trash2Icon className="size-4 text-white hover:text-yellow-400" />
+                      </button>
 
-                  <button
-                    onClick={async () => {
-                      const dialog = document.getElementById(
-                        "exercise_video_modal",
-                      ) as HTMLDialogElement;
-                      if (exercise.video) {
-                        await setExerciseVideo(exercise.video);
-                      }
-                      if (dialog) {
-                        dialog.showModal();
-                      }
-                    }}
-                    disabled={!exercise.video}
-                  >
-                    <PlayIcon className="size-4 rounded-full bg-red-600 p-1 text-white md:size-6" />
-                  </button>
-                </div>
+                      <button
+                        onClick={async () => {
+                          const dialog = document.getElementById(
+                            "exercise_update_modal",
+                          ) as HTMLDialogElement;
+                          if (exercise) {
+                            await setExercise(exercise);
+                          }
+                          if (dialog) {
+                            dialog.showModal();
+                          }
+                        }}
+                      >
+                        <SettingsIcon className="size-4 text-white hover:text-yellow-400" />
+                      </button>
+
+                      <button
+                        onClick={async () => {
+                          const dialog = document.getElementById(
+                            "exercise_description_modal",
+                          ) as HTMLDialogElement;
+                          if (exercise.description) {
+                            await setExerciseDescription(exercise.description);
+                          }
+                          if (dialog) {
+                            dialog.showModal();
+                          }
+                        }}
+                        disabled={!exercise.description}
+                      >
+                        <BookOpenIcon className="size-4 text-white hover:text-yellow-400" />
+                      </button>
+
+                      <button
+                        onClick={async () => {
+                          const dialog = document.getElementById(
+                            "exercise_video_modal",
+                          ) as HTMLDialogElement;
+                          if (exercise.video) {
+                            await setExerciseVideo(exercise.video);
+                          }
+                          if (dialog) {
+                            dialog.showModal();
+                          }
+                        }}
+                        disabled={!exercise.video}
+                      >
+                        <PlayIcon className="size-4 rounded-full border bg-purple-950 p-1 text-white hover:bg-yellow-400 hover:text-slate-950 md:size-6" />
+                      </button>
+                    </div>
+                  )}
+                </>
               </Piece>
             ))}
         </>
       ) : (
         <div className="h-96 w-full">
-          <span className="flex h-full w-full items-center justify-center text-center text-3xl font-medium text-neutral-800 dark:text-neutral-300">
+          <span className="flex h-full w-full items-center justify-center text-center text-3xl font-medium text-white">
             You have no exercises in this category or with this name. To create
             one click on the plus sign at the top.
           </span>
@@ -219,7 +288,7 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
           actionLabel="Delete"
         />
       )}
-    </div>
+    </>
   );
 };
 export default ExerciseTag;

@@ -12,4 +12,5 @@ export interface Users extends Models.Document {
   pictureUrl: string;
   pictureId: string;
   exercises: [];
+  trainingDays: [];
 }

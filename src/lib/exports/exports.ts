@@ -8,4 +8,6 @@ export enum FormFieldType {
   SELECT = "select",
   SKELETON = "skeleton",
   SWITCH = "switch",
+  TEMPLATE_DAY = "templateDay",
+  TEMPLATE_DAY_VARIABLES = "templateDayVaraibles",
 }

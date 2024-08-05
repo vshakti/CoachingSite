@@ -38,3 +38,17 @@ export const ExerciseFormDefaultValues = {
   description: "",
   video: undefined,
 };
+
+export const TemplateDayDefaultValues = {
+  name: "",
+  // exerciseSpecifics: [
+  //   {
+  //     exercise: [ExerciseFormDefaultValues],
+  //     targetRpe: "",
+  //     targetReps: "",
+  //     targetSets: "",
+  //   },
+  // ],
+  description: "",
+  type: "",
+};

@@ -16,7 +16,7 @@ export const LogOutBtn = () => {
   return (
     <button
       onClick={handleLogOut}
-      className="flex items-center justify-center rounded-md p-1 text-white hover:bg-slate-900"
+      className="flex items-center justify-center rounded-md p-1 text-white hover:bg-violet-900"
     >
       <LogOutIcon className="size-4 md:size-5" />
     </button>

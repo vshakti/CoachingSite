@@ -12,7 +12,7 @@ interface ToastProps {
 const Toast: React.FC<ToastProps> = ({
   message,
   type = "info",
-  duration = 3000,
+  duration = 5000,
   onClose,
   onAction,
   actionLabel = "Action",
@@ -34,14 +34,14 @@ const Toast: React.FC<ToastProps> = ({
         <div className="flex gap-4">
           {onAction && (
             <button
-              className="rounded border border-neutral-500 bg-transparent px-2 py-1 text-sm text-white transition hover:bg-zinc-200 hover:text-black"
+              className="rounded border border-neutral-500 bg-transparent px-2 py-1 text-sm text-white transition hover:border-yellow-500 hover:text-yellow-500"
               onClick={onAction}
             >
               {actionLabel}
             </button>
           )}
           <button
-            className="rounded border border-neutral-500 bg-transparent px-2 py-1 text-sm text-white transition hover:bg-zinc-200 hover:text-black"
+            className="rounded border border-neutral-500 bg-transparent px-2 py-1 text-sm text-white transition hover:border-yellow-500 hover:text-yellow-500"
             onClick={onClose}
           >
             Close

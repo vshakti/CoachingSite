@@ -44,6 +44,7 @@ declare interface User extends Omit<UserAuth, "password">, UserPicture {
   pictureId: string;
   isCoaching: boolean;
   exercises: Exercise[];
+  trainingDays: TrainingDays[];
 }
 
 declare interface showUser extends UserPicture {
@@ -69,4 +70,21 @@ declare interface Exercise {
   video?: URL;
   muscles: MusclesArray;
   exerciseOwner?: string;
+}
+
+declare interface TrainingDays {
+  $id?: string;
+  trainingDayId?: string | undefined;
+  name: string;
+  description?: string;
+  exerciseSpecifics?: ExerciseSpecifics[];
+  type: string;
+  creator?: string;
+}
+
+declare interface ExerciseSpecifics {
+  exercises: Exrcises;
+  targetRpe: string;
+  targetSets: string;
+  targetReps: string;
 }
