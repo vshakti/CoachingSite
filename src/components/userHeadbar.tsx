@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getLoggedInUser, LogOut } from "@/lib/actions/user.actions";
 import { LogOutIcon } from "lucide-react";
-import { LogOutBtn } from "./userPage/logOutBtn";
+import { LogOutBtn } from "./logOutBtn";
 
 export const UserHeadbar = async () => {
   const userResponse = await getLoggedInUser();

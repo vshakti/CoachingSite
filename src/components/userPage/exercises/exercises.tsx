@@ -3,6 +3,7 @@ import ExerciseSelection from "@/components/userPage/exercises/justExercises/exe
 
 import ExerciseCreationModal from "@/components/userPage/exercises/justExercises/exerciseCreationModal";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
+import WeeklyTemplates from "./weekTemplates/weeklyTemplates";
 
 const Exercises = async () => {
   const userResponse = await getLoggedInUser();
@@ -10,8 +11,8 @@ const Exercises = async () => {
   const user: User = userResponse;
 
   return (
-    <div className="grid h-max w-full gap-y-8 py-4 antialiased lg:ml-6 lg:grid-cols-4 lg:grid-rows-5">
-      <div className="flex flex-col items-center justify-start gap-x-6 gap-y-10 px-4 lg:col-span-4 lg:row-span-2 lg:grid-cols-4 lg:flex-row lg:justify-center">
+    <div className="grid h-max w-full gap-y-8 py-4 antialiased lg:ml-6 lg:grid-cols-4">
+      <div className="flex flex-col items-center justify-start gap-x-6 gap-y-10 px-4 lg:col-span-4 lg:grid-cols-4 lg:flex-row lg:justify-center">
         <>
           <ExerciseSelection user={user} />
 
@@ -22,8 +23,8 @@ const Exercises = async () => {
         </>
       </div>
 
-      <div className="w-full items-center justify-center border px-6 lg:col-span-4 lg:row-span-2 lg:row-start-3">
-        flexWEEKLY TEMPLATES
+      <div className="flex w-full items-center justify-center px-4 lg:col-span-4">
+        <WeeklyTemplates user={user} />
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ export default async function Home() {
   const user: User = userResponse;
 
   if (user) {
-    redirect(`/user/${user.$id}/profile`);
+    redirect(`/user/profile`);
   }
 
   return (

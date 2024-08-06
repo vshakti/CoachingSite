@@ -1,10 +1,10 @@
 "use client";
 
 interface OpenModalButtonProps {
-  className: string;
-  children: React.ReactNode;
+  className?: string;
+  children?: React.ReactNode;
   modalId: string;
-  onClick: React.Dispatch<React.SetStateAction<string>>;
+  onClick?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const OpenModalButton = ({

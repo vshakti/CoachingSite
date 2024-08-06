@@ -37,7 +37,7 @@ const RegisterForm = () => {
       };
       const user = await Register(userData);
 
-      if (user) router.push(`/user/${user.$id}`);
+      if (user) router.push(`/user/profile`);
     } catch (error) {
       console.log(error);
     }

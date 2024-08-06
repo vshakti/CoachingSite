@@ -19,6 +19,9 @@ const {
   APPWRITE_EXERCISES_COLLECTION_ID: EXERCISES_COLLECTION_ID,
   APPWRITE_TRAINING_DAYS_COLLECTION_ID: TRAINING_DAYS_COLLECTION_ID,
   APPWRITE_EXERCISE_SPECIFICS_COLLECTION_ID: EXERCISE_SPECIFICS_COLLECTION_ID,
+  APPWRITE_TRAINING_WEEK_COLLECTION_ID: TRAINING_WEEK_COLLECTION_ID,
+  APPWRITE_TRAINING_DAYS_SPECIFICS_COLLECTION_ID:
+    TRAINING_DAYS_SPECIFICS_COLLECTION_ID,
 } = process.env;
 
 export const getUserInfo = async ({ userId }: getUserInfo) => {
@@ -343,17 +346,17 @@ export const DeleteExercise = async ({ exerciseId }: Exercise) => {
   }
 };
 
-// export const ShowExercise = async () => {
+// export const ShowExercise = async (id: string) => {
 //   try {
 //     const { database } = await createAdminClient();
 
-//     const user = await database.listDocuments(
+//     const exercise = await database.listDocuments(
 //       DATABASE_ID!,
 //       EXERCISES_COLLECTION_ID!,
-//       // [Query.equal("userId", [userId])],
+//       [Query.equal("exerciseId", [id])],
 //     );
 
-//     return parseStringify(user.documents);
+//     return exercise;
 //   } catch (error) {
 //     console.log(error);
 //   }
@@ -368,8 +371,6 @@ export const TemplateDayCreation = async (
     const user = await getLoggedInUser();
     const exerciseSpecificsIds = [];
 
-    console.log("ids:", exerciseSpecifics);
-
     if (exerciseSpecifics) {
       for (let i = 0; i < exerciseSpecifics.length; i++) {
         const newExerciseSpecific = await database.createDocument(
@@ -380,14 +381,7 @@ export const TemplateDayCreation = async (
             targetSets: exerciseSpecifics[i].targetSets,
             targetReps: exerciseSpecifics[i].targetReps,
             targetRpe: exerciseSpecifics[i].targetRpe,
-            exercises: {
-              name: exerciseSpecifics[i].exercises.name,
-              video: exerciseSpecifics[i].exercises.video,
-              description: exerciseSpecifics[i].exercises.description,
-              muscles: exerciseSpecifics[i].exercises.muscles,
-              exerciseId: exerciseSpecifics[i].exercises.exerciseId,
-              exerciseOwner: exerciseSpecifics[i].exercises.exerciseOwner,
-            },
+            exercises: [exerciseSpecifics[i].exercises.$id],
           },
         );
         exerciseSpecificsIds.push(newExerciseSpecific.$id);
@@ -427,6 +421,83 @@ export const TemplateDayCreation = async (
     const parsedNewUser = parseStringify(newUser);
 
     return parsedNewUser;
+  } catch (error: any) {
+    console.error(error);
+  }
+};
+
+export const CreateTrainingWeek = async (
+  weeklyTraining: TrainingWeek,
+  userId: string,
+) => {
+  try {
+    const { database } = await createAdminClient();
+    const user = await getLoggedInUser();
+
+    const trainingDaysSpecificsIds = [];
+
+    if (weeklyTraining) {
+      for (let i = 0; i < weeklyTraining.length; i++) {
+        const newtrainingDaysSpecific = await database.createDocument(
+          DATABASE_ID!,
+          TRAINING_DAYS_SPECIFICS_COLLECTION_ID!,
+          ID.unique(),
+          {
+            iD: ID.unique(),
+            isRest: weeklyTraining[i].isRest,
+            trainingDays: weeklyTraining[i].trainingDays?.$id,
+          },
+        );
+        trainingDaysSpecificsIds.push(newtrainingDaysSpecific.$id);
+      }
+    }
+
+    const newTrainingWeek = await database.createDocument(
+      DATABASE_ID!,
+      TRAINING_WEEK_COLLECTION_ID!,
+      ID.unique(),
+      {
+        trainingDaySpecifics: trainingDaysSpecificsIds.map((days) => days),
+      },
+    );
+    const currentTrainingWeek = user.trainingWeek || [];
+
+    const updatedtrainingWeek = [...currentTrainingWeek, newTrainingWeek];
+
+    const newUser = await database.updateDocument(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      userId,
+      {
+        trainingWeek: updatedtrainingWeek,
+      },
+    );
+
+    if (!newUser) throw Error;
+
+    const parsedNewUser = parseStringify(newUser);
+
+    return parsedNewUser;
+  } catch (error: any) {
+    console.error(error);
+  }
+};
+
+export const DeleteTrainingDay = async (TrainingDayId: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const newTrainingDay = await database.deleteDocument(
+      DATABASE_ID!,
+      TRAINING_DAYS_COLLECTION_ID!,
+      TrainingDayId!,
+    );
+
+    if (!newTrainingDay) throw Error;
+
+    const parsedNewTrainingDay = parseStringify(newTrainingDay);
+
+    return parsedNewTrainingDay;
   } catch (error: any) {
     console.error(error);
   }

@@ -1,10 +1,13 @@
+import Profile from "@/components/userPage/profile/profile";
 import { UserProvider } from "@/lib/context/user";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
-import Exercises from "@/components/userPage/exercises/exercises";
-import { ExerciseProvider } from "@/lib/context/exerciseAdd";
 
-const UserExercises = async () => {
+export const metadata = {
+  title: "Profile",
+};
+
+const UserProfile = async () => {
   const userResponse = await getLoggedInUser();
 
   const user: User = userResponse;
@@ -15,12 +18,10 @@ const UserExercises = async () => {
 
   return (
     <UserProvider>
-      <ExerciseProvider>
-        <div className="flex">
-          <Exercises />
-        </div>
-      </ExerciseProvider>
+      <div className="flex h-full">
+        <Profile />
+      </div>
     </UserProvider>
   );
 };
-export default UserExercises;
+export default UserProfile;

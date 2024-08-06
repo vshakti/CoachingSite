@@ -35,7 +35,9 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
 
   return (
     <>
-      <div className={`${!exerciseOpen ? "" : "hidden"} flex`}>
+      <div
+        className={`${!exerciseOpen ? "" : "hidden"} flex flex-col items-center justify-center gap-y-2`}
+      >
         <button
           onClick={() => {
             setExerciseOpen(!exerciseOpen);
@@ -43,6 +45,9 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
         >
           <DumbbellIcon className="size-12 rounded-full border bg-gradient-to-br from-slate-950 to-violet-950 p-2 text-white" />
         </button>
+        <h1 className="text-lg font-medium tracking-wide text-white antialiased">
+          CREATE YOUR EXERCISES
+        </h1>
       </div>
 
       <div

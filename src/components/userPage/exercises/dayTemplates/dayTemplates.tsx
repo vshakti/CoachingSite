@@ -10,11 +10,12 @@ import {
   XIcon,
 } from "lucide-react";
 import { useState } from "react";
-import { Form, FormControl } from "@/components/ui/form";
-import { Label } from "@radix-ui/react-label";
+import { Form } from "@/components/ui/form";
+
 import { useForm } from "react-hook-form";
 import CustomFormField from "@/components/ui/customFormField";
-import CustomSwitchGroup from "@/components/ui/customSwitch";
+
+import Toast from "@/components/ui/toast";
 
 import { TemplateDayCreationValidation } from "@/lib/validation";
 import { FormFieldType } from "@/lib/exports/exports";
@@ -28,6 +29,11 @@ import { useExerciseContext } from "@/lib/context/exerciseAdd";
 
 interface UserProps {
   user: User;
+}
+
+interface ShowToastParams {
+  message: React.ReactNode;
+  type?: "info" | "success" | "error" | "warning" | "action";
 }
 
 const DayTemplates = ({ user }: UserProps) => {
@@ -49,6 +55,24 @@ const DayTemplates = ({ user }: UserProps) => {
       ...TemplateDayDefaultValues,
     },
   });
+
+  const [toast, setToast] = useState<{
+    message: React.ReactNode;
+    type: string;
+    show: boolean;
+  }>({
+    message: "",
+    type: "",
+    show: false,
+  });
+
+  const showToast = ({ message, type = "info" }: ShowToastParams) => {
+    setToast({ message, type, show: true });
+  };
+
+  const handleToastClose = () => {
+    setToast({ ...toast, show: false });
+  };
 
   async function onSubmit(
     values: z.infer<typeof TemplateDayCreationValidation>,
@@ -78,12 +102,18 @@ const DayTemplates = ({ user }: UserProps) => {
         ...templateDay,
         exerciseSpecifics: [],
       });
+      showToast({
+        message: <span>Training card created!</span>,
+        type: "success",
+      });
     }
   }
 
   return (
     <>
-      <div className={`${!dayTemplateIsOpen ? "" : "hidden"} flex`}>
+      <div
+        className={`${!dayTemplateIsOpen ? "" : "hidden"} flex flex-col items-center justify-center gap-y-2`}
+      >
         <button
           onClick={() => {
             setDayTemplateIsOpen(!dayTemplateIsOpen);
@@ -91,6 +121,9 @@ const DayTemplates = ({ user }: UserProps) => {
         >
           <CalendarPlusIcon className="size-12 rounded-full border bg-gradient-to-br from-slate-950 to-violet-950 p-2 text-white" />
         </button>
+        <h1 className="text-lg font-medium tracking-wide text-white antialiased">
+          CREATE YOUR TRAINIG DAYS
+        </h1>
       </div>
 
       <div
@@ -312,7 +345,14 @@ const DayTemplates = ({ user }: UserProps) => {
                             </div>
                           ))
                         ) : (
-                          <></>
+                          <div className="h-full w-full rounded-md border border-slate-700 p-2">
+                            <span className="flex h-full w-full items-center justify-center text-center text-3xl font-medium text-white">
+                              You have no exercises selected. Unlock your card
+                              by pressing the {"(>>)"} button at the top and
+                              send your exercises from the exercise list to
+                              here.
+                            </span>
+                          </div>
                         )}
                       </>
                     </div>
@@ -346,6 +386,16 @@ const DayTemplates = ({ user }: UserProps) => {
             </form>
           </Form>
         </div>
+        {toast.show && (
+          <Toast
+            message={toast.message}
+            type={
+              toast.type as "info" | "success" | "error" | "warning" | "action"
+            }
+            onClose={handleToastClose}
+            actionLabel="success"
+          />
+        )}
       </div>
     </>
   );

@@ -12,7 +12,7 @@ interface ToastProps {
 const Toast: React.FC<ToastProps> = ({
   message,
   type = "info",
-  duration = 5000,
+  duration = 3000,
   onClose,
   onAction,
   actionLabel = "Action",
@@ -57,7 +57,7 @@ const getToastClasses = (
 ): string => {
   switch (type) {
     case "success":
-      return "bg-green-500";
+      return "bg-black border-slate-700";
     case "error":
       return "bg-red-500";
     case "warning":

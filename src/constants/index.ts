@@ -41,14 +41,16 @@ export const ExerciseFormDefaultValues = {
 
 export const TemplateDayDefaultValues = {
   name: "",
-  // exerciseSpecifics: [
-  //   {
-  //     exercise: [ExerciseFormDefaultValues],
-  //     targetRpe: "",
-  //     targetReps: "",
-  //     targetSets: "",
-  //   },
-  // ],
   description: "",
   type: "",
 };
+
+export const WeekDays = [
+  "MONDAY",
+  "TUESDAY",
+  "WEDNESDAY",
+  "THURSDAY",
+  "FRIDAY",
+  "SATURDAY",
+  "SUNDAY",
+];

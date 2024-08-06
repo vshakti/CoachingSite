@@ -36,7 +36,7 @@ const LogInForm = () => {
       };
       const user = await LogIn(userData);
 
-      if (user) router.push(`/user/${user.$id}/profile`);
+      if (user) router.push(`/user/profile`);
     } catch (error) {
       console.log(error);
     } finally {

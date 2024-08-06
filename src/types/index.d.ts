@@ -45,6 +45,7 @@ declare interface User extends Omit<UserAuth, "password">, UserPicture {
   isCoaching: boolean;
   exercises: Exercise[];
   trainingDays: TrainingDays[];
+  trainingWeek: TrainingWeek[];
 }
 
 declare interface showUser extends UserPicture {
@@ -88,3 +89,10 @@ declare interface ExerciseSpecifics {
   targetSets: string;
   targetReps: string;
 }
+
+declare interface TrainingDay {
+  trainingDays: TrainingDays | null;
+  isRest: boolean;
+}
+
+declare type TrainingWeek = TrainingDay[];
