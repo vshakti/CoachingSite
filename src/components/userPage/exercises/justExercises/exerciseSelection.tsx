@@ -45,7 +45,7 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
         >
           <DumbbellIcon className="size-12 rounded-full border bg-gradient-to-br from-slate-950 to-violet-950 p-2 text-white" />
         </button>
-        <h1 className="text-lg font-medium tracking-wide text-white antialiased">
+        <h1 className="bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0 px-8 text-lg font-medium tracking-wide text-white antialiased">
           CREATE YOUR EXERCISES
         </h1>
       </div>
@@ -58,7 +58,7 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
             onClick={() => {
               setSelect("Search");
             }}
-            className={`${select === "Search" ? "h-14 border-b bg-zinc-950" : "h-9 border-r bg-neutral-950"} rounded-l-lg border-l border-t border-white px-2 text-white transition-colors`}
+            className={`${select === "Search" ? "h-14 border-b bg-gray-950" : "h-9 border-r bg-zinc-950"} rounded-l-lg border-l border-t border-white px-2 text-white transition-colors`}
           >
             <ListIcon
               className={`${select === "Search" ? "size-10 md:size-11" : "size-5 md:size-7"} text-white`}
@@ -70,7 +70,7 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
               onClick={() => {
                 setSelect(exercise);
               }}
-              className={`${select === exercise ? "h-14 border-b border-t bg-zinc-950" : "h-9 border-r bg-neutral-950"} ${exercise === "Triceps" ? "border-b" : ""} rounded-l-lg border-l border-white px-2 text-white transition-colors`}
+              className={`${select === exercise ? "h-14 border-b border-t bg-gray-950" : "h-9 border-r bg-zinc-950"} ${exercise === "Triceps" ? "border-b" : ""} rounded-l-lg border-l border-white px-2 text-white transition-colors`}
             >
               <Image
                 src={`/muscles/${exercise}.png`}
@@ -83,11 +83,11 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
             </button>
           ))}
         </ul>
-        <div className="flex w-full items-start justify-start rounded-r-lg border border-l-0 border-white bg-gradient-to-r from-zinc-950 to-neutral-950 px-2 text-white">
+        <div className="flex w-full items-start justify-start rounded-r-lg border border-l-0 border-white bg-gradient-to-r from-gray-950 via-zinc-950 to-gray-950 px-2 text-white">
           {select === "Search" ? (
             <div className="flex h-full w-full flex-col items-center justify-start gap-y-4 px-4 pt-2">
               <div className="flex w-full flex-col items-center justify-center gap-y-2">
-                <div className="relative flex w-full flex-row items-center justify-center">
+                <div className="relative flex w-full flex-row items-center justify-center bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0">
                   {user.exercises.length > 0 ? (
                     <span className="absolute left-10 p-1 text-2xl font-medium text-white md:text-2xl xl:text-4xl">
                       {user.exercises.length}
@@ -147,7 +147,7 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
           ) : (
             <div className="flex h-full w-full flex-col items-center justify-start gap-y-4 px-4 pt-2">
               <div className="flex w-full flex-col items-center justify-center gap-y-2">
-                <div className="relative flex w-full flex-row items-center justify-center">
+                <div className="relative flex w-full flex-row items-center justify-center bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0">
                   <h3 className="text-4xl font-medium text-white md:text-5xl xl:text-6xl">
                     {select}
                   </h3>

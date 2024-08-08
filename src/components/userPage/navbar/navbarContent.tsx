@@ -93,7 +93,7 @@ const NavbarContent = async () => {
           <NavbarOptions
             user={user}
             icon={<LayoutListIcon className="size-5 md:size-7 2xl:size-8" />}
-            text={"Templates"}
+            text={"Training"}
           />
         </ul>
       </div>

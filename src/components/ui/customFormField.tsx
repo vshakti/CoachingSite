@@ -119,7 +119,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
       return (
         <FormControl>
           <Textarea
-            className={`flex h-8 items-center rounded-md border border-slate-700 bg-slate-950 p-2 pl-2 text-white ring-yellow-500 ring-offset-0 focus:ring-1 ${className} `}
+            className={`flex h-8 items-center rounded-md border bg-transparent p-2 pl-2 text-white ring-yellow-500 ring-offset-0 focus:ring-1 ${className} `}
             placeholder={props.placeholder}
             {...field}
             disabled={props.disabled}

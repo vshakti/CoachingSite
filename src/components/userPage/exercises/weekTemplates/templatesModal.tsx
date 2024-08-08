@@ -1,15 +1,16 @@
-import ExerciseCreationForm from "@/components/forms/exerciseCreationForm";
+"use client";
+
 import { XIcon } from "lucide-react";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import TemplateNavbar from "./templateNavbar";
 import TemplateTypeTitle from "./templateTypeTitle";
 import TemplateCards from "./templateCards";
 
-const TemplatesModal = async () => {
-  const userResponse = await getLoggedInUser();
+interface UserProps {
+  user: User;
+}
 
-  const user: User = userResponse;
-
+const TemplatesModal = ({ user }: UserProps) => {
   return (
     <dialog id="templates_modal" className="modal">
       <div className="remove-scrollbar fixed inset-0 flex items-center justify-center overflow-auto bg-black/25 backdrop-blur-sm">
@@ -24,7 +25,7 @@ const TemplatesModal = async () => {
               </button>
             </form>
           </div>
-          <div className="flex h-full border-spacing-4 flex-row overflow-hidden overscroll-contain border-t border-slate-700 bg-black/50">
+          <div className="flex h-full border-spacing-4 flex-row overflow-hidden overscroll-contain">
             <div className="remove-scrollbar flex h-full w-full flex-col overflow-auto">
               <TemplateTypeTitle />
               <div className="flex h-full w-full flex-row">

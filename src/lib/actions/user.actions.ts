@@ -263,7 +263,7 @@ export const ExerciseCreationFunction = async (
     const newExercise = await database.createDocument(
       DATABASE_ID!,
       EXERCISES_COLLECTION_ID!,
-      ID.custom(exerciseId!),
+      ID.unique(),
       {
         name,
         video,
@@ -403,9 +403,20 @@ export const TemplateDayCreation = async (
       },
     );
 
+    const updatededTrainingDayId = await database.updateDocument(
+      DATABASE_ID!,
+      TRAINING_DAYS_COLLECTION_ID!,
+      newTrainingDay.$id,
+      {
+        trainingDayId: newTrainingDay.$id,
+      },
+    );
     const currentTrainingDays = user.trainingDays || [];
 
-    const updatedTrainingDays = [...currentTrainingDays, newTrainingDay];
+    const updatedTrainingDays = [
+      ...currentTrainingDays,
+      updatededTrainingDayId,
+    ];
 
     const newUser = await database.updateDocument(
       DATABASE_ID!,
@@ -428,6 +439,7 @@ export const TemplateDayCreation = async (
 
 export const CreateTrainingWeek = async (
   weeklyTraining: TrainingWeek,
+  name: string,
   userId: string,
 ) => {
   try {
@@ -443,7 +455,7 @@ export const CreateTrainingWeek = async (
           TRAINING_DAYS_SPECIFICS_COLLECTION_ID!,
           ID.unique(),
           {
-            iD: ID.unique(),
+            iD: weeklyTraining[i].trainingDays?.$id,
             isRest: weeklyTraining[i].isRest,
             trainingDays: weeklyTraining[i].trainingDays?.$id,
           },
@@ -457,6 +469,7 @@ export const CreateTrainingWeek = async (
       TRAINING_WEEK_COLLECTION_ID!,
       ID.unique(),
       {
+        name,
         trainingDaySpecifics: trainingDaysSpecificsIds.map((days) => days),
       },
     );
@@ -500,5 +513,21 @@ export const DeleteTrainingDay = async (TrainingDayId: string) => {
     return parsedNewTrainingDay;
   } catch (error: any) {
     console.error(error);
+  }
+};
+
+export const getTrainingDay = async (trainingDayId: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const user = await database.listDocuments(
+      DATABASE_ID!,
+      TRAINING_DAYS_COLLECTION_ID!,
+      [Query.equal("trainingDayId", [trainingDayId])],
+    );
+
+    return parseStringify(user.documents[0]);
+  } catch (error) {
+    console.log(error);
   }
 };

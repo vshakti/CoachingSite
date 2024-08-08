@@ -78,11 +78,13 @@ const TemplateDaysAdd = ({ children, dayLocation }: TemplateDaysAddProps) => {
 
         {weeklyTraining[dayLocation].trainingDays ? (
           <div
-            className={`${getColorClassForType(weeklyTraining[dayLocation].trainingDays.type)} flex h-full w-full flex-col gap-2 rounded-md border border-slate-700 p-1 text-white shadow-sm shadow-slate-700`}
+            className={`${getColorClassForType(weeklyTraining[dayLocation].trainingDays.type)} flex h-full w-full flex-col gap-2 rounded-md p-1 text-white shadow-sm shadow-slate-700`}
           >
             <div className="flex flex-col items-center justify-center gap-1">
               <span className="flex w-full items-center justify-center rounded-full bg-zinc-950 px-2">
-                {weeklyTraining[dayLocation].trainingDays?.name}
+                <span className="bg-gradient-to-r from-zinc-950/0 via-zinc-800/100 to-zinc-950/0 px-4">
+                  {weeklyTraining[dayLocation].trainingDays?.name}
+                </span>
               </span>
             </div>
 
@@ -94,7 +96,7 @@ const TemplateDaysAdd = ({ children, dayLocation }: TemplateDaysAddProps) => {
                       (exercises: Exercise, e: number) => (
                         <div
                           key={e}
-                          className="flex flex-row gap-1 rounded-lg border-b px-2 py-1"
+                          className="flex flex-row gap-1 bg-gradient-to-r from-zinc-950/0 via-zinc-800/100 to-zinc-950/0 px-4 py-1"
                         >
                           <span>{exercises.name}</span>
                           {exercises.muscles.map((muscle, m) => (
@@ -117,9 +119,10 @@ const TemplateDaysAdd = ({ children, dayLocation }: TemplateDaysAddProps) => {
                 ),
               )}
             </div>
-
-            <div className="remove-scrollbar h-24 overflow-auto rounded-md bg-zinc-950 p-1 text-xs">
-              {weeklyTraining[dayLocation].trainingDays?.description}
+            <div className="rounded-md bg-zinc-950">
+              <div className="remove-scrollbar h-24 overflow-auto bg-gradient-to-r from-zinc-950/0 via-zinc-800/100 to-zinc-950/0 p-1 text-xs">
+                {weeklyTraining[dayLocation].trainingDays?.description}
+              </div>
             </div>
             <button
               className="absolute -right-0 -top-1"

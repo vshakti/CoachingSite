@@ -1,3 +1,17 @@
+export function extractYouTubeId(url: string): string | null {
+  const youtubeRegex =
+    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/(?:watch\?v=|embed\/|v\/|.+\?v=)?([^"&?\/\s]{11})/;
+  const match = url.match(youtubeRegex);
+
+  return match ? match[1] : null;
+}
+
+export function getYouTubeEmbedUrl(url: string): string | undefined {
+  const videoId = extractYouTubeId(url);
+
+  return videoId ? `https://www.youtube.com/embed/${videoId}` : undefined;
+}
+
 export const GenderOptions = ["Male", "Female", "Other"];
 export const MuscleOptions = [
   "Cardio",

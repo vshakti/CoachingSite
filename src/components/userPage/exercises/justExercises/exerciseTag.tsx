@@ -99,7 +99,7 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
             .sort((a: Exercise, b: Exercise) => a.name.localeCompare(b.name))
             .map((exercise: Exercise, i) => (
               <Piece
-                className={`${isDeleting && exercise.name === targetPiece ? "opacity-30" : ""} ${exerciseList.some((item) => item.name === exercise.name) ? "opacity-40" : ""} flex w-full flex-shrink-0 flex-row items-center justify-between rounded-full border border-slate-700 bg-gradient-to-r from-gray-900 via-violet-950 to-gray-900 px-2 py-1 text-white shadow-sm shadow-black`}
+                className={`${isDeleting && exercise.name === targetPiece ? "opacity-30" : ""} ${exerciseList.some((item) => item.name === exercise.name) ? "opacity-40" : ""} flex w-full flex-shrink-0 flex-row items-center justify-between bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0 px-2 py-1`}
                 key={i}
               >
                 <div className="flex w-full flex-row items-center justify-start gap-x-3">

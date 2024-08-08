@@ -17,11 +17,9 @@ const UserProfile = async () => {
   }
 
   return (
-    <UserProvider>
-      <div className="flex h-full">
-        <Profile />
-      </div>
-    </UserProvider>
+    <div className="flex h-full">
+      <Profile />
+    </div>
   );
 };
 export default UserProfile;

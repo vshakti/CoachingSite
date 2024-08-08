@@ -7,6 +7,7 @@ import {
   EraserIcon,
   LockIcon,
   PlusIcon,
+  Trash2Icon,
   XIcon,
 } from "lucide-react";
 import { useState } from "react";
@@ -121,7 +122,7 @@ const DayTemplates = ({ user }: UserProps) => {
         >
           <CalendarPlusIcon className="size-12 rounded-full border bg-gradient-to-br from-slate-950 to-violet-950 p-2 text-white" />
         </button>
-        <h1 className="text-lg font-medium tracking-wide text-white antialiased">
+        <h1 className="bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0 px-8 text-lg font-medium tracking-wide text-white antialiased">
           CREATE YOUR TRAINIG DAYS
         </h1>
       </div>
@@ -129,7 +130,7 @@ const DayTemplates = ({ user }: UserProps) => {
       <div
         className={`${dayTemplateIsOpen ? "flex h-max w-full flex-col px-1 text-white" : "hidden"} max-h-[640px] max-w-[440px] transition-transform duration-500 md:max-w-[580px]`}
       >
-        <div className="relative flex h-[560px] flex-col items-center justify-center gap-y-2 rounded-lg border bg-gradient-to-br from-zinc-950 to-neutral-950 p-4">
+        <div className="relative flex h-[560px] flex-col items-center justify-center gap-y-2 rounded-lg border bg-gradient-to-br from-gray-950 via-zinc-950 to-gray-950 p-4">
           <div className="flex w-full flex-row items-center justify-between pr-2">
             <div className="flex gap-x-4">
               <button
@@ -183,8 +184,8 @@ const DayTemplates = ({ user }: UserProps) => {
               className="h-full w-full"
             >
               <div className="flex h-full w-full flex-col items-center justify-center gap-y-2 rounded-xl px-3 py-1">
-                <h3 className="flex h-10 w-full items-center justify-between rounded-full border border-slate-700 bg-zinc-950 px-2 pb-2 ring-yellow-500 ring-offset-0 group-focus-within:ring-1">
-                  <div className="mt-3 flex w-3/4 flex-row items-end justify-end">
+                <h3 className="flex h-10 w-full items-center justify-between bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0 px-2 pb-2 ring-yellow-500 ring-offset-0 group-focus-within:ring-1">
+                  <div className="flex w-3/4 flex-row items-end justify-end">
                     <CustomFormField
                       fieldType={FormFieldType.TEMPLATE_DAY}
                       name="name"
@@ -194,7 +195,7 @@ const DayTemplates = ({ user }: UserProps) => {
                       control={form.control}
                     />
                   </div>
-                  <div className="mt-3 flex h-full w-1/3 items-center justify-center">
+                  <div className="flex h-full w-1/3 items-center justify-center">
                     <CustomFormField
                       fieldType={FormFieldType.TEMPLATE_DAY}
                       name="type"
@@ -221,7 +222,7 @@ const DayTemplates = ({ user }: UserProps) => {
                                     <span className="hidden text-white"></span>
                                   }
                                   renderSkeleton={() => (
-                                    <div className="flex flex-row items-center justify-center gap-x-3 rounded-full border border-yellow-400 bg-gradient-to-r from-gray-900 via-violet-950 to-gray-900 px-4 py-1 text-white shadow-sm shadow-black">
+                                    <div className="flex flex-row items-center justify-center gap-x-3 bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0 px-4 py-1 text-white">
                                       <div className="flex w-40 flex-shrink-0 flex-row items-end justify-start gap-x-1 md:w-64 md:gap-x-3">
                                         <button
                                           type="button"
@@ -246,7 +247,7 @@ const DayTemplates = ({ user }: UserProps) => {
                                             }));
                                           }}
                                         >
-                                          <XIcon />
+                                          <Trash2Icon />
                                         </button>
                                         <div className="w-full items-center justify-start truncate">
                                           {exercises.name}
@@ -278,14 +279,14 @@ const DayTemplates = ({ user }: UserProps) => {
                                               }));
                                             }}
                                             placeholder="Sets"
-                                            className="flex h-7 w-11 items-center justify-center rounded-md bg-black px-1 text-sm focus:border-0"
+                                            className="flex h-7 w-11 items-center justify-center rounded-md bg-black/50 px-1 text-sm focus:border-0"
                                           />
                                         </div>
 
                                         <div className="group flex h-max w-max items-center justify-center">
                                           <input
                                             placeholder="Reps"
-                                            className="flex h-7 w-11 items-center justify-center rounded-md bg-black px-1 text-sm focus:border-0"
+                                            className="flex h-7 w-11 items-center justify-center rounded-md bg-black/50 px-1 text-sm focus:border-0"
                                             id="inputField"
                                             type="text"
                                             onChange={(e) => {
@@ -312,7 +313,7 @@ const DayTemplates = ({ user }: UserProps) => {
 
                                         <div className="flex h-max w-max items-center justify-center">
                                           <input
-                                            className="flex h-7 w-11 items-center justify-center rounded-md bg-black px-2 text-sm"
+                                            className="flex h-7 w-11 items-center justify-center rounded-md bg-black/50 px-2 text-sm"
                                             id="inputField"
                                             type="text"
                                             placeholder="RPE"
@@ -345,7 +346,7 @@ const DayTemplates = ({ user }: UserProps) => {
                             </div>
                           ))
                         ) : (
-                          <div className="h-full w-full rounded-md border border-slate-700 p-2">
+                          <div className="h-full w-full bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0 p-2">
                             <span className="flex h-full w-full items-center justify-center text-center text-3xl font-medium text-white">
                               You have no exercises selected. Unlock your card
                               by pressing the {"(>>)"} button at the top and
@@ -360,7 +361,7 @@ const DayTemplates = ({ user }: UserProps) => {
                 </ul>
                 <div className="flex w-full flex-col gap-6 xl:flex-row">
                   <CustomFormField
-                    className="bg-zinc-950"
+                    className="border-0 bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0"
                     fieldType={FormFieldType.TEXTAREA}
                     control={form.control}
                     name="description"

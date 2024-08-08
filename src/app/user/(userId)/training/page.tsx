@@ -1,12 +1,12 @@
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
-import Exercises from "@/components/userPage/exercises/exercises";
+import Training from "@/components/userPage/training/training";
 
 export const metadata = {
-  title: "Exercises",
+  title: "Training",
 };
 
-const UserExercises = async () => {
+const UserTraining = async () => {
   const userResponse = await getLoggedInUser();
 
   const user: User = userResponse;
@@ -17,8 +17,8 @@ const UserExercises = async () => {
 
   return (
     <div>
-      <Exercises />
+      <Training />
     </div>
   );
 };
-export default UserExercises;
+export default UserTraining;
