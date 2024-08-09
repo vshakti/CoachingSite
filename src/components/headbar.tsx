@@ -8,7 +8,7 @@ const Headbar = () => {
     <UserProvider>
       <nav className="sticky inset-x-0 top-0 z-[100] h-14 w-full border-b border-slate-950 bg-gradient-to-l from-slate-900/75 via-violet-900/75 to-slate-900/75 backdrop-blur-lg transition-all">
         <div className="flex h-14 items-center justify-between px-4">
-          <div className="z-40 flex items-center gap-x-2 font-semibold">
+          <div className="font-astro z-40 flex items-center gap-x-2">
             <Image
               src="/logo/nebula2.png"
               width={400}
@@ -17,6 +17,7 @@ const Headbar = () => {
               alt="logo"
               className="size-10 rounded-full border border-slate-950"
             />
+            <span className="animate-color-change text-sm">Nebula</span>
           </div>
 
           <div className="flex h-full items-center space-x-3">
@@ -28,7 +29,7 @@ const Headbar = () => {
 
             <Link
               href={"/donation"}
-              className="rounded-md bg-violet-800 px-5 py-2 font-medium text-white hover:bg-violet-900"
+              className="rounded-md bg-gradient-to-r from-violet-950/5 via-violet-950 to-violet-950/5 px-5 py-2 font-medium text-white hover:from-violet-900/5 hover:via-violet-900 hover:to-violet-900/5"
             >
               Donate
             </Link>

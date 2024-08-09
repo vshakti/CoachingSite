@@ -7,6 +7,7 @@ import {
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronUpIcon,
+  CircleCheckBigIcon,
   LoaderCircleIcon,
   VideoOffIcon,
 } from "lucide-react";
@@ -14,6 +15,8 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { getYouTubeEmbedUrl } from "@/constants";
+import OpenModalButton from "../openModalButton";
+import FinishExerciseModal from "./finishExerciseModal";
 
 interface TrainingWeekDetailsProps {
   user: User;
@@ -21,19 +24,15 @@ interface TrainingWeekDetailsProps {
   index: number;
 }
 
-const TrainingWeekDetails = ({
-  user,
-  children,
-  index,
-}: TrainingWeekDetailsProps) => {
-  const [showDay, setShowDay] = useState(false);
+const TrainingWeekDetails = ({ children, index }: TrainingWeekDetailsProps) => {
+  const [showDay, setShowDay] = useState(true);
   const { trainingWeek } = useTraining();
   const [isExerciseOpen, setIsExerciseOpen] = useState(false);
   const [exerciseName, setExerciseName] = useState("");
+  const [exerciseId, setExerciseId] = useState("");
   const [trainingDaysArray, setTrainingDaysArray] = useState<TrainingDays[]>(
     [],
   );
-
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -41,30 +40,30 @@ const TrainingWeekDetails = ({
       setIsLoading(true);
 
       try {
+        const savedTrainingDays = localStorage.getItem("trainingDaysArrayKey");
+        const savedTrainingWeek = localStorage.getItem("trainingWeekKey");
+
+        if (!trainingWeek && savedTrainingDays) {
+          setTrainingDaysArray(JSON.parse(savedTrainingDays));
+          setShowDay(true);
+          return;
+        }
+
         if (trainingWeek) {
-          const daysArray: (TrainingDays | null)[] = [];
+          const storedTrainingWeek = savedTrainingWeek
+            ? JSON.parse(savedTrainingWeek)
+            : null;
 
-          if (trainingWeek.trainingDaySpecifics) {
-            for (let i = 0; i < trainingWeek.trainingDaySpecifics.length; i++) {
-              const daySpecific = trainingWeek.trainingDaySpecifics[i];
-
-              if (!daySpecific.iD) {
-                daysArray.push(null);
-              } else {
-                try {
-                  const trainingDay = await getTrainingDay(daySpecific.iD);
-                  daysArray.push(trainingDay || null);
-                } catch (error) {
-                  console.error(
-                    `Error fetching training day with ID ${daySpecific.iD}:`,
-                    error,
-                  );
-                  daysArray.push(null);
-                }
-              }
+          if (
+            !storedTrainingWeek ||
+            JSON.stringify(trainingWeek) !== JSON.stringify(storedTrainingWeek)
+          ) {
+            await fetchAndStoreTrainingDays(trainingWeek);
+          } else {
+            if (savedTrainingDays) {
+              setTrainingDaysArray(JSON.parse(savedTrainingDays));
+              setShowDay(true);
             }
-
-            setTrainingDaysArray(daysArray);
           }
         }
       } catch (error) {
@@ -72,6 +71,34 @@ const TrainingWeekDetails = ({
       } finally {
         setIsLoading(false);
       }
+    };
+
+    const fetchAndStoreTrainingDays = async (week: TrainingWeek) => {
+      if (!week.trainingDaySpecifics) return;
+
+      const daysArray: (TrainingDays | null)[] = [];
+
+      for (const daySpecific of week.trainingDaySpecifics) {
+        if (!daySpecific.iD) {
+          daysArray.push(null);
+        } else {
+          try {
+            const trainingDay = await getTrainingDay(daySpecific.iD);
+            daysArray.push(trainingDay || null);
+          } catch (error) {
+            console.error(
+              `Error fetching training day with ID ${daySpecific.iD}:`,
+              error,
+            );
+            daysArray.push(null);
+          }
+        }
+      }
+
+      localStorage.setItem("trainingDaysArrayKey", JSON.stringify(daysArray));
+      localStorage.setItem("trainingWeekKey", JSON.stringify(week));
+      setTrainingDaysArray(daysArray);
+      setShowDay(true);
     };
 
     fetchTrainingDays();
@@ -112,13 +139,13 @@ const TrainingWeekDetails = ({
             <div className="flex w-full flex-col gap-3 py-3">
               {trainingDaysArray && trainingDaysArray[index] != null ? (
                 trainingDaysArray[index].exerciseSpecifics?.map(
-                  (specifics, spec) => (
+                  (specifics, specificityIndex) => (
                     <>
                       {isExerciseOpen &&
                       exerciseName === specifics.exercises[0].name ? (
                         <div
-                          key={spec}
-                          className="flex flex-col gap-3 p-3 md:flex-row"
+                          key={specificityIndex}
+                          className="flex flex-col gap-6 p-3 md:flex-row"
                         >
                           <div className="flex w-full flex-col gap-4 rounded-md md:w-1/2">
                             <div className="relative flex flex-row items-center justify-center gap-4 bg-gradient-to-r from-zinc-950/0 via-zinc-950/100 to-violet-950/0">
@@ -155,13 +182,23 @@ const TrainingWeekDetails = ({
                                 {specifics.exercises[0].name}
                               </span>
 
+                              <OpenModalButton
+                                onClick={() => {
+                                  console.log(specifics.exercises[0].$id);
+                                }}
+                                modalId="finish_exercise_modal"
+                                className="absolute right-6"
+                              >
+                                <CircleCheckBigIcon className="size-8 text-yellow-400 transition-transform hover:scale-110" />
+                              </OpenModalButton>
+
                               <button
                                 onClick={() => {
                                   setIsExerciseOpen(false);
                                 }}
                                 className="absolute left-0"
                               >
-                                <ChevronLeftIcon className="size-8" />
+                                <ChevronLeftIcon className="size-8 text-yellow-400 transition-transform hover:scale-110" />
                               </button>
                             </div>
                             <div className="flex w-full flex-row items-center justify-center gap-x-4 rounded-md bg-gradient-to-r from-zinc-950/0 via-zinc-950/100 to-violet-950/0 py-1 text-xl">
@@ -244,6 +281,7 @@ const TrainingWeekDetails = ({
                               onClick={() => {
                                 setIsExerciseOpen(true);
                                 setExerciseName(specifics.exercises[0].name);
+                                setExerciseId(specifics.exercises[0].$id);
                               }}
                             >
                               {specifics.exercises[0].name}
@@ -266,6 +304,10 @@ const TrainingWeekDetails = ({
           </div>
         )}
       </>
+      <FinishExerciseModal
+        exerciseName={exerciseName}
+        exerciseId={exerciseId}
+      />
     </div>
   );
 };

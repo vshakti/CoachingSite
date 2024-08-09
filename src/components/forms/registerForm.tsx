@@ -49,25 +49,26 @@ const RegisterForm = () => {
         <CustomFormField
           fieldType={FormFieldType.INPUT}
           name="email"
-          label={<span className="dark:text-neutral-200">Email</span>}
+          label={<span className="text-white">Email</span>}
           placeholder="example@example.com"
-          iconSrc={
-            <AtSignIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
-          }
+          iconSrc={<AtSignIcon className="size-4 text-white" />}
           control={form.control}
         />
         <CustomFormField
           fieldType={FormFieldType.PASSWORD_INPUT}
           name="password"
-          label={<span className="dark:text-neutral-200">Password</span>}
+          label={<span className="text-white">Password</span>}
           placeholder="********"
-          iconSrc={
-            <LockKeyholeIcon className="size-4 text-cyan-600 dark:text-neutral-200" />
-          }
+          iconSrc={<LockKeyholeIcon className="size-4 text-white" />}
           control={form.control}
         />
 
-        <SubmitButton isLoading={isLoading}>GET STARTED FOR FREE</SubmitButton>
+        <SubmitButton
+          className="w-full border border-slate-700 bg-black text-xl tracking-wider hover:border-yellow-400 hover:bg-black hover:text-yellow-400"
+          isLoading={isLoading}
+        >
+          GET STARTED FOR FREE
+        </SubmitButton>
       </form>
     </Form>
   );

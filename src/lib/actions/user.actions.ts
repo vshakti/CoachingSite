@@ -326,7 +326,44 @@ export const UpdateExercise = async ({
   }
 };
 
-export const DeleteExercise = async ({ exerciseId }: Exercise) => {
+export const ExerciseProgressionUpdate = async (
+  progressionData: ExerciseProgression,
+  exerciseId: string,
+) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const currentExercise = await database.getDocument(
+      DATABASE_ID!,
+      EXERCISES_COLLECTION_ID!,
+      exerciseId!,
+    );
+
+    const updatedExercisesProgressions = [
+      ...(currentExercise.exerciseProgression || []),
+      progressionData,
+    ];
+
+    const updatedExercise = await database.updateDocument(
+      DATABASE_ID!,
+      EXERCISES_COLLECTION_ID!,
+      exerciseId!,
+      {
+        exerciseProgression: updatedExercisesProgressions,
+      },
+    );
+
+    if (!updatedExercise) throw Error;
+
+    const parsednewExercise = parseStringify(updatedExercise);
+
+    return parsednewExercise;
+  } catch (error: any) {
+    console.error(error);
+  }
+};
+
+export const DeleteExercise = async (exerciseId: string) => {
   try {
     const { database } = await createAdminClient();
 

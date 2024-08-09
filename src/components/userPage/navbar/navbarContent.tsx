@@ -54,7 +54,7 @@ const NavbarContent = async () => {
             )}
           </span>
 
-          <IsCoachingForm />
+          <IsCoachingForm user={user} />
         </div>
       </div>
 

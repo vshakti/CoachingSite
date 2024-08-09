@@ -80,7 +80,7 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
 
   const handleDeletion = async () => {
     if (exercise) {
-      await DeleteExercise(exercise);
+      await DeleteExercise(exercise.$id!);
       router.refresh();
       setToast({ ...toast, show: false });
     }

@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Astro";
+  src: url("/fonts/astro/astro.TTF") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 @layer base {
   /* Remove scrollbar */
   .remove-scrollbar::-webkit-scrollbar {

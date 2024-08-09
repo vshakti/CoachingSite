@@ -68,3 +68,10 @@ export const WeekDays = [
   "SATURDAY",
   "SUNDAY",
 ];
+
+export const ExerciseProgressionDefaultValues = {
+  sets: 0,
+  series: 0,
+  rpe: 0,
+  feedback: "",
+};

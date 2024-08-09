@@ -71,6 +71,7 @@ declare interface Exercise {
   video?: URL;
   muscles: MusclesArray;
   exerciseOwner?: string;
+  ExerciseProgression?: ExerciseProgression[];
 }
 
 declare interface TrainingDays {
@@ -96,3 +97,12 @@ declare interface TrainingDay {
 }
 
 declare type TrainingWeek = TrainingDay[];
+
+declare interface ExerciseProgression {
+  exerciseName: string;
+  trainingDay: string;
+  feedback?: string;
+  sets: number;
+  reps: number[];
+  rpe: number[];
+}

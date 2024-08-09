@@ -10,9 +10,16 @@ import { CoachingStatus } from "@/lib/actions/user.actions";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { LoaderCircleIcon } from "lucide-react";
 
-const IsCoachingForm = () => {
-  const [isCoaching, setIsCoaching] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+interface UserProps {
+  user: User;
+}
+
+const IsCoachingForm = ({ user }: UserProps) => {
+  const [isCoaching, setIsCoaching] = useState(() => {
+    // Initialize state from local storage
+    const storedIsCoaching = localStorage.getItem("isCoaching");
+    return storedIsCoaching ? JSON.parse(storedIsCoaching) : false; // Default to false if not set
+  });
 
   const FormSchema = z.object({
     isCoaching: z.boolean(),
@@ -38,76 +45,53 @@ const IsCoachingForm = () => {
   }
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const newUser = await getLoggedInUser();
-        setUser(newUser);
-        if (newUser) {
-          setIsCoaching(newUser.isCoaching);
-          form.setValue("isCoaching", newUser.isCoaching);
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    };
+    localStorage.setItem("isCoaching", JSON.stringify(isCoaching));
 
-    fetchUser();
-  }, []);
-
-  useEffect(() => {
     const updateCoachingStatus = async () => {
       await onSubmit({ isCoaching });
     };
 
     updateCoachingStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCoaching]);
 
   return (
     <>
-      {!user ? (
-        <div className="flex flex-row gap-x-2">
-          <div className="flex h-5 w-12 items-center rounded-full bg-neutral-500 px-1">
-            <div className="size-4 rounded-full bg-neutral-400"></div>
-          </div>
-          <LoaderCircleIcon className="size-5 animate-spin text-neutral-300" />
-        </div>
-      ) : (
-        <>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-row gap-x-2"
-            >
-              <FormField
-                control={form.control}
-                name="isCoaching"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-center">
-                    <FormControl>
-                      <Switch
-                        checked={isCoaching}
-                        onCheckedChange={(checked) => {
-                          setIsCoaching(checked);
-                          field.onChange(checked);
-                        }}
-                      />
-                    </FormControl>
-                  </FormItem>
+      <>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-row gap-x-2"
+          >
+            <FormField
+              control={form.control}
+              name="isCoaching"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-center">
+                  <FormControl>
+                    <Switch
+                      checked={isCoaching}
+                      onCheckedChange={(checked) => {
+                        setIsCoaching(checked);
+                        field.onChange(checked);
+                      }}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <span className="flex h-full items-center justify-center text-xl font-medium text-white antialiased">
+              <>
+                {!isCoaching ? (
+                  <span>Not coaching </span>
+                ) : (
+                  <span>Coaching </span>
                 )}
-              />
-              <span className="flex h-full items-center justify-center text-xl font-medium text-white antialiased">
-                <>
-                  {!isCoaching ? (
-                    <span>Not coaching </span>
-                  ) : (
-                    <span>Coaching </span>
-                  )}
-                </>
-              </span>
-            </form>
-          </Form>
-        </>
-      )}
+              </>
+            </span>
+          </form>
+        </Form>
+      </>
     </>
   );
 };

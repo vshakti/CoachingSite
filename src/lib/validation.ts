@@ -115,10 +115,35 @@ const ExerciseSpecificSchema = z.object({
 });
 
 export const TemplateDayCreationValidation = z.object({
-  name: z.string().min(2, "Required").max(50, "Limit 50 characters"),
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must be at most 50 characters"),
   description: z
     .string()
     .max(500, "Your description must be at most 500 characters")
     .optional(),
-  type: z.string().min(2, "Required").max(50, "Limit 50 characters"),
+  type: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must be at most 50 characters"),
 });
+
+const SetSchema = z.object({
+  reps: z.number().int().positive(),
+  rpe: z.number().int().positive(),
+});
+
+export const ExerciseProgressionValidation = z
+  .object({
+    sets: z.array(z.number().int().positive()).nonempty("Sets cannot be empty"),
+    reps: z.array(z.number().int().positive()).nonempty("Reps cannot be empty"),
+    rpe: z.array(z.number().int().positive()).nonempty("RPE cannot be empty"),
+    feedback: z
+      .string()
+      .max(500, "Your feedback must be at most 500 characters")
+      .optional(),
+  })
+  .refine((data) => data.reps.length === data.rpe.length, {
+    message: "The lengths of reps and rpe arrays must be the same",
+  });

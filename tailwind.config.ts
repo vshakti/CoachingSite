@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss";
 
 const config = {
-  // darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -18,6 +17,9 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        astro: ["Astro", "sans-serif"],
+      },
       boxShadow: {
         "right-only": "5px 0px 20px rgba(0, 0, 0, 0.18)",
         "right-only-dark": "15px 0px 8px rgba(0, 0, 0, 0.4)",
@@ -73,10 +75,28 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "color-change": {
+          "0%, 100%": { color: "#6d28d9" },
+          " 25%": {
+            color: " #8b5cf6",
+          },
+          "50%": {
+            color: "#a78bfa",
+          },
+          "75%:": {
+            color: "#d8b4fe",
+          },
+        },
+        "infinite-scroll": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-100%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "color-change": "color-change 5s infinite",
+        "infinite-scroll": "infinite-scroll 15s linear infinite",
       },
     },
   },
