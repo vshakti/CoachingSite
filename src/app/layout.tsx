@@ -27,7 +27,7 @@ export default async function RootLayout({
         <ExerciseProvider>
           <TemplateTypeProvider>
             <body
-              className={`remove-scrollbar ${orbitron.className} bg-gradient-to-br from-neutral-950 to-zinc-950`}
+              className={`remove-scrollbar ${inter.className} bg-gradient-to-br from-neutral-950 to-zinc-950`}
             >
               <Headbar />
 

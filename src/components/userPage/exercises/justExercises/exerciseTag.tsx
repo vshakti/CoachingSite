@@ -4,6 +4,7 @@ import {
   PlayIcon,
   SettingsIcon,
   Trash2Icon,
+  TrashIcon,
 } from "lucide-react";
 import Image from "next/image";
 import ExerciseVideoModal from "./exerciseVideoModal";
@@ -171,7 +172,7 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
                           }
                         }}
                       >
-                        <ChevronsRightIcon />
+                        <ChevronsRightIcon className="hover:text-yellow-400" />
                       </button>
                       {exerciseList.some(
                         (item) => item.name === exercise.name,
@@ -186,7 +187,7 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
                       )}
                     </div>
                   ) : (
-                    <div className="flex items-center justify-center gap-x-1 md:gap-x-3">
+                    <div className="flex items-center justify-center gap-x-2 md:gap-x-3">
                       <button
                         onClick={async () => {
                           if (exercise) {
@@ -195,13 +196,15 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
                             setIsDeleting(true);
                             showToast({
                               message: (
-                                <span>
-                                  Are you sure you want to delete{" "}
-                                  <span className="max-w-36 truncate text-yellow-400">
-                                    {exercise.name}
+                                <div className="flex h-16 items-center justify-center text-center">
+                                  <span>
+                                    Delete{" "}
+                                    <span className="max-w-36 truncate text-yellow-400">
+                                      {exercise.name}
+                                    </span>{" "}
+                                    ?
                                   </span>
-                                  ?
-                                </span>
+                                </div>
                               ),
                               type: "action",
                             });
@@ -258,7 +261,7 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
                         }}
                         disabled={!exercise.video}
                       >
-                        <PlayIcon className="size-4 rounded-full border bg-purple-950 p-1 text-white hover:bg-yellow-400 hover:text-slate-950 md:size-6" />
+                        <PlayIcon className="size-4 rounded-full border bg-purple-950 p-0.5 text-white hover:bg-yellow-400 hover:text-slate-950 md:size-5" />
                       </button>
                     </div>
                   )}
@@ -285,13 +288,10 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
           }
           onClose={handleToastClose}
           onAction={handleDeletion}
-          actionLabel="Delete"
+          actionLabel={<Trash2Icon className="size-4" />}
         />
       )}
     </>
   );
 };
 export default ExerciseTag;
-function invariant(el: null) {
-  throw new Error("Function not implemented.");
-}

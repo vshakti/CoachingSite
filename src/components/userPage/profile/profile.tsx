@@ -1,5 +1,5 @@
 import { UserProvider } from "@/lib/context/user";
-import ProfilePicture from "@/components/userPage/navbar/profilePicture";
+import ProfilePicture from "@/components/userPage/profile/profilePicture";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import UserUpdateModal from "./userUpdateModal";
 import OpenModalButton from "../openModalButton";

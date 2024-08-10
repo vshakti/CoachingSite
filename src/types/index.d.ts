@@ -46,6 +46,7 @@ declare interface User extends Omit<UserAuth, "password">, UserPicture {
   exercises: Exercise[];
   trainingDays: TrainingDays[];
   trainingWeek: TrainingWeek[];
+  progressionList: ProgressionList[];
 }
 
 declare interface showUser extends UserPicture {
@@ -71,7 +72,6 @@ declare interface Exercise {
   video?: URL;
   muscles: MusclesArray;
   exerciseOwner?: string;
-  ExerciseProgression?: ExerciseProgression[];
 }
 
 declare interface TrainingDays {
@@ -99,10 +99,16 @@ declare interface TrainingDay {
 declare type TrainingWeek = TrainingDay[];
 
 declare interface ExerciseProgression {
-  exerciseName: string;
   trainingDay: string;
   feedback?: string;
   sets: number;
   reps: number[];
   rpe: number[];
+  weight: number[];
+}
+
+declare interface ProgressionList {
+  exerciseProgression: ExerciseProgression[];
+  exerciseName: string;
+  exerciseId: string;
 }

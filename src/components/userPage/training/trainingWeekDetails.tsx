@@ -24,7 +24,11 @@ interface TrainingWeekDetailsProps {
   index: number;
 }
 
-const TrainingWeekDetails = ({ children, index }: TrainingWeekDetailsProps) => {
+const TrainingWeekDetails = ({
+  children,
+  index,
+  user,
+}: TrainingWeekDetailsProps) => {
   const [showDay, setShowDay] = useState(true);
   const { trainingWeek } = useTraining();
   const [isExerciseOpen, setIsExerciseOpen] = useState(false);
@@ -73,7 +77,7 @@ const TrainingWeekDetails = ({ children, index }: TrainingWeekDetailsProps) => {
       }
     };
 
-    const fetchAndStoreTrainingDays = async (week: TrainingWeek) => {
+    const fetchAndStoreTrainingDays = async (week: any) => {
       if (!week.trainingDaySpecifics) return;
 
       const daysArray: (TrainingDays | null)[] = [];
@@ -305,8 +309,9 @@ const TrainingWeekDetails = ({ children, index }: TrainingWeekDetailsProps) => {
         )}
       </>
       <FinishExerciseModal
-        exerciseName={exerciseName}
         exerciseId={exerciseId}
+        exerciseName={exerciseName}
+        user={user}
       />
     </div>
   );

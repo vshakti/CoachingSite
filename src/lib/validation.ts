@@ -139,6 +139,9 @@ export const ExerciseProgressionValidation = z
     sets: z.array(z.number().int().positive()).nonempty("Sets cannot be empty"),
     reps: z.array(z.number().int().positive()).nonempty("Reps cannot be empty"),
     rpe: z.array(z.number().int().positive()).nonempty("RPE cannot be empty"),
+    weight: z
+      .array(z.number().int().positive())
+      .nonempty("RPE cannot be empty"),
     feedback: z
       .string()
       .max(500, "Your feedback must be at most 500 characters")

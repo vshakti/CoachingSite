@@ -21,7 +21,7 @@ const TemplateNavbar = ({ user }: UserProps) => {
           onClick={() => {
             setTemplateType("All");
           }}
-          className={`${templateType === "All" ? `translate-x-1 scale-125` : ""} h-10 w-full truncate bg-gradient-to-r from-slate-950 via-slate-950/50 to-slate-950/0 px-2 py-1 text-lg text-white antialiased`}
+          className={`${templateType === "All" ? `scale-110` : ""} h-10 w-full truncate bg-gradient-to-r from-slate-950 via-slate-950/50 to-slate-950/0 px-2 py-1 text-lg text-white antialiased`}
         >
           All
         </button>
@@ -33,7 +33,7 @@ const TemplateNavbar = ({ user }: UserProps) => {
                 setTemplateType(trainingDays.type);
               }}
               key={t}
-              className={`${templateType === trainingDays.type ? `translate-x-1 scale-125` : ""} border-white ${getColorClassForType(trainingDays.type)} h-10 w-full truncate bg-gradient-to-r from-slate-950 via-slate-950/50 to-slate-950/0 px-2 py-1 text-lg text-white antialiased`}
+              className={`${templateType === trainingDays.type ? `scale-110` : ""} h-10 w-full truncate border-white ${getColorClassForType(trainingDays.type)} px-2 py-1 text-lg text-white antialiased`}
             >
               {trainingDays.type}
             </button>

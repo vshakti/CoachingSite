@@ -1,16 +1,35 @@
 "use client";
 import CompleteExerciseForm from "@/components/forms/completeExerciseForm";
 import { XIcon } from "lucide-react";
+import { useRef } from "react";
 
 interface FinishExerciseProps {
   exerciseName: string;
+  user: User;
   exerciseId: string;
 }
 
 const FinishExerciseModal = ({
   exerciseName,
+  user,
   exerciseId,
 }: FinishExerciseProps) => {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleModalClose = () => {
+    const dialog = document.getElementById(
+      "finish_exercise_modal",
+    ) as HTMLDialogElement;
+
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+
+    if (dialog) {
+      dialog.close();
+    }
+  };
+
   return (
     <dialog id="finish_exercise_modal" className="modal">
       <div className="remove-scrollbar fixed inset-0 flex items-center justify-center overflow-auto bg-black/25 backdrop-blur-sm">
@@ -19,15 +38,19 @@ const FinishExerciseModal = ({
             <h2 className="w-max text-xl font-medium text-yellow-400 md:text-3xl">
               {exerciseName}
             </h2>
-            <form method="dialog">
-              <button className="flex items-center justify-center">
-                <XIcon className="md:size-10" />
-              </button>
-            </form>
+            <button
+              className="flex items-center justify-center"
+              onClick={handleModalClose}
+            >
+              <XIcon className="md:size-10" />
+            </button>
           </div>
           <CompleteExerciseForm
+            ref={formRef}
             exerciseId={exerciseId}
+            user={user}
             exerciseName={exerciseName}
+            onReset={handleModalClose}
           />
         </div>
       </div>

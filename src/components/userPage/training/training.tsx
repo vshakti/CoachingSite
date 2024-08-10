@@ -9,12 +9,6 @@ const Training = async () => {
 
   const user: User = userResponse;
 
-  // console.log(
-  //   user.trainingWeek.map((training, t) =>
-  //     training.trainingDaySpecifics.map((rest, r) => rest.isRest),
-  //   ),
-  // );
-
   return (
     <TrainingProvider>
       <div className="flex h-max w-full flex-col gap-6 p-6 text-white antialiased md:ml-6">

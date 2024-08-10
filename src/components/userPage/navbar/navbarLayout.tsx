@@ -36,7 +36,7 @@ const NavbarLayout = ({ children }: { children: ReactNode }) => {
               onClick={() => {
                 setShowNavbar("SHOW");
               }}
-              className="text-white"
+              className="text-yellow-400"
             >
               <ChevronDownIcon className="size-5" />
             </button>
@@ -45,7 +45,7 @@ const NavbarLayout = ({ children }: { children: ReactNode }) => {
               onClick={() => {
                 setShowNavbar("HIDE");
               }}
-              className="text-white"
+              className="text-yellow-400"
             >
               <ChevronUpIcon className="size-5" />
             </button>
@@ -57,7 +57,7 @@ const NavbarLayout = ({ children }: { children: ReactNode }) => {
               onClick={() => {
                 setShowNavbar("SHOW");
               }}
-              className="text-white"
+              className="text-yellow-400"
             >
               <ChevronRightIcon className="size-5" />
             </button>
@@ -66,7 +66,7 @@ const NavbarLayout = ({ children }: { children: ReactNode }) => {
               onClick={() => {
                 setShowNavbar("HIDE");
               }}
-              className="text-white"
+              className="text-yellow-400"
             >
               <ChevronLeftIcon className="size-5" />
             </button>

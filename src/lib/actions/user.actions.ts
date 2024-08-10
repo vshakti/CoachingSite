@@ -22,6 +22,9 @@ const {
   APPWRITE_TRAINING_WEEK_COLLECTION_ID: TRAINING_WEEK_COLLECTION_ID,
   APPWRITE_TRAINING_DAYS_SPECIFICS_COLLECTION_ID:
     TRAINING_DAYS_SPECIFICS_COLLECTION_ID,
+  APPWRITE_EXERCISE_PROGRESSION_COLLECTION_ID:
+    EXERCISE_PROGRESSION_COLLECTION_ID,
+  APPWRITE_PROGRESSION_LIST_COLLECTION_ID: PROGRESSION_LIST_COLLECTION_ID,
 } = process.env;
 
 export const getUserInfo = async ({ userId }: getUserInfo) => {
@@ -328,38 +331,111 @@ export const UpdateExercise = async ({
 
 export const ExerciseProgressionUpdate = async (
   progressionData: ExerciseProgression,
+  userId: string,
+  exerciseName: string,
   exerciseId: string,
 ) => {
   try {
     const { database } = await createAdminClient();
+    const user: User = await getLoggedInUser();
 
-    const currentExercise = await database.getDocument(
+    //CREATE THE EXERCISE PROGRESSION
+    const newExerciseProgression = await database.createDocument(
       DATABASE_ID!,
-      EXERCISES_COLLECTION_ID!,
-      exerciseId!,
-    );
-
-    const updatedExercisesProgressions = [
-      ...(currentExercise.exerciseProgression || []),
-      progressionData,
-    ];
-
-    const updatedExercise = await database.updateDocument(
-      DATABASE_ID!,
-      EXERCISES_COLLECTION_ID!,
-      exerciseId!,
+      EXERCISE_PROGRESSION_COLLECTION_ID!,
+      ID.unique(),
       {
-        exerciseProgression: updatedExercisesProgressions,
+        ...progressionData,
       },
     );
 
-    if (!updatedExercise) throw Error;
+    let progressionList;
 
-    const parsednewExercise = parseStringify(updatedExercise);
+    //CHECK IF AN EXERCISE PROGRESSION WITH THIS EXERCISE ID ALREADY EXISTS
+    try {
+      progressionList = await database.getDocument(
+        DATABASE_ID!,
+        PROGRESSION_LIST_COLLECTION_ID!,
+        exerciseId!,
+      );
+    } catch (error: any) {
+      if (error.code === 404) {
+        //IF DOESN'T EXIST CREATE ONE
+        const newExerciseProgressionList = await database.createDocument(
+          DATABASE_ID!,
+          PROGRESSION_LIST_COLLECTION_ID!,
+          ID.custom(exerciseId),
+          {
+            exerciseName,
+            exerciseId,
+          },
+        );
 
-    return parsednewExercise;
-  } catch (error: any) {
-    console.error(error);
+        //GET THE ACTUAL VALUE OF THE NEW CREATED LIST
+        const updatedExerciseProgression = [
+          ...(newExerciseProgressionList.exerciseProgression || []),
+          newExerciseProgression,
+        ];
+
+        //UPDATE THE NEW LIST WITH THE EXERCISE PROGRESSION
+        const updateNewList = await database.updateDocument(
+          DATABASE_ID!,
+          PROGRESSION_LIST_COLLECTION_ID!,
+          newExerciseProgressionList.$id,
+          {
+            exerciseProgression: updatedExerciseProgression,
+          },
+        );
+
+        //GET THE ACTUAL LIST OF EXERCISES LIST FOR THE USER
+        const updatedExerciseList = [
+          ...(user.progressionList || []),
+          updateNewList,
+        ];
+
+        //PUSH THIS LIST TO THE USER
+        const updateUser = await database.updateDocument(
+          DATABASE_ID!,
+          USERS_COLLECTION_ID!,
+          userId!,
+          {
+            progressionList: updatedExerciseList,
+          },
+        );
+
+        if (!updateUser) throw Error;
+
+        const parsedNewUser = parseStringify(updateUser);
+        return parsedNewUser;
+      } else {
+        throw error;
+      }
+    }
+
+    //IF THIS LIST ALREADY EXISTS GET THE LIST BY THE EXERCISE ID
+    //GET THE ACTUAL VALUE OF THE LIST
+    const updatedExerciseProgression = [
+      ...(progressionList.exerciseProgression || []),
+      newExerciseProgression,
+    ];
+
+    //UPDATE THE LIST WITH THE EXERCISE PROGRESSION
+    const updateNewList = await database.updateDocument(
+      DATABASE_ID!,
+      PROGRESSION_LIST_COLLECTION_ID!,
+      exerciseId!,
+      {
+        exerciseProgression: updatedExerciseProgression,
+      },
+    );
+
+    if (!updateNewList) throw Error;
+
+    const parsedNewList = parseStringify(updateNewList);
+    return parsedNewList;
+  } catch (error) {
+    console.error("Error updating exercise progression:", error);
+    throw error;
   }
 };
 

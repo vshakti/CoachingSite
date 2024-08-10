@@ -50,7 +50,9 @@ const NavbarContent = async () => {
             {!user ? (
               <div>loading</div>
             ) : (
-              <p className="text-3xl text-white md:text-xl">{user.name}</p>
+              <p className="text-3xl tracking-wider text-white md:text-xl">
+                {user.name}
+              </p>
             )}
           </span>
 
@@ -59,7 +61,7 @@ const NavbarContent = async () => {
       </div>
 
       <div className="flex w-full flex-col items-center gap-y-2">
-        <ul className="flex w-full items-center justify-between gap-y-6 py-2.5 md:mt-2 md:grid md:justify-center md:px-0 2xl:gap-y-10">
+        <ul className="flex w-full items-center justify-between gap-y-6 px-3 py-2.5 md:mt-2 md:grid md:justify-center md:px-0 2xl:gap-y-10">
           <NavbarOptions
             user={user}
             icon={<MessageSquareIcon className="size-5 md:size-7 2xl:size-8" />}

@@ -25,14 +25,14 @@ const TemplatesModal = ({ user }: UserProps) => {
               </button>
             </form>
           </div>
-          <div className="flex h-full border-spacing-4 flex-row overflow-hidden overscroll-contain">
-            <div className="remove-scrollbar flex h-full w-full flex-col overflow-auto">
+          <div className="flex h-full flex-row overflow-hidden overscroll-contain">
+            <div className="flex h-full w-full flex-col">
               <TemplateTypeTitle />
-              <div className="flex h-full w-full flex-row">
-                <div className="w-32 py-6">
+              <div className="remove-scrollbar flex h-max flex-row gap-x-5 overflow-auto py-3">
+                <div className="w-32">
                   <TemplateNavbar user={user} />
                 </div>
-                <div className="remove-scrollbar grid h-max grid-cols-1 gap-4 overflow-auto p-6 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+                <div className="grid h-max w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   <TemplateCards user={user} />
                 </div>
               </div>

@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import { XIcon } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
 interface ToastProps {
   message: React.ReactNode;
@@ -6,7 +7,7 @@ interface ToastProps {
   duration?: number;
   onClose: () => void;
   onAction?: () => void;
-  actionLabel?: string;
+  actionLabel?: React.ReactNode;
 }
 
 const Toast: React.FC<ToastProps> = ({
@@ -17,9 +18,13 @@ const Toast: React.FC<ToastProps> = ({
   onAction,
   actionLabel = "Action",
 }) => {
+  const [visible, setVisible] = useState(false);
+
   useEffect(() => {
+    setVisible(true);
     const timer = setTimeout(() => {
-      onClose();
+      setVisible(false);
+      setTimeout(onClose, 500);
     }, duration);
 
     return () => clearTimeout(timer);
@@ -27,24 +32,30 @@ const Toast: React.FC<ToastProps> = ({
 
   return (
     <div
-      className={`fixed bottom-4 right-4 z-50 rounded border border-neutral-500 px-4 py-2 text-white shadow-lg ${getToastClasses(type)}`}
+      className={`fixed bottom-8 left-1/2 z-50 -translate-x-1/2 transform rounded-lg border border-neutral-700 bg-zinc-950 text-white shadow-lg transition-all duration-500 ${
+        visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+      }`}
     >
       <div className="flex items-center justify-between gap-x-8">
-        <span className="max-w-40 text-sm font-medium">{message}</span>
-        <div className="flex gap-4">
+        <span
+          className={`${getToastClasses(type)} flex max-w-40 items-center justify-center rounded-l-lg py-2 text-sm font-medium`}
+        >
+          {message}
+        </span>
+        <div className="flex gap-4 py-2 pr-2">
           {onAction && (
             <button
-              className="rounded border border-neutral-500 bg-transparent px-2 py-1 text-sm text-white transition hover:border-yellow-500 hover:text-yellow-500"
+              className="px-2 py-1 text-sm text-white transition hover:text-yellow-400"
               onClick={onAction}
             >
               {actionLabel}
             </button>
           )}
           <button
-            className="rounded border border-neutral-500 bg-transparent px-2 py-1 text-sm text-white transition hover:border-yellow-500 hover:text-yellow-500"
-            onClick={onClose}
+            className="px-2 py-1 text-sm text-white transition hover:text-yellow-400"
+            onClick={() => setVisible(false)}
           >
-            Close
+            <XIcon className="size-4" />
           </button>
         </div>
       </div>
@@ -57,9 +68,9 @@ const getToastClasses = (
 ): string => {
   switch (type) {
     case "success":
-      return "bg-black border-slate-700";
+      return "bg-green-600 w-16 h-16";
     case "error":
-      return "bg-red-500";
+      return "bg-red-600";
     case "warning":
       return "bg-yellow-500";
     default:

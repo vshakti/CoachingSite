@@ -104,7 +104,7 @@ const DayTemplates = ({ user }: UserProps) => {
         exerciseSpecifics: [],
       });
       showToast({
-        message: <span>Training card created!</span>,
+        message: <CheckIcon className="size-5" />,
         type: "success",
       });
     }
@@ -247,7 +247,7 @@ const DayTemplates = ({ user }: UserProps) => {
                                             }));
                                           }}
                                         >
-                                          <Trash2Icon />
+                                          <Trash2Icon className="size-5 hover:text-yellow-400" />
                                         </button>
                                         <div className="w-full items-center justify-start truncate">
                                           {exercises.name}
@@ -279,14 +279,14 @@ const DayTemplates = ({ user }: UserProps) => {
                                               }));
                                             }}
                                             placeholder="Sets"
-                                            className="flex h-7 w-11 items-center justify-center rounded-md bg-black/50 px-1 text-sm focus:border-0"
+                                            className="flex h-7 w-11 items-center justify-center rounded-md bg-black/50 px-1 text-xs focus:border-0"
                                           />
                                         </div>
 
                                         <div className="group flex h-max w-max items-center justify-center">
                                           <input
                                             placeholder="Reps"
-                                            className="flex h-7 w-11 items-center justify-center rounded-md bg-black/50 px-1 text-sm focus:border-0"
+                                            className="flex h-7 w-11 items-center justify-center rounded-md bg-black/50 px-1 text-xs focus:border-0"
                                             id="inputField"
                                             type="text"
                                             onChange={(e) => {
@@ -313,7 +313,7 @@ const DayTemplates = ({ user }: UserProps) => {
 
                                         <div className="flex h-max w-max items-center justify-center">
                                           <input
-                                            className="flex h-7 w-11 items-center justify-center rounded-md bg-black/50 px-2 text-sm"
+                                            className="flex h-7 w-11 items-center justify-center rounded-md bg-black/50 px-2 text-xs"
                                             id="inputField"
                                             type="text"
                                             placeholder="RPE"
@@ -347,11 +347,27 @@ const DayTemplates = ({ user }: UserProps) => {
                           ))
                         ) : (
                           <div className="h-full w-full bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0 p-2">
-                            <span className="flex h-full w-full items-center justify-center text-center text-3xl font-medium text-white">
-                              You have no exercises selected. Unlock your card
-                              by pressing the {"(>>)"} button at the top and
-                              send your exercises from the exercise list to
-                              here.
+                            <span className="flex h-full w-full flex-col items-center justify-center gap-3 px-5 text-xs font-medium tracking-wider text-white lg:text-base">
+                              <p>1: Name your day</p>
+                              <p>2: Define your day by a custom type</p>
+                              <p className="flex items-center gap-1">
+                                3: Unlock your exercises by clicking
+                                <ChevronsRightIcon
+                                  className={`flex size-4 rounded-full border bg-gradient-to-br from-slate-950 to-violet-950 p-0.5`}
+                                />
+                              </p>
+                              <p className="flex items-center gap-1">
+                                4: Add your exercises by clicking
+                                <ChevronsRightIcon className="size-4" />
+                                on them
+                              </p>
+                              <p>5: Define your sets, reps and rpe</p>
+                              <p>6: Add a description for your day</p>
+                              <p className="flex items-center gap-1">
+                                7: Click on the
+                                <CheckIcon className="size-4 rounded-full border bg-gradient-to-br from-slate-950 to-violet-950 p-0.5" />
+                                to create your day
+                              </p>
                             </span>
                           </div>
                         )}

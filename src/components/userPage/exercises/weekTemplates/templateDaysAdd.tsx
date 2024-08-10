@@ -78,11 +78,11 @@ const TemplateDaysAdd = ({ children, dayLocation }: TemplateDaysAddProps) => {
 
         {weeklyTraining[dayLocation].trainingDays ? (
           <div
-            className={`${getColorClassForType(weeklyTraining[dayLocation].trainingDays.type)} flex h-full w-full flex-col gap-2 rounded-md p-1 text-white shadow-sm shadow-slate-700`}
+            className={`${getColorClassForType(weeklyTraining[dayLocation].trainingDays.type)} flex h-full w-full flex-col gap-2 rounded-md p-1 text-xs text-white shadow-sm shadow-slate-700`}
           >
             <div className="flex flex-col items-center justify-center gap-1">
               <span className="flex w-full items-center justify-center rounded-full bg-zinc-950 px-2">
-                <span className="bg-gradient-to-r from-zinc-950/0 via-zinc-800/100 to-zinc-950/0 px-4">
+                <span className="w-full truncate bg-gradient-to-r from-zinc-950/0 via-zinc-800/100 to-zinc-950/0 px-4">
                   {weeklyTraining[dayLocation].trainingDays?.name}
                 </span>
               </span>
@@ -96,9 +96,11 @@ const TemplateDaysAdd = ({ children, dayLocation }: TemplateDaysAddProps) => {
                       (exercises: Exercise, e: number) => (
                         <div
                           key={e}
-                          className="flex flex-row gap-1 bg-gradient-to-r from-zinc-950/0 via-zinc-800/100 to-zinc-950/0 px-4 py-1"
+                          className="flex flex-row gap-1 bg-gradient-to-r from-zinc-950/0 via-zinc-800/100 to-zinc-950/0 px-4"
                         >
-                          <span>{exercises.name}</span>
+                          <span className="w-16 truncate">
+                            {exercises.name}
+                          </span>
                           {exercises.muscles.map((muscle, m) => (
                             <div key={m}>
                               <Image

@@ -31,7 +31,7 @@ const TemplateCards = ({ user }: UserProps) => {
           {user.trainingDays.map((trainingDays, t) => (
             <div
               key={t}
-              className="relative transition-transform hover:scale-110"
+              className="relative text-xs transition-transform hover:scale-110"
             >
               <button
                 onClick={async () => {
@@ -41,7 +41,7 @@ const TemplateCards = ({ user }: UserProps) => {
                   router.refresh();
                   setIsLoading(false);
                 }}
-                className="absolute -right-2 -top-2 rounded-full border bg-slate-950 p-1 text-white transition-transform hover:scale-110"
+                className="absolute -top-2 right-4 rounded-full border bg-slate-950 p-1 text-white transition-transform hover:scale-110"
               >
                 {isLoading && dayId === trainingDays.$id ? (
                   <LoaderIcon className="size-4 animate-spin" />
@@ -67,10 +67,10 @@ const TemplateCards = ({ user }: UserProps) => {
                   }
                   setCompleteCounter((prev) => prev + 1);
                 }}
-                className={`${getColorClassForType(trainingDays.type)} ${dayId === trainingDays.$id ? "opacity-30" : ""} flex w-44 flex-col items-center gap-2 rounded-md p-2 text-white shadow-md shadow-slate-800`}
+                className={`${getColorClassForType(trainingDays.type)} ${dayId === trainingDays.$id ? "opacity-30" : ""} flex w-52 flex-col items-center gap-2 rounded-md p-2 text-white shadow-md shadow-slate-800`}
               >
                 <h1 className="flex w-full items-center justify-center rounded-full bg-slate-950 px-2 py-0.5">
-                  <span className="bg-gradient-to-r from-zinc-950/0 via-zinc-800/100 to-zinc-950/0 px-5 text-sm">
+                  <span className="w-full truncate bg-gradient-to-r from-zinc-950/0 via-zinc-800/100 to-zinc-950/0 px-5">
                     {trainingDays.name}
                   </span>
                 </h1>
@@ -87,7 +87,9 @@ const TemplateCards = ({ user }: UserProps) => {
                               key={e}
                               className="flex flex-col items-center justify-center gap-1"
                             >
-                              <span className="truncate">{exercise.name}</span>
+                              <span className="w-14 truncate">
+                                {exercise.name}
+                              </span>
                               <div className="flex flex-row gap-1">
                                 {exercise.muscles.map((muscle, m) => (
                                   <div key={m}>
@@ -170,7 +172,7 @@ const TemplateCards = ({ user }: UserProps) => {
             .map((trainingDay, td) => (
               <div
                 key={td}
-                className="relative transition-transform hover:scale-110"
+                className="relative text-xs transition-transform hover:scale-110"
               >
                 <button
                   onClick={async () => {
@@ -180,7 +182,7 @@ const TemplateCards = ({ user }: UserProps) => {
                     router.refresh();
                     setIsLoading(false);
                   }}
-                  className="absolute -right-2 -top-2 rounded-full border bg-slate-950 p-1 text-white transition-transform hover:scale-110"
+                  className="absolute -top-2 right-4 rounded-full border bg-slate-950 p-1 text-white transition-transform hover:scale-110"
                 >
                   {isLoading && dayId === trainingDay.$id ? (
                     <LoaderIcon className="size-4 animate-spin" />
@@ -206,21 +208,25 @@ const TemplateCards = ({ user }: UserProps) => {
                     }
                   }}
                   key={td}
-                  className={`${getColorClassForType(trainingDay.type)} ${dayId === trainingDay.$id ? "opacity-30" : ""} flex w-44 flex-col items-center gap-2 rounded-md border border-slate-700 p-2 text-white shadow-md shadow-slate-800`}
+                  className={`${getColorClassForType(trainingDay.type)} ${dayId === trainingDay.$id ? "opacity-30" : ""} flex w-52 flex-col items-center gap-2 rounded-md border border-slate-700 p-2 text-white shadow-md shadow-slate-800`}
                 >
                   <h1 className="flex w-full items-center justify-center rounded-full bg-slate-950 px-2 py-0.5">
-                    <span>{trainingDay.name}</span>
+                    <span className="w-full truncate bg-gradient-to-r from-zinc-950/0 via-zinc-800/100 to-zinc-950/0 px-5">
+                      {trainingDay.name}
+                    </span>
                   </h1>
                   <div className="remove-scrollbar flex h-40 w-full flex-col gap-y-2 overflow-auto rounded-md bg-slate-950 p-2 text-xs">
                     {trainingDay.exerciseSpecifics?.map((specifics, sp) => (
                       <div
                         key={sp}
-                        className="flex w-full flex-row items-center justify-evenly gap-x-2 border-b border-slate-700 p-1"
+                        className="flex w-full flex-row items-center justify-evenly gap-x-2 bg-gradient-to-r from-zinc-950/0 via-zinc-800/100 to-zinc-950/0 p-1"
                       >
                         {specifics.exercises.map(
                           (exercise: Exercise, exId: number) => (
                             <div key={exId} className="flex flex-col gap-1">
-                              <span className="truncate">{exercise.name}</span>
+                              <span className="w-14 truncate">
+                                {exercise.name}
+                              </span>
                               <div className="flex flex-row gap-1">
                                 {exercise.muscles.map((muscle, m) => (
                                   <div key={m} className="">

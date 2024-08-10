@@ -14,13 +14,13 @@ const WeeksCollection = ({ user }: WeeksCollectionProps) => {
     <div className="remove-scrollbar grid h-[220px] grid-cols-3 gap-3 overflow-auto overscroll-contain md:grid-cols-5 lg:grid-cols-7">
       {user.trainingWeek && user.trainingWeek.length > 0 ? (
         <>
-          {user.trainingWeek.map((week, i) => (
+          {user.trainingWeek.map((week: any, i) => (
             <div
               key={i}
               className="flex w-full flex-col items-center justify-center transition-transform hover:scale-105"
             >
               <div className="flex h-max w-32 flex-col items-center justify-center gap-2">
-                <span className="flex w-full items-center justify-center text-sm font-semibold tracking-wide text-yellow-400">
+                <span className="flex w-full items-center justify-center text-center text-sm font-semibold tracking-wide text-yellow-400">
                   {week.name}
                 </span>
               </div>
