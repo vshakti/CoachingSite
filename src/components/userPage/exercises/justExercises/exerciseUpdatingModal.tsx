@@ -11,7 +11,7 @@ const ExerciseUpdateModal = ({ exercise }: ExerciseUpdateProps) => {
     <dialog id="exercise_update_modal" className="modal">
       <div className="remove-scrollbar fixed inset-0 flex items-center justify-center overflow-auto bg-black/25 backdrop-blur-sm">
         <div className="flex h-max w-max flex-col gap-y-4 rounded-md border border-slate-400 bg-gradient-to-b from-slate-950 via-violet-950 to-slate-950 p-4">
-          <div className="flex w-full flex-row items-center justify-between text-yellow-500">
+          <div className="flex w-full flex-row items-center justify-between text-cyan-500">
             <h2 className="w-max text-xl font-medium md:text-3xl">
               {exercise && (
                 <>

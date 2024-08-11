@@ -2,15 +2,15 @@
 import { createContext, useState, useContext, ReactNode } from "react";
 
 const cardColors = [
-  "bg-gradient-to-br from-blue-950/75 via-blue-800/75 to-blue-600/75",
-  "bg-gradient-to-br from-red-950/75 via-red-800/75 to-red-600/75",
-  "bg-gradient-to-br from-green-950/75 via-green-800/75 to-green-600/75",
-  "bg-gradient-to-br from-yellow-950/75 via-yellow-800/75 to-yellow-600/75",
-  "bg-gradient-to-br from-purple-950/75 via-purple-800/75 to-purple-600/75",
-  "bg-gradient-to-br from-indigo-950/75 via indigo-800/75 to-indigo-600/75",
-  "bg-gradient-to-br from-pink-950/75 via-pink-800/75 to-pink-600/75",
-  "bg-gradient-to-br from-gray-600/75 via-gray-300/75 to-gray-50/75",
-  "bg-gradient-to-br from-gray-900/75 via-gray-800/75 to-gray-600/75",
+  "bg-gradient-to-r from-blue-950/75 via-blue-800/75 to-blue-600/0",
+  "bg-gradient-to-r from-red-950/75 via-red-800/75 to-red-600/0",
+  "bg-gradient-to-r from-green-950/75 via-green-800/75 to-green-600/0",
+  "bg-gradient-to-r from-yellow-950/75 via-yellow-800/75 to-yellow-600/0",
+  "bg-gradient-to-r from-purple-950/75 via-purple-800/75 to-purple-600/0",
+  "bg-gradient-to-r from-indigo-950/75 via indigo-800/75 to-indigo-600/0",
+  "bg-gradient-to-r from-pink-950/75 via-pink-800/75 to-pink-600/0",
+  "bg-gradient-to-r from-gray-600/75 via-gray-300/75 to-gray-50/0",
+  "bg-gradient-to-r from-gray-900/75 via-gray-800/75 to-gray-600/0",
 ];
 
 const initialWeeklyTraining = Array(7).fill({

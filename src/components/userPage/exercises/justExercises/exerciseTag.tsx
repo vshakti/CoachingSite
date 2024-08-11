@@ -172,7 +172,7 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
                           }
                         }}
                       >
-                        <ChevronsRightIcon className="hover:text-yellow-400" />
+                        <ChevronsRightIcon className="hover:text-cyan-500" />
                       </button>
                       {exerciseList.some(
                         (item) => item.name === exercise.name,
@@ -199,7 +199,7 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
                                 <div className="flex h-16 items-center justify-center text-center">
                                   <span>
                                     Delete{" "}
-                                    <span className="max-w-36 truncate text-yellow-400">
+                                    <span className="max-w-36 truncate text-cyan-500">
                                       {exercise.name}
                                     </span>{" "}
                                     ?
@@ -211,7 +211,7 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
                           }
                         }}
                       >
-                        <Trash2Icon className="size-4 text-white hover:text-yellow-400" />
+                        <Trash2Icon className="size-4 text-white hover:text-cyan-500" />
                       </button>
 
                       <button
@@ -227,7 +227,7 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
                           }
                         }}
                       >
-                        <SettingsIcon className="size-4 text-white hover:text-yellow-400" />
+                        <SettingsIcon className="size-4 text-white hover:text-cyan-500" />
                       </button>
 
                       <button
@@ -244,7 +244,7 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
                         }}
                         disabled={!exercise.description}
                       >
-                        <BookOpenIcon className="size-4 text-white hover:text-yellow-400" />
+                        <BookOpenIcon className="size-4 text-white hover:text-cyan-500" />
                       </button>
 
                       <button
@@ -261,7 +261,7 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
                         }}
                         disabled={!exercise.video}
                       >
-                        <PlayIcon className="size-4 rounded-full border bg-purple-950 p-0.5 text-white hover:bg-yellow-400 hover:text-slate-950 md:size-5" />
+                        <PlayIcon className="size-4 rounded-full border bg-purple-950 p-0.5 text-white hover:bg-cyan-500 hover:text-slate-950 md:size-5" />
                       </button>
                     </div>
                   )}

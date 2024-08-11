@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { DumbbellIcon, ListIcon, PlusIcon, SearchIcon } from "lucide-react";
+import {
+  DumbbellIcon,
+  ListIcon,
+  PlusIcon,
+  SearchIcon,
+  XIcon,
+} from "lucide-react";
 import ExerciseTag from "./exerciseTag";
 import OpenModalButton from "../../openModalButton";
 
@@ -17,6 +23,7 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const selection = [
     "Cardio",
+    "Adductors",
     "Biceps",
     "Calves",
     "Chest",
@@ -35,20 +42,18 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
 
   return (
     <>
-      <div
-        className={`${!exerciseOpen ? "" : "hidden"} flex flex-col items-center justify-center gap-y-2`}
+      <button
+        onClick={() => {
+          setExerciseOpen(!exerciseOpen);
+        }}
+        className={`${!exerciseOpen ? "" : "hidden"} flex animate-pulse flex-col items-center justify-center gap-y-2 bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0 py-2`}
       >
-        <button
-          onClick={() => {
-            setExerciseOpen(!exerciseOpen);
-          }}
-        >
-          <DumbbellIcon className="size-12 rounded-full border bg-gradient-to-br from-slate-950 to-violet-950 p-2 text-white" />
-        </button>
-        <h1 className="bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0 px-8 text-lg font-medium tracking-wide text-white antialiased">
-          CREATE YOUR EXERCISES
+        <DumbbellIcon className="size-12 text-white" />
+
+        <h1 className="px-8 text-lg font-medium tracking-wide text-white antialiased">
+          EXERCISE LIST
         </h1>
-      </div>
+      </button>
 
       <div
         className={`${exerciseOpen ? "flex h-max w-full flex-row px-1" : "hidden"} max-h-[640px] max-w-[440px] transition-transform duration-500 md:max-w-[580px]`}
@@ -105,7 +110,7 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
                       modalId="exercise_creation_modal"
                       className=""
                     >
-                      <PlusIcon className="size-8 text-yellow-400 md:size-10" />
+                      <PlusIcon className="size-8 text-cyan-500 md:size-10" />
                     </OpenModalButton>
                   </div>
                   <button
@@ -114,7 +119,7 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
                       setExerciseOpen(!exerciseOpen);
                     }}
                   >
-                    <DumbbellIcon className="size-8 rounded-full border bg-gradient-to-br from-slate-950 to-violet-950 p-1 text-white md:size-8 lg:size-10" />
+                    <XIcon className="size-9" />
                   </button>
                 </div>
 
@@ -131,7 +136,7 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
                 </div>
               </div>
 
-              <div className="remove-scrollbar overflow-x-show flex h-[440px] w-full flex-col items-start justify-start gap-y-1.5 overflow-y-auto overscroll-contain rounded-3xl p-1">
+              <div className="remove-scrollbar overflow-x-show flex h-[460px] w-full flex-col items-start justify-start gap-y-1.5 overflow-y-auto overscroll-contain rounded-3xl p-1">
                 <ExerciseTag
                   targetPiece={targetPiece}
                   setTargetPiece={setTargetPiece}
@@ -157,7 +162,7 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
                       modalId="exercise_creation_modal"
                       className=""
                     >
-                      <PlusIcon className="size-8 text-yellow-500 md:size-10" />
+                      <PlusIcon className="size-8 text-cyan-500 md:size-10" />
                     </OpenModalButton>
                   </div>
                   <button
@@ -166,7 +171,7 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
                       setExerciseOpen(!exerciseOpen);
                     }}
                   >
-                    <DumbbellIcon className="size-8 rounded-full border bg-gradient-to-br from-slate-950 to-violet-950 p-1 text-white md:size-8 lg:size-10" />
+                    <XIcon className="size-9" />
                   </button>
                 </div>
                 <div className="flex h-6 w-full items-center">

@@ -16,12 +16,12 @@ const TemplateNavbar = ({ user }: UserProps) => {
 
   return (
     <div className="h-full w-full">
-      <div className="flex flex-col gap-2">
+      <div className="fixed flex flex-col gap-2 overflow-hidden">
         <button
           onClick={() => {
             setTemplateType("All");
           }}
-          className={`${templateType === "All" ? `scale-110` : ""} h-10 w-full truncate bg-gradient-to-r from-slate-950 via-slate-950/50 to-slate-950/0 px-2 py-1 text-lg text-white antialiased`}
+          className={`${templateType === "All" ? `` : ""} h-10 w-full truncate bg-gradient-to-r from-slate-950 via-slate-950/50 to-slate-950/0 px-2 py-1 text-lg text-white antialiased transition-transform hover:scale-110`}
         >
           All
         </button>
@@ -33,7 +33,7 @@ const TemplateNavbar = ({ user }: UserProps) => {
                 setTemplateType(trainingDays.type);
               }}
               key={t}
-              className={`${templateType === trainingDays.type ? `scale-110` : ""} h-10 w-full truncate border-white ${getColorClassForType(trainingDays.type)} px-2 py-1 text-lg text-white antialiased`}
+              className={`${templateType === trainingDays.type ? `` : ""} h-10 w-full truncate border-white transition-transform hover:scale-110 ${getColorClassForType(trainingDays.type)} px-2 py-1 text-lg text-white antialiased`}
             >
               {trainingDays.type}
             </button>

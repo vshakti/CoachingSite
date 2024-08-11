@@ -126,7 +126,7 @@ const CompleteExerciseForm = forwardRef<
                     className="absolute left-0"
                     onClick={addSet}
                   >
-                    <PlusIcon className="size-5 text-yellow-400" />
+                    <PlusIcon className="size-5 text-cyan-500" />
                   </button>
                   <span className="flex w-1/3 items-center justify-center">
                     Set
@@ -151,7 +151,7 @@ const CompleteExerciseForm = forwardRef<
                       className="absolute left-0"
                       onClick={() => removeSet(set.id)}
                     >
-                      <MinusIcon className="size-5 text-yellow-400" />
+                      <MinusIcon className="size-5 text-cyan-500" />
                     </button>
                     <span className="flex w-1/3 items-center justify-center">
                       {index + 1}
@@ -228,7 +228,7 @@ const CompleteExerciseForm = forwardRef<
           {sets.length > 0 ? (
             <SubmitButton
               isLoading={isLoading}
-              className="w-full border border-slate-700 bg-slate-950 tracking-widest text-white hover:border-yellow-400 hover:bg-slate-950 hover:text-yellow-400"
+              className="w-full border border-slate-700 bg-slate-950 tracking-widest text-white hover:border-cyan-500 hover:bg-slate-950 hover:text-cyan-500"
             >
               <span>FINISH</span>
             </SubmitButton>

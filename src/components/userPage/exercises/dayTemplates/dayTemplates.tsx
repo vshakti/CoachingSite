@@ -112,25 +112,23 @@ const DayTemplates = ({ user }: UserProps) => {
 
   return (
     <>
-      <div
-        className={`${!dayTemplateIsOpen ? "" : "hidden"} flex flex-col items-center justify-center gap-y-2`}
+      <button
+        onClick={() => {
+          setDayTemplateIsOpen(!dayTemplateIsOpen);
+        }}
+        className={`${!dayTemplateIsOpen ? "" : "hidden"} flex animate-pulse flex-col items-center justify-center gap-y-2 bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0 px-8 py-2`}
       >
-        <button
-          onClick={() => {
-            setDayTemplateIsOpen(!dayTemplateIsOpen);
-          }}
-        >
-          <CalendarPlusIcon className="size-12 rounded-full border bg-gradient-to-br from-slate-950 to-violet-950 p-2 text-white" />
-        </button>
-        <h1 className="bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0 px-8 text-lg font-medium tracking-wide text-white antialiased">
+        <CalendarPlusIcon className="size-12 p-2 text-white" />
+
+        <h1 className="text-lg font-medium tracking-wide text-white antialiased">
           CREATE YOUR TRAINIG DAYS
         </h1>
-      </div>
+      </button>
 
       <div
         className={`${dayTemplateIsOpen ? "flex h-max w-full flex-col px-1 text-white" : "hidden"} max-h-[640px] max-w-[440px] transition-transform duration-500 md:max-w-[580px]`}
       >
-        <div className="relative flex h-[560px] flex-col items-center justify-center gap-y-2 rounded-lg border bg-gradient-to-br from-gray-950 via-zinc-950 to-gray-950 p-4">
+        <div className="relative flex h-[596px] flex-col items-center justify-center gap-y-2 rounded-lg border bg-gradient-to-br from-gray-950 via-zinc-950 to-gray-950 p-4">
           <div className="flex w-full flex-row items-center justify-between pr-2">
             <div className="flex gap-x-4">
               <button
@@ -175,7 +173,7 @@ const DayTemplates = ({ user }: UserProps) => {
                 setDayTemplateIsOpen(!dayTemplateIsOpen);
               }}
             >
-              <CalendarPlusIcon className="flex size-9 rounded-full border bg-gradient-to-br from-slate-950 to-violet-950 p-2 text-white" />
+              <XIcon className="size-9" />
             </button>
           </div>
           <Form {...form}>
@@ -184,7 +182,7 @@ const DayTemplates = ({ user }: UserProps) => {
               className="h-full w-full"
             >
               <div className="flex h-full w-full flex-col items-center justify-center gap-y-2 rounded-xl px-3 py-1">
-                <h3 className="flex h-10 w-full items-center justify-between bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0 px-2 pb-2 ring-yellow-500 ring-offset-0 group-focus-within:ring-1">
+                <h3 className="flex h-10 w-full items-center justify-between bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0 px-2 pb-2 ring-cyan-500 ring-offset-0 group-focus-within:ring-1">
                   <div className="flex w-3/4 flex-row items-end justify-end">
                     <CustomFormField
                       fieldType={FormFieldType.TEMPLATE_DAY}
@@ -247,7 +245,7 @@ const DayTemplates = ({ user }: UserProps) => {
                                             }));
                                           }}
                                         >
-                                          <Trash2Icon className="size-5 hover:text-yellow-400" />
+                                          <Trash2Icon className="size-5 hover:text-cyan-400" />
                                         </button>
                                         <div className="w-full items-center justify-start truncate">
                                           {exercises.name}

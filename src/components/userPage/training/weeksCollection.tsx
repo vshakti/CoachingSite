@@ -20,7 +20,7 @@ const WeeksCollection = ({ user }: WeeksCollectionProps) => {
               className="flex w-full flex-col items-center justify-center transition-transform hover:scale-105"
             >
               <div className="flex h-max w-32 flex-col items-center justify-center gap-2">
-                <span className="flex w-full items-center justify-center text-center text-sm font-semibold tracking-wide text-yellow-400">
+                <span className="flex w-full items-center justify-center text-center text-sm font-semibold tracking-wide text-cyan-400">
                   {week.name}
                 </span>
               </div>
@@ -30,7 +30,7 @@ const WeeksCollection = ({ user }: WeeksCollectionProps) => {
                 }}
                 className="flex h-40 w-32 flex-col"
               >
-                <div className="flex h-full w-full items-center justify-center rounded-md border border-yellow-400 bg-gradient-to-b from-zinc-950 to-black">
+                <div className="flex h-full w-full items-center justify-center rounded-md border border-cyan-400 bg-gradient-to-b from-zinc-950 to-black">
                   <Image
                     src="/logo/icon.png"
                     width={200}
@@ -40,9 +40,9 @@ const WeeksCollection = ({ user }: WeeksCollectionProps) => {
                     className="size-full opacity-85"
                   />
                 </div>
-                <div className="black h-1.5 w-full rounded-b-md border border-t-0 border-yellow-400"></div>
-                <div className="black h-1.5 w-full rounded-b-md border border-t-0 border-yellow-400"></div>
-                <div className="black h-1.5 w-full rounded-b-md border border-t-0 border-yellow-400"></div>
+                <div className="black h-1.5 w-full rounded-b-md border border-t-0 border-cyan-400"></div>
+                <div className="black h-1.5 w-full rounded-b-md border border-t-0 border-cyan-400"></div>
+                <div className="black h-1.5 w-full rounded-b-md border border-t-0 border-cyan-400"></div>
               </button>
             </div>
           ))}

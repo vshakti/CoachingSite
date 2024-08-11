@@ -15,6 +15,7 @@ export function getYouTubeEmbedUrl(url: string): string | undefined {
 export const GenderOptions = ["Male", "Female", "Other"];
 export const MuscleOptions = [
   "Cardio",
+  "Adductors",
   "Biceps",
   "Calves",
   "Chest",

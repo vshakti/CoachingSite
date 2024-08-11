@@ -116,7 +116,7 @@ const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
         </div>
 
         <SubmitButton
-          className="w-full border border-slate-700 bg-slate-950 tracking-widest text-white hover:border-yellow-400 hover:bg-slate-950 hover:text-yellow-400"
+          className="w-full border border-slate-700 bg-slate-950 tracking-widest text-white hover:border-cyan-500 hover:bg-slate-950 hover:text-cyan-500"
           isLoading={isLoading}
         >
           CREATE EXERCISE

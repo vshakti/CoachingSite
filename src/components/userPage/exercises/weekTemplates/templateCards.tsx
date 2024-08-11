@@ -31,24 +31,8 @@ const TemplateCards = ({ user }: UserProps) => {
           {user.trainingDays.map((trainingDays, t) => (
             <div
               key={t}
-              className="relative text-xs transition-transform hover:scale-110"
+              className="w-max text-xs transition-transform hover:scale-110"
             >
-              <button
-                onClick={async () => {
-                  setDayId(trainingDays.$id!);
-                  setIsLoading(true);
-                  await DeleteTrainingDay(trainingDays.$id!);
-                  router.refresh();
-                  setIsLoading(false);
-                }}
-                className="absolute -top-2 right-4 rounded-full border bg-slate-950 p-1 text-white transition-transform hover:scale-110"
-              >
-                {isLoading && dayId === trainingDays.$id ? (
-                  <LoaderIcon className="size-4 animate-spin" />
-                ) : (
-                  <TrashIcon className="size-4" />
-                )}
-              </button>
               <button
                 onClick={() => {
                   setWeeklyTraining((prevState) => {
@@ -67,8 +51,24 @@ const TemplateCards = ({ user }: UserProps) => {
                   }
                   setCompleteCounter((prev) => prev + 1);
                 }}
-                className={`${getColorClassForType(trainingDays.type)} ${dayId === trainingDays.$id ? "opacity-30" : ""} flex w-52 flex-col items-center gap-2 rounded-md p-2 text-white shadow-md shadow-slate-800`}
+                className={`${getColorClassForType(trainingDays.type)} ${dayId === trainingDays.$id ? "opacity-30" : ""} relative flex w-52 flex-col items-center gap-2 rounded-md p-2 text-white shadow-md shadow-slate-800`}
               >
+                <button
+                  onClick={async () => {
+                    setDayId(trainingDays.$id!);
+                    setIsLoading(true);
+                    await DeleteTrainingDay(trainingDays.$id!);
+                    router.refresh();
+                    setIsLoading(false);
+                  }}
+                  className="absolute -right-1 top-1 rounded-full border bg-slate-950 p-1 text-white transition-transform hover:scale-110"
+                >
+                  {isLoading && dayId === trainingDays.$id ? (
+                    <LoaderIcon className="size-4 animate-spin" />
+                  ) : (
+                    <TrashIcon className="size-4" />
+                  )}
+                </button>
                 <h1 className="flex w-full items-center justify-center rounded-full bg-slate-950 px-2 py-0.5">
                   <span className="w-full truncate bg-gradient-to-r from-zinc-950/0 via-zinc-800/100 to-zinc-950/0 px-5">
                     {trainingDays.name}
@@ -172,24 +172,8 @@ const TemplateCards = ({ user }: UserProps) => {
             .map((trainingDay, td) => (
               <div
                 key={td}
-                className="relative text-xs transition-transform hover:scale-110"
+                className="text-xs transition-transform hover:scale-110"
               >
-                <button
-                  onClick={async () => {
-                    setDayId(trainingDay.$id!);
-                    setIsLoading(true);
-                    await DeleteTrainingDay(trainingDay.$id!);
-                    router.refresh();
-                    setIsLoading(false);
-                  }}
-                  className="absolute -top-2 right-4 rounded-full border bg-slate-950 p-1 text-white transition-transform hover:scale-110"
-                >
-                  {isLoading && dayId === trainingDay.$id ? (
-                    <LoaderIcon className="size-4 animate-spin" />
-                  ) : (
-                    <TrashIcon className="size-4" />
-                  )}
-                </button>
                 <button
                   onClick={() => {
                     setWeeklyTraining((prevState) => {
@@ -208,8 +192,24 @@ const TemplateCards = ({ user }: UserProps) => {
                     }
                   }}
                   key={td}
-                  className={`${getColorClassForType(trainingDay.type)} ${dayId === trainingDay.$id ? "opacity-30" : ""} flex w-52 flex-col items-center gap-2 rounded-md border border-slate-700 p-2 text-white shadow-md shadow-slate-800`}
+                  className={`${getColorClassForType(trainingDay.type)} ${dayId === trainingDay.$id ? "opacity-30" : ""} relative flex w-52 flex-col items-center gap-2 rounded-md border border-slate-700 p-2 text-white shadow-md shadow-slate-800`}
                 >
+                  <button
+                    onClick={async () => {
+                      setDayId(trainingDay.$id!);
+                      setIsLoading(true);
+                      await DeleteTrainingDay(trainingDay.$id!);
+                      router.refresh();
+                      setIsLoading(false);
+                    }}
+                    className="absolute -right-1 top-1 rounded-full border bg-slate-950 p-1 text-white transition-transform hover:scale-110"
+                  >
+                    {isLoading && dayId === trainingDay.$id ? (
+                      <LoaderIcon className="size-4 animate-spin" />
+                    ) : (
+                      <TrashIcon className="size-4" />
+                    )}
+                  </button>
                   <h1 className="flex w-full items-center justify-center rounded-full bg-slate-950 px-2 py-0.5">
                     <span className="w-full truncate bg-gradient-to-r from-zinc-950/0 via-zinc-800/100 to-zinc-950/0 px-5">
                       {trainingDay.name}

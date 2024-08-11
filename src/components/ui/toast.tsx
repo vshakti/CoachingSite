@@ -45,14 +45,14 @@ const Toast: React.FC<ToastProps> = ({
         <div className="flex gap-4 py-2 pr-2">
           {onAction && (
             <button
-              className="px-2 py-1 text-sm text-white transition hover:text-yellow-400"
+              className="px-2 py-1 text-sm text-white transition hover:text-cyan-500"
               onClick={onAction}
             >
               {actionLabel}
             </button>
           )}
           <button
-            className="px-2 py-1 text-sm text-white transition hover:text-yellow-400"
+            className="px-2 py-1 text-sm text-white transition hover:text-cyan-500"
             onClick={() => setVisible(false)}
           >
             <XIcon className="size-4" />
@@ -72,7 +72,7 @@ const getToastClasses = (
     case "error":
       return "bg-red-600";
     case "warning":
-      return "bg-yellow-500";
+      return "bg-cyan-500";
     default:
       return "bg-zinc-950";
   }

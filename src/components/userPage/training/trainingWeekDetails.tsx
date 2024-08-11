@@ -193,7 +193,7 @@ const TrainingWeekDetails = ({
                                 modalId="finish_exercise_modal"
                                 className="absolute right-6"
                               >
-                                <CircleCheckBigIcon className="size-8 text-yellow-400 transition-transform hover:scale-110" />
+                                <CircleCheckBigIcon className="size-8 text-cyan-500 transition-transform hover:scale-110" />
                               </OpenModalButton>
 
                               <button
@@ -202,14 +202,14 @@ const TrainingWeekDetails = ({
                                 }}
                                 className="absolute left-0"
                               >
-                                <ChevronLeftIcon className="size-8 text-yellow-400 transition-transform hover:scale-110" />
+                                <ChevronLeftIcon className="size-8 text-cyan-500 transition-transform hover:scale-110" />
                               </button>
                             </div>
                             <div className="flex w-full flex-row items-center justify-center gap-x-4 rounded-md bg-gradient-to-r from-zinc-950/0 via-zinc-950/100 to-violet-950/0 py-1 text-xl">
                               <div className="flex flex-row items-center justify-center gap-2">
                                 <span className="text-zinc-600">Sets:</span>
                                 {specifics.targetSets ? (
-                                  <span className="text-yellow-400">
+                                  <span className="text-cyan-500">
                                     {specifics.targetSets}
                                   </span>
                                 ) : (
@@ -220,7 +220,7 @@ const TrainingWeekDetails = ({
                               <div className="flex flex-row items-center justify-center gap-2">
                                 <span className="text-zinc-600">Reps:</span>
                                 {specifics.targetReps ? (
-                                  <span className="text-yellow-400">
+                                  <span className="text-cyan-500">
                                     {specifics.targetReps}
                                   </span>
                                 ) : (
@@ -231,7 +231,7 @@ const TrainingWeekDetails = ({
                               <div className="flex flex-row items-center justify-center gap-2">
                                 <span className="text-zinc-600">RPE:</span>
                                 {specifics.targetRpe ? (
-                                  <span className="text-yellow-400">
+                                  <span className="text-cyan-500">
                                     {specifics.targetRpe}
                                   </span>
                                 ) : (

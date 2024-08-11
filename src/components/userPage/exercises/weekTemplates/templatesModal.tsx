@@ -32,7 +32,7 @@ const TemplatesModal = ({ user }: UserProps) => {
                 <div className="w-32">
                   <TemplateNavbar user={user} />
                 </div>
-                <div className="grid h-max w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="grid h-max w-full grid-cols-1 gap-4 pl-12 md:grid-cols-2 md:pl-0 lg:grid-cols-3 xl:grid-cols-4">
                   <TemplateCards user={user} />
                 </div>
               </div>

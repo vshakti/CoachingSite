@@ -18,7 +18,7 @@ export default function Auth() {
               onClick={() => {
                 setAuth("Register");
               }}
-              className={`${auth === "Login" ? "border border-slate-700 bg-black hover:border hover:border-yellow-400 hover:text-yellow-400" : "bg-transparent text-yellow-400"} w-1/2 rounded-sm py-1 font-medium text-white`}
+              className={`${auth === "Login" ? "border border-slate-700 bg-black hover:border hover:border-cyan-500 hover:text-cyan-500" : "bg-transparent text-cyan-500"} w-1/2 rounded-sm py-1 font-medium text-white`}
             >
               REGISTER
             </button>
@@ -27,7 +27,7 @@ export default function Auth() {
               onClick={() => {
                 setAuth("Login");
               }}
-              className={`${auth === "Register" ? "border border-slate-700 bg-black hover:border hover:border-yellow-400 hover:text-yellow-400" : "bg-transparent text-yellow-400"} w-1/2 rounded-sm py-1 font-medium text-white`}
+              className={`${auth === "Register" ? "border border-slate-700 bg-black hover:border hover:border-cyan-500 hover:text-cyan-500" : "bg-transparent text-cyan-500"} w-1/2 rounded-sm py-1 font-medium text-white`}
             >
               LOG IN
             </button>
@@ -45,7 +45,7 @@ export default function Auth() {
               <p className="flex items-center justify-center xl:text-left">
                 © {new Date().getFullYear()}
               </p>
-              <span className="font-astro flex items-center justify-center text-xs">
+              <span className="flex items-center justify-center font-astro text-xs">
                 Nebula
               </span>
             </div>

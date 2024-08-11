@@ -5,7 +5,7 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   PlusIcon,
-  RefreshCcwIcon,
+  TrashIcon,
   SquareAsteriskIcon,
 } from "lucide-react";
 import { useState } from "react";
@@ -127,7 +127,7 @@ const TemplateDaysAdd = ({ children, dayLocation }: TemplateDaysAddProps) => {
               </div>
             </div>
             <button
-              className="absolute -right-0 -top-1"
+              className="absolute -bottom-0 right-1"
               onClick={() => {
                 setWeeklyTraining((prevState) => {
                   const newState = [...prevState];
@@ -140,7 +140,7 @@ const TemplateDaysAdd = ({ children, dayLocation }: TemplateDaysAddProps) => {
                 setCompleteCounter((prev) => prev - 1);
               }}
             >
-              <RefreshCcwIcon className="size-6 rounded-full border bg-zinc-950 p-1 text-yellow-500" />
+              <TrashIcon className="size-8 rounded-full border bg-black p-1 text-cyan-500 hover:text-white" />
             </button>
           </div>
         ) : (
@@ -151,7 +151,7 @@ const TemplateDaysAdd = ({ children, dayLocation }: TemplateDaysAddProps) => {
         !weeklyTraining[dayLocation].trainingDays ? (
           <div className="relative flex h-full w-full items-center justify-center">
             <button
-              className="absolute -top-1 right-0"
+              className="absolute -bottom-1 right-0"
               onClick={() => {
                 setWeeklyTraining((prevState) => {
                   const newState = [...prevState];
@@ -164,7 +164,7 @@ const TemplateDaysAdd = ({ children, dayLocation }: TemplateDaysAddProps) => {
                 setCompleteCounter((prev) => prev - 1);
               }}
             >
-              <RefreshCcwIcon className="size-6 rounded-full border bg-zinc-950 p-1 text-yellow-500" />
+              <TrashIcon className="size-8 rounded-full p-1 text-black hover:border hover:bg-black hover:text-cyan-500" />
             </button>
             <div className="flex flex-col items-center justify-center gap-2">
               <BedSingleIcon className="size-10" />

@@ -64,7 +64,7 @@ const RegisterForm = () => {
         />
 
         <SubmitButton
-          className="w-full border border-slate-700 bg-black text-xl tracking-wider hover:border-yellow-400 hover:bg-black hover:text-yellow-400"
+          className="w-full border border-slate-700 bg-black text-xl tracking-wider hover:border-cyan-500 hover:bg-black hover:text-cyan-500"
           isLoading={isLoading}
         >
           GET STARTED FOR FREE
