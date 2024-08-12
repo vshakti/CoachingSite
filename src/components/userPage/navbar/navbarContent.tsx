@@ -11,19 +11,11 @@ import {
   UsersRoundIcon,
 } from "lucide-react";
 import React from "react";
+import ProfilePic from "./profilePic";
 
 const NavbarContent = async () => {
   const userResponse = await getLoggedInUser();
   const user: User = userResponse;
-  const avatarResponse = await ShowUserPicture(user.pictureId);
-  const userAvatar = avatarResponse;
-  let avatar;
-
-  // if (userAvatar) {
-  //   const blob = await new Blob([userAvatar], { type: "image/jpeg" });
-
-  //   avatar = convertFileToUrl(blob);
-  // }
 
   return (
     <div>
@@ -31,15 +23,16 @@ const NavbarContent = async () => {
         <div className="size-[6rem] md:size-[9rem] 2xl:size-[10rem]">
           {user?.pictureUrl ? (
             <div className="overflow-hidden rounded-full bg-center">
-              <Image
+              <ProfilePic user={user} />
+              {/* <Image
                 id="img"
                 width={260}
                 height={260}
-                src={`/hero-users/user-1.png`}
+                src={userAvatar!}
                 className="rounded-full border-2 border-white"
                 quality={100}
                 alt=""
-              />
+              /> */}
             </div>
           ) : (
             <div>num tem</div>

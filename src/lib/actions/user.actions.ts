@@ -199,13 +199,25 @@ export const UpdateUser = async ({
 
 export const ShowUserPicture = async (pictureId: string) => {
   try {
-    const { storage } = await createAdminClient();
+    const response = await fetch(pictureId);
 
-    const avatar = await storage.getFile(BUCKET_ID!, pictureId);
+    // Check if the response is successful
+    if (!response.ok) {
+      throw new Error("Failed to fetch image");
+    }
 
-    return avatar;
+    // Get text content which contains the base64 string
+    const text = await response.text();
+
+    // Check if the text starts with "data:image/png;base64,"
+    if (!text.startsWith("data:image/png;base64,")) {
+      throw new Error("Invalid Base64 data");
+    }
+
+    return text.split(",")[1]; // Extract base64 data without MIME type prefix
   } catch (error) {
-    console.log(error);
+    console.error("Error in ShowUserPicture:", error);
+    throw error;
   }
 };
 

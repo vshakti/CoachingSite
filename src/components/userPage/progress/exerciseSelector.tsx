@@ -32,7 +32,7 @@ const ExerciseSelector = ({ user }: ExerciseSelectorProps) => {
                 {trackedExercise.exerciseName}
               </span>
               <div className="flex flex-row gap-1">
-                <span>Done</span>
+                <span>Performed</span>
                 <span className="text-cyan-500">
                   {trackedExercise.exerciseProgression.length}
                 </span>
@@ -48,8 +48,8 @@ const ExerciseSelector = ({ user }: ExerciseSelectorProps) => {
             </OpenModalButton>
           </div>
           <div className="flex w-full flex-row items-center justify-between bg-gradient-to-r from-neutral-950/0 via-neutral-950 to-neutral-950/0 px-8">
-            <div className="flex flex-col gap-2 py-1">
-              <div className="flex flex-row gap-6 text-sm">
+            <div className="flex flex-col py-1">
+              <div className="flex flex-col text-sm">
                 <span className="">
                   {
                     trackedExercise.exerciseProgression[0].trainingDay.split(
@@ -57,6 +57,12 @@ const ExerciseSelector = ({ user }: ExerciseSelectorProps) => {
                     )[0]
                   }
                 </span>
+                <div className="flex flex-row items-center gap-0.5">
+                  <span className="text-cyan-500">
+                    {trackedExercise.exerciseProgression[0].reps[0]}
+                  </span>
+                  reps
+                </div>
               </div>
 
               <div className="flex items-center justify-center gap-2">
@@ -69,8 +75,8 @@ const ExerciseSelector = ({ user }: ExerciseSelectorProps) => {
 
             <AnimatedColoredChevrons />
 
-            <div className="flex flex-col gap-2 py-1">
-              <div className="flex flex-row gap-6 text-sm">
+            <div className="flex flex-col py-1">
+              <div className="flex flex-col text-sm">
                 <span className="">
                   {
                     trackedExercise.exerciseProgression[
@@ -78,6 +84,16 @@ const ExerciseSelector = ({ user }: ExerciseSelectorProps) => {
                     ].trainingDay.split(" ")[0]
                   }
                 </span>
+                <div className="flex flex-row items-center gap-0.5">
+                  <span className="text-cyan-500">
+                    {
+                      trackedExercise.exerciseProgression[
+                        trackedExercise.exerciseProgression.length - 1
+                      ].reps[0]
+                    }
+                  </span>
+                  reps
+                </div>
               </div>
 
               <div className="flex items-center justify-center gap-2">
