@@ -12,10 +12,7 @@ const SubmitButton = ({ isLoading, className, children }: ButtonProps) => {
     <Button
       type="submit"
       disabled={isLoading}
-      className={
-        className ??
-        "h-11 w-full bg-cyan-600 px-3 text-lg font-medium text-white hover:bg-cyan-700 dark:text-neutral-200"
-      }
+      className={className ?? "h-11 w-full px-3 text-lg font-medium text-white"}
     >
       {isLoading ? (
         <div className="flex items-center gap-4">

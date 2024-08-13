@@ -30,7 +30,7 @@ const Profile = async () => {
   return (
     <div className="flex w-full flex-col gap-y-2 p-4 antialiased lg:gap-y-4">
       <header className="grid justify-evenly gap-x-2 gap-y-6 bg-gradient-to-r from-neutral-950/0 via-violet-950 to-neutral-950/0 px-4 py-4 md:grid-cols-3">
-        <ProfilePicture />
+        <ProfilePicture user={user} />
         <div className="flex flex-col items-center justify-center gap-y-6 py-2 pb-2 md:items-start md:justify-start dark:text-neutral-200">
           <div className="flex flex-col gap-y-4">
             <h1 className="flex items-center justify-center text-center text-3xl md:justify-start md:text-start md:text-5xl">

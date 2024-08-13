@@ -24,15 +24,6 @@ const NavbarContent = async () => {
           {user?.pictureUrl ? (
             <div className="overflow-hidden rounded-full bg-center">
               <ProfilePic user={user} />
-              {/* <Image
-                id="img"
-                width={260}
-                height={260}
-                src={userAvatar!}
-                className="rounded-full border-2 border-white"
-                quality={100}
-                alt=""
-              /> */}
             </div>
           ) : (
             <div>num tem</div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import AvatarEditor from "react-avatar-editor";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
@@ -9,19 +9,31 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserPictureValidation } from "@/lib/validation";
 import SubmitButton from "@/components/submitButton";
 import { useUser } from "@/lib/context/user";
-import { UpdateUserProfilePicture } from "@/lib/actions/user.actions";
+import {
+  ShowUserPicture,
+  UpdateUserProfilePicture,
+} from "@/lib/actions/user.actions";
 import {
   UserRoundIcon,
   CloudUploadIcon,
-  ArrowDownToLineIcon,
+  CameraIcon,
+  CameraOffIcon,
 } from "lucide-react";
+import { useUserAvatar } from "@/lib/context/userAvatar";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-const ProfilePicture: React.FC = () => {
+interface ProfilePicProps {
+  user: User;
+}
+
+const ProfilePicture = ({ user }: ProfilePicProps) => {
   const [image, setImage] = useState<string | null>(null);
   const editorRef = useRef<AvatarEditor | null>(null);
   const [scale, setScale] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useUser();
+  const { userAvatar, setUserAvatar } = useUserAvatar();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof UserPictureValidation>>({
     resolver: zodResolver(UserPictureValidation),
@@ -56,6 +68,10 @@ const ProfilePicture: React.FC = () => {
         const picId = user?.pictureId;
 
         const newUserPicture = await UpdateUserProfilePicture(userPicture);
+
+        setUserAvatar(newUserPicture.pictureUrl);
+        setImage("");
+        router.refresh();
       } catch (error) {
         console.log(error);
       }
@@ -63,6 +79,28 @@ const ProfilePicture: React.FC = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (user.pictureUrl) {
+      const storageKey = `userAvatar_${btoa(user.pictureUrl)}`;
+      const cachedAvatar = localStorage.getItem(storageKey);
+
+      if (cachedAvatar) {
+        setUserAvatar(cachedAvatar);
+      } else {
+        (async () => {
+          try {
+            const base64String = await ShowUserPicture(user.pictureUrl);
+            const newAvatar = `data:image/png;base64,${base64String}`;
+            localStorage.setItem(storageKey, newAvatar);
+            setUserAvatar(newAvatar);
+          } catch (error) {
+            console.error("Error fetching or converting image:", error);
+          }
+        })();
+      }
+    }
+  }, [user.pictureUrl, setUserAvatar, userAvatar]);
 
   return (
     <Form {...form}>
@@ -82,6 +120,15 @@ const ProfilePicture: React.FC = () => {
                   rotate={0}
                   className="mb-4 rounded-full border-2 bg-white"
                 />
+                <button
+                  onClick={() => {
+                    setImage("");
+                  }}
+                  className={`absolute -right-3 top-0 flex cursor-pointer items-center gap-1 rounded-full bg-neutral-950 px-4 py-2`}
+                >
+                  <CameraOffIcon className="size-8 text-cyan-600" />
+                </button>
+
                 <div className="flex flex-col items-center px-2">
                   <input
                     type="range"
@@ -96,9 +143,9 @@ const ProfilePicture: React.FC = () => {
 
                 <label
                   form="doc"
-                  className={`absolute bottom-10 right-0 flex cursor-pointer items-center gap-1 rounded-full border-cyan-600 bg-neutral-400/60 p-2 dark:border-neutral-400 dark:bg-neutral-700/90`}
+                  className={`absolute -right-3 bottom-10 flex cursor-pointer items-center gap-1 rounded-full bg-neutral-950 px-4 py-2`}
                 >
-                  <ArrowDownToLineIcon className="size-8 text-cyan-600" />
+                  <CameraIcon className="size-8 text-cyan-600" />
 
                   <input
                     type="file"
@@ -112,22 +159,33 @@ const ProfilePicture: React.FC = () => {
 
                 <SubmitButton
                   isLoading={isLoading}
-                  className={`absolute bottom-10 left-0 flex h-12 cursor-pointer items-center rounded-full border-cyan-600 bg-neutral-400/60 p-2 dark:border-neutral-400 dark:bg-neutral-700/90`}
+                  className={`absolute -left-3 bottom-10 flex h-12 items-center rounded-full bg-neutral-950 px-4 py-2`}
                 >
                   <CloudUploadIcon className="size-8 text-cyan-600" />
                 </SubmitButton>
               </div>
             ) : (
               <div className="relative flex w-max flex-col items-center gap-y-2 px-8">
-                <div>
-                  <UserRoundIcon className="size-48 rounded-full border-2 border-neutral-400 bg-neutral-200 text-neutral-400 dark:bg-neutral-500 dark:text-neutral-300" />
-                </div>
+                {userAvatar ? (
+                  <Image
+                    height={200}
+                    width={200}
+                    quality={100}
+                    src={userAvatar!}
+                    className="size-48 rounded-full bg-center"
+                    alt="User Avatar"
+                  />
+                ) : (
+                  <div>
+                    <UserRoundIcon className="size-48 rounded-full border-2 border-neutral-400 bg-neutral-500 text-neutral-300" />
+                  </div>
+                )}
 
                 <label
                   form="doc"
-                  className={`absolute bottom-0 right-0 flex cursor-pointer items-center gap-1 rounded-full border-cyan-600 bg-neutral-400/60 p-2 dark:border-neutral-400 dark:bg-neutral-700/90`}
+                  className={`absolute -right-4 bottom-0 flex cursor-pointer items-center gap-1 rounded-full bg-neutral-950 px-4 py-2`}
                 >
-                  <ArrowDownToLineIcon className="size-8 text-cyan-600" />
+                  <CameraIcon className="size-8 text-cyan-600" />
 
                   <input
                     type="file"
