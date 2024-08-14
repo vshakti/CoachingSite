@@ -1,6 +1,5 @@
 import { getLoggedInUser, ShowUserPicture } from "@/lib/actions/user.actions";
 
-import Image from "next/image";
 import UserSearch from "./userSearch";
 import UserDetails from "./userDetails";
 
@@ -49,9 +48,8 @@ const Social = async ({ allUsers }: SocialProps) => {
             userImages={imageMap}
           />
         </div>
-        <div className="bg-gradient-to-r from-zinc-950/0 via-violet-950 to-zinc-950/0 p-2">
-          <UserDetails userImages={imageMap} />
-        </div>
+
+        <UserDetails userImages={imageMap} />
       </div>
     </div>
   );

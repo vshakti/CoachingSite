@@ -12,6 +12,7 @@ interface ProfilePicProps {
 
 const ProfilePic = ({ user }: ProfilePicProps) => {
   const { userAvatar, setUserAvatar } = useUserAvatar();
+  console.log(user.isCoaching);
 
   useEffect(() => {
     if (user.pictureUrl) {
@@ -27,7 +28,9 @@ const ProfilePic = ({ user }: ProfilePicProps) => {
   return (
     <>
       {userAvatar ? (
-        <div className="flex size-max items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 via-cyan-500 to-indigo-600 p-1">
+        <div
+          className={`${user.isCoaching ? "bg-gradient-to-br from-indigo-600 via-cyan-500 to-indigo-600" : "bg-gradient-to-br from-yellow-600 via-violet-900 to-yellow-600"} flex size-max items-center justify-center rounded-full p-1`}
+        >
           <Image
             height={200}
             width={200}

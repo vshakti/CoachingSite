@@ -1,14 +1,10 @@
 "use server";
-import { convertFileToUrl } from "./../utils";
 
-import { ID, Permission, Query, Role } from "node-appwrite";
+import { ID, Query, Role } from "node-appwrite";
 import { InputFile } from "node-appwrite/file";
-
 import { parseStringify } from "../utils";
 import { createAdminClient, createSessionClient } from "../appwrite.config";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { permission } from "process";
 
 const {
   APPWRITE_DATABASE_ID: DATABASE_ID,
@@ -25,6 +21,8 @@ const {
   APPWRITE_EXERCISE_PROGRESSION_COLLECTION_ID:
     EXERCISE_PROGRESSION_COLLECTION_ID,
   APPWRITE_PROGRESSION_LIST_COLLECTION_ID: PROGRESSION_LIST_COLLECTION_ID,
+  APPWRITE_CHAT_ROOM_COLLECTION_ID: CHAT_ROOM_COLLECTION_ID,
+  APPWRITE_MESSAGES_COLLECTION_ID: MESSAGES_COLLECTION_ID,
 } = process.env;
 
 export const getAllUsers = async () => {
@@ -482,22 +480,6 @@ export const DeleteExercise = async (exerciseId: string) => {
   }
 };
 
-// export const ShowExercise = async (id: string) => {
-//   try {
-//     const { database } = await createAdminClient();
-
-//     const exercise = await database.listDocuments(
-//       DATABASE_ID!,
-//       EXERCISES_COLLECTION_ID!,
-//       [Query.equal("exerciseId", [id])],
-//     );
-
-//     return exercise;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
 export const TemplateDayCreation = async (
   { name, description, type, exerciseSpecifics, creator }: TrainingDays,
   userId: string,
@@ -667,3 +649,80 @@ export const getTrainingDay = async (trainingDayId: string) => {
     console.log(error);
   }
 };
+
+// interface MessageProps {
+//   body: string;
+//   sender: string;
+// }
+
+// export const sendMessage = async (
+//   currentUserId: string,
+//   selectedUserId: string,
+//   { body, sender }: MessageProps,
+// ) => {
+//   try {
+//     const { database } = await createAdminClient();
+//     const chatRooms = await database.listDocuments(
+//       DATABASE_ID!,
+//       CHAT_ROOM_COLLECTION_ID!,
+//       [Query.equal("usersId", [currentUserId, selectedUserId])],
+//     );
+
+//     let chatRoomId;
+//     if (chatRooms.documents.length > 0) {
+//       chatRoomId = chatRooms.documents[0].$id;
+//     } else {
+//       const newChatRoom = await database.createDocument(
+//         DATABASE_ID!,
+//         CHAT_ROOM_COLLECTION_ID!,
+//         ID.unique(),
+//         {
+//           users: [currentUserId, selectedUserId],
+//           messages: [],
+//         },
+//       );
+//       chatRoomId = newChatRoom.$id;
+//     }
+
+//     await database.updateDocument(
+//       DATABASE_ID!,
+//       CHAT_ROOM_COLLECTION_ID!,
+//       chatRoomId,
+//       {
+//         messages: {
+//           body: body,
+//           sender: sender,
+//         },
+//       },
+//     );
+
+//     console.log("Message sent successfully.");
+//   } catch (error) {
+//     console.error("Error sending message:", error);
+//   }
+// };
+
+// export const getChatRoomMessages = async (
+//   currentUserId: string,
+//   selectedUserId: string,
+// ) => {
+//   try {
+//     const { database } = await createAdminClient();
+//     const response = await database.listDocuments(
+//       DATABASE_ID!,
+//       CHAT_ROOM_COLLECTION_ID!,
+//       [Query.equal("usersId", [currentUserId, selectedUserId])],
+//     );
+
+//     if (response.documents.length > 0) {
+//       const chatRoom = response.documents[0];
+//       return chatRoom.messages;
+//     } else {
+//       console.error("Chat room not found.");
+//       return [];
+//     }
+//   } catch (error) {
+//     console.error("Error fetching chat room messages:", error);
+//     return [];
+//   }
+// };

@@ -9,12 +9,14 @@ import Switch from "../ui/switch";
 import { CoachingStatus } from "@/lib/actions/user.actions";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { LoaderCircleIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface UserProps {
   user: User;
 }
 
 const IsCoachingForm = ({ user }: UserProps) => {
+  const router = useRouter();
   const [isCoaching, setIsCoaching] = useState(() => {
     const storedIsCoaching = localStorage.getItem("isCoaching");
     return storedIsCoaching ? JSON.parse(storedIsCoaching) : user.isCoaching;
@@ -37,6 +39,7 @@ const IsCoachingForm = ({ user }: UserProps) => {
         };
 
         const newUser = await CoachingStatus(userData);
+        router.refresh();
       }
     } catch (error) {
       console.log(error);

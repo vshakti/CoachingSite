@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import OpenModalButton from "../openModalButton";
 
 interface UserDetailsProps {
   userImages: { [key: string]: string };
@@ -20,7 +21,9 @@ const UserDetails = ({ userImages }: UserDetailsProps) => {
   const [showDetails, setShowDetails] = useState(true);
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
+    <div
+      className={`${!user ? "hidden" : ""} flex h-full w-full items-center justify-center bg-gradient-to-r from-zinc-950/0 via-violet-950 to-zinc-950/0 p-2`}
+    >
       {user ? (
         <div className="relative flex h-full w-full flex-row items-center justify-center gap-3">
           <button
@@ -75,7 +78,9 @@ const UserDetails = ({ userImages }: UserDetailsProps) => {
                     {user.email}
                   </span>
                 )}
-                <MessageSquareMoreIcon className="size-10 hover:text-cyan-500" />
+                <OpenModalButton modalId="chat_modal">
+                  <MessageSquareMoreIcon className="size-10 hover:text-cyan-500" />
+                </OpenModalButton>
               </div>
               <div className="flex w-full flex-col gap-2">
                 <div className="flex w-full flex-col items-center justify-center gap-0.5 bg-gradient-to-r from-zinc-950/0 via-zinc-950 to-zinc-950/0 p-1 text-base tracking-wide">
@@ -179,7 +184,7 @@ const UserDetails = ({ userImages }: UserDetailsProps) => {
           )}
         </div>
       ) : (
-        <>sem</>
+        <></>
       )}
     </div>
   );
