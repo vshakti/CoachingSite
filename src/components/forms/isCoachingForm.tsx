@@ -17,7 +17,7 @@ interface UserProps {
 const IsCoachingForm = ({ user }: UserProps) => {
   const [isCoaching, setIsCoaching] = useState(() => {
     const storedIsCoaching = localStorage.getItem("isCoaching");
-    return storedIsCoaching ? JSON.parse(storedIsCoaching) : user.isCoaching; // Default to false if not set
+    return storedIsCoaching ? JSON.parse(storedIsCoaching) : user.isCoaching;
   });
 
   const FormSchema = z.object({

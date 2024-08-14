@@ -6,6 +6,25 @@ export function extractYouTubeId(url: string): string | null {
   return match ? match[1] : null;
 }
 
+export function calculateAge(birthday: Date | undefined) {
+  if (birthday) {
+    const today = new Date();
+    const birthDate = new Date(birthday);
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  }
+}
+
 export function getYouTubeEmbedUrl(url: string): string | undefined {
   const videoId = extractYouTubeId(url);
 

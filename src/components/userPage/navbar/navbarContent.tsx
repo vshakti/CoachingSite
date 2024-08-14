@@ -8,6 +8,7 @@ import {
   LayoutListIcon,
   MessageSquareIcon,
   UserIcon,
+  UserRoundIcon,
   UsersRoundIcon,
 } from "lucide-react";
 import React from "react";
@@ -22,11 +23,15 @@ const NavbarContent = async () => {
       <div className="flex w-screen items-center justify-center gap-x-10 gap-y-1 pb-2 pt-5 md:w-full md:flex-col md:pl-3">
         <div className="size-[6rem] md:size-[9rem] 2xl:size-[10rem]">
           {user?.pictureUrl ? (
-            <div className="overflow-hidden rounded-full bg-center">
+            <div className="size-max">
               <ProfilePic user={user} />
             </div>
           ) : (
-            <div>num tem</div>
+            <div
+              className={`${user.isCoaching ? "bg-gradient-to-br from-cyan-500 via-indigo-800 to-cyan-500" : "bg-gradient-to-br from-yellow-600 via-violet-900 to-yellow-600"} flex size-max items-center justify-center rounded-full p-1`}
+            >
+              <UserRoundIcon className="size-24 rounded-full bg-neutral-200 text-neutral-400 md:size-32" />
+            </div>
           )}
         </div>
         <div className="flex flex-col items-center justify-center gap-y-4 text-center text-xs font-medium md:w-full md:gap-y-1 md:text-base xl:text-lg 2xl:text-2xl">
@@ -35,7 +40,7 @@ const NavbarContent = async () => {
               <div>loading</div>
             ) : (
               <p className="text-3xl tracking-wider text-white md:text-xl">
-                {user.name}
+                {user.name ? <>{user.name}</> : <>{user.email}</>}
               </p>
             )}
           </span>
@@ -55,7 +60,7 @@ const NavbarContent = async () => {
           <NavbarOptions
             user={user}
             icon={<UsersRoundIcon className="size-5 md:size-7 2xl:size-8" />}
-            text={"Clients"}
+            text={"Social"}
           />
 
           <NavbarOptions

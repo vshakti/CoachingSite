@@ -7,9 +7,7 @@ interface UserAvatarContextType {
   setUserAvatar: (avatar: string | null) => void;
 }
 
-const UserAvatarContext = createContext<UserAvatarContextType | undefined>(
-  undefined,
-);
+const UserAvatarContext = createContext<UserAvatarContextType | null>(null);
 
 export const UserAvatarProvider: FC<{ children: React.ReactNode }> = ({
   children,
@@ -25,7 +23,7 @@ export const UserAvatarProvider: FC<{ children: React.ReactNode }> = ({
 
 export const useUserAvatar = (): UserAvatarContextType => {
   const context = useContext(UserAvatarContext);
-  if (context === undefined) {
+  if (context === null) {
     throw new Error("useUserAvatar must be used within a UserAvatarProvider");
   }
   return context;

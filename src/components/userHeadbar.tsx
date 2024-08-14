@@ -13,7 +13,7 @@ export const UserHeadbar = async () => {
       {user ? (
         <div className="flex flex-row items-center gap-x-1">
           <p className="font-medium tracking-wide text-white antialiased">
-            {user?.name.split(" ")[0]}
+            {user.name ? <>{user?.name.split(" ")[0]}</> : <>{user.email}</>}
           </p>
 
           <LogOutBtn />

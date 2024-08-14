@@ -3,29 +3,11 @@ import { getLoggedInUser } from "@/lib/actions/user.actions";
 import UserUpdateModal from "./userUpdateModal";
 import OpenModalButton from "../openModalButton";
 import { PenIcon } from "lucide-react";
+import { calculateAge } from "@/constants";
 
 const Profile = async () => {
   const userResponse = await getLoggedInUser();
   const user: User = userResponse;
-
-  function calculateAge(birthday: Date | undefined) {
-    if (birthday) {
-      const today = new Date();
-      const birthDate = new Date(birthday);
-
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const monthDifference = today.getMonth() - birthDate.getMonth();
-
-      if (
-        monthDifference < 0 ||
-        (monthDifference === 0 && today.getDate() < birthDate.getDate())
-      ) {
-        age--;
-      }
-
-      return age;
-    }
-  }
 
   return (
     <div className="flex w-full flex-col gap-y-2 p-4 antialiased lg:gap-y-4">
@@ -34,7 +16,7 @@ const Profile = async () => {
         <div className="flex flex-col items-center justify-center gap-y-6 py-2 pb-2 md:items-start md:justify-start dark:text-neutral-200">
           <div className="flex flex-col gap-y-4">
             <h1 className="flex items-center justify-center text-center text-3xl md:justify-start md:text-start md:text-5xl">
-              {user?.name}
+              {user.name ? <>{user.name}</> : <>{user.email}</>}
             </h1>
             <div className="flex flex-col items-center gap-y-4 md:items-start">
               Amigos: [Array de Amigos]{" "}
@@ -71,12 +53,25 @@ const Profile = async () => {
           <ul className="flex h-full w-full flex-col justify-start gap-y-6 p-4 text-xs font-medium text-white md:w-2/3 md:text-xl">
             <div className="flex flex-col items-center justify-center space-y-1 bg-gradient-to-r from-neutral-950/0 via-violet-950 to-neutral-950/0 px-4 pb-1 tracking-wide">
               <span>Age</span>
-              {calculateAge(user.birthDate)}
+
+              {user.birthDate ? (
+                <span>{calculateAge(user.birthDate)}</span>
+              ) : (
+                <span className="text-slate-600">
+                  You have no public age information
+                </span>
+              )}
             </div>
 
             <div className="flex flex-col items-center justify-center space-y-1 bg-gradient-to-r from-neutral-950/0 via-violet-950 to-neutral-950/0 px-4 pb-1 tracking-wide">
               <span>Gender</span>
-              <span>{user?.gender}</span>
+              {user.gender ? (
+                <span>{user?.gender}</span>
+              ) : (
+                <span className="text-slate-600">
+                  You have no public gender information
+                </span>
+              )}
             </div>
 
             <div className="flex flex-col items-center justify-center space-y-1 bg-gradient-to-r from-neutral-950/0 via-violet-950 to-neutral-950/0 px-4 pb-1 tracking-wide">
@@ -86,7 +81,13 @@ const Profile = async () => {
 
             <div className="flex flex-col items-center justify-center space-y-1 bg-gradient-to-r from-neutral-950/0 via-violet-950 to-neutral-950/0 px-4 pb-1 tracking-wide">
               <span>Phone</span>
-              <span>{user?.phone}</span>
+              {user.phone ? (
+                <span>{user?.phone}</span>
+              ) : (
+                <span className="text-slate-600">
+                  You have no public phone information
+                </span>
+              )}
             </div>
           </ul>
         </div>
@@ -95,12 +96,16 @@ const Profile = async () => {
           <div className="flex h-full w-full flex-col gap-y-4 bg-gradient-to-r from-neutral-950/0 via-violet-950 to-neutral-950/0 p-2 px-4 text-xs font-medium md:text-xl">
             <div className="flex flex-col items-center justify-center">
               <span>Bio</span>
-              <span>{user?.description}</span>
+              {user.description ? (
+                <span>{user?.description}</span>
+              ) : (
+                <span className="text-slate-600">You have no public bio</span>
+              )}
             </div>
           </div>
         </div>
       </div>
-      <UserUpdateModal />
+      <UserUpdateModal user={user} />
     </div>
   );
 };

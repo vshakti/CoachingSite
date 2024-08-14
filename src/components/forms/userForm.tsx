@@ -20,12 +20,14 @@ import CustomFormField from "@/components/ui/customFormField";
 import { UserFormValidation } from "@/lib/validation";
 import { FormFieldType } from "@/lib/exports/exports";
 import { GenderOptions } from "@/constants";
-import { useUser } from "@/lib/context/user";
 
-const UserForm = () => {
+interface UserProps {
+  user: User;
+}
+
+const UserForm = ({ user }: UserProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { user } = useUser();
 
   const defaultValues = {
     name: user?.name ?? "",

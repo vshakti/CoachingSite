@@ -3,7 +3,7 @@
 import { CreateTrainingWeek } from "@/lib/actions/user.actions";
 import { useTemplateType } from "@/lib/context/templateType";
 import { LoaderIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 
 interface SubmitWeekBtn {
@@ -19,7 +19,7 @@ const SubmitWeekBtn = ({ user, name, setName }: SubmitWeekBtn) => {
     setWeeklyTraining,
     setCompleteCounter,
   } = useTemplateType();
-  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
 
   async function SubmitWeek() {

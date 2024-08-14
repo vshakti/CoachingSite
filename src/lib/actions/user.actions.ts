@@ -27,6 +27,20 @@ const {
   APPWRITE_PROGRESSION_LIST_COLLECTION_ID: PROGRESSION_LIST_COLLECTION_ID,
 } = process.env;
 
+export const getAllUsers = async () => {
+  try {
+    const { database } = await createAdminClient();
+    const result = await database.listDocuments(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+    );
+
+    return parseStringify(result.documents);
+  } catch (error) {
+    console.error("Error fetching documents:", error);
+  }
+};
+
 export const getUserInfo = async ({ userId }: getUserInfo) => {
   try {
     const { database } = await createAdminClient();
@@ -201,20 +215,17 @@ export const ShowUserPicture = async (pictureId: string) => {
   try {
     const response = await fetch(pictureId);
 
-    // Check if the response is successful
     if (!response.ok) {
       throw new Error("Failed to fetch image");
     }
 
-    // Get text content which contains the base64 string
     const text = await response.text();
 
-    // Check if the text starts with "data:image/png;base64,"
     if (!text.startsWith("data:image/png;base64,")) {
       throw new Error("Invalid Base64 data");
     }
 
-    return text.split(",")[1]; // Extract base64 data without MIME type prefix
+    return text.split(",")[1];
   } catch (error) {
     console.error("Error in ShowUserPicture:", error);
     throw error;

@@ -1,7 +1,11 @@
 import UserForm from "@/components/forms/userForm";
 import { XIcon } from "lucide-react";
 
-const UserUpdateModal = () => {
+interface UserProps {
+  user: User;
+}
+
+const UserUpdateModal = ({ user }: UserProps) => {
   return (
     <dialog id="user_update_modal" className="modal">
       <div className="remove-scrollbar fixed inset-0 flex items-center justify-center overflow-auto bg-black/25 backdrop-blur-sm">
@@ -11,7 +15,7 @@ const UserUpdateModal = () => {
               <XIcon className="text-neutral-800 dark:text-neutral-200" />
             </button>
           </form>
-          <UserForm />
+          <UserForm user={user} />
         </div>
       </div>
     </dialog>
