@@ -57,7 +57,7 @@ const Profile = async () => {
               {user.birthDate ? (
                 <span>{calculateAge(user.birthDate)}</span>
               ) : (
-                <span className="text-slate-600">
+                <span className="w-full text-center text-slate-600">
                   You have no public age information
                 </span>
               )}
@@ -68,7 +68,7 @@ const Profile = async () => {
               {user.gender ? (
                 <span>{user?.gender}</span>
               ) : (
-                <span className="text-slate-600">
+                <span className="w-full text-center text-slate-600">
                   You have no public gender information
                 </span>
               )}
@@ -84,7 +84,7 @@ const Profile = async () => {
               {user.phone ? (
                 <span>{user?.phone}</span>
               ) : (
-                <span className="text-slate-600">
+                <span className="w-full text-center text-slate-600">
                   You have no public phone information
                 </span>
               )}
@@ -99,7 +99,9 @@ const Profile = async () => {
               {user.description ? (
                 <span>{user?.description}</span>
               ) : (
-                <span className="text-slate-600">You have no public bio</span>
+                <span className="w-full text-center text-slate-600">
+                  You have no public bio
+                </span>
               )}
             </div>
           </div>

@@ -49,7 +49,7 @@ const Social = async ({ allUsers }: SocialProps) => {
           />
         </div>
 
-        <UserDetails userImages={imageMap} />
+        <UserDetails currentUser={user} userImages={imageMap} />
       </div>
     </div>
   );

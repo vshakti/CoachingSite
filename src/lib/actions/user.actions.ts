@@ -23,6 +23,8 @@ const {
   APPWRITE_PROGRESSION_LIST_COLLECTION_ID: PROGRESSION_LIST_COLLECTION_ID,
   APPWRITE_CHAT_ROOM_COLLECTION_ID: CHAT_ROOM_COLLECTION_ID,
   APPWRITE_MESSAGES_COLLECTION_ID: MESSAGES_COLLECTION_ID,
+  APPWRITE_CLIENT_STATUS_COLLECTION_ID: CLIENT_STATUS_COLLECTION_ID,
+  APPWRITE_CLIENTS_COLLECTION_ID: CLIENTS_COLLECTION_ID,
 } = process.env;
 
 export const getAllUsers = async () => {
@@ -645,6 +647,151 @@ export const getTrainingDay = async (trainingDayId: string) => {
     );
 
     return parseStringify(user.documents[0]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const inviteForCoaching = async (
+  user: User,
+  selectedUserId: string,
+  status: string,
+) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const actualUser = await database.listDocuments(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      [Query.equal("userId", [selectedUserId])],
+    );
+
+    if (!actualUser.documents[0].clientStatus) {
+      const newInvite = await database.updateDocument(
+        DATABASE_ID!,
+        USERS_COLLECTION_ID!,
+        actualUser.documents[0].$id,
+        {
+          clientStatus: {
+            status,
+            users: user,
+          },
+        },
+      );
+      if (!newInvite) throw Error;
+
+      const parsedNewInvite = parseStringify(newInvite);
+
+      return parsedNewInvite;
+    } else {
+      const newInvite = await database.updateDocument(
+        DATABASE_ID!,
+        CLIENT_STATUS_COLLECTION_ID!,
+        actualUser.documents[0].clientStatus.$id,
+        {
+          status,
+          users: user,
+        },
+      );
+      if (!newInvite) throw Error;
+
+      const parsedNewInvite = parseStringify(newInvite);
+
+      return parsedNewInvite;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const denyCoachingInvite = async (statusId: string, status: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const newInvite = await database.updateDocument(
+      DATABASE_ID!,
+      CLIENT_STATUS_COLLECTION_ID!,
+      statusId,
+      {
+        status,
+        users: null,
+      },
+    );
+    if (!newInvite) throw Error;
+
+    const parsedNewInvite = parseStringify(newInvite);
+
+    return parsedNewInvite;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const acceptCoachingInvite = async (
+  statusId: string,
+  status: string,
+  user: User,
+) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const newInvite = await database.updateDocument(
+      DATABASE_ID!,
+      CLIENT_STATUS_COLLECTION_ID!,
+      statusId,
+      {
+        status,
+        users: user,
+      },
+    );
+    if (!newInvite) throw Error;
+
+    const newClient = await getLoggedInUser();
+
+    const coach = await database.listDocuments(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      [Query.equal("userId", [user.userId])],
+    );
+
+    if (!coach.documents[0].clients) {
+      const newClients = await database.createDocument(
+        DATABASE_ID!,
+        CLIENTS_COLLECTION_ID!,
+        ID.unique(),
+        {
+          users: [newClient.$id],
+        },
+      );
+
+      const newCoach = await database.updateDocument(
+        DATABASE_ID!,
+        USERS_COLLECTION_ID!,
+        coach.documents[0].$id,
+        {
+          clients: newClients,
+        },
+      );
+      const parsedNewCoach = parseStringify(newCoach);
+
+      return parsedNewCoach;
+    } else {
+      const currentCoachClients = coach.documents[0].clients || [];
+
+      const updatedCoachClients = [...currentCoachClients, newClient];
+
+      const newCoach = await database.updateDocument(
+        DATABASE_ID!,
+        USERS_COLLECTION_ID!,
+        coach.documents[0].$id,
+        {
+          clients: updatedCoachClients,
+        },
+      );
+      const parsedNewCoach = parseStringify(newCoach);
+
+      return parsedNewCoach;
+    }
   } catch (error) {
     console.log(error);
   }

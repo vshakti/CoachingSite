@@ -1,6 +1,7 @@
 "use client";
 
 import { calculateAge } from "@/constants";
+import { inviteForCoaching } from "@/lib/actions/user.actions";
 import { useUser } from "@/lib/context/user";
 import {
   ChevronDownIcon,
@@ -10,16 +11,32 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import OpenModalButton from "../openModalButton";
 
 interface UserDetailsProps {
   userImages: { [key: string]: string };
+  currentUser: User;
 }
 
-const UserDetails = ({ userImages }: UserDetailsProps) => {
+const UserDetails = ({ userImages, currentUser }: UserDetailsProps) => {
   const { user } = useUser();
   const [showDetails, setShowDetails] = useState(true);
 
+  const coachingInvite = async () => {
+    try {
+      if (user) {
+        const status = "Pending";
+        const selectedUserId = user.userId!;
+
+        const newUser = await inviteForCoaching(
+          currentUser,
+          selectedUserId,
+          status,
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div
       className={`${!user ? "hidden" : ""} flex h-full w-full items-center justify-center bg-gradient-to-r from-zinc-950/0 via-violet-950 to-zinc-950/0 p-2`}
@@ -78,9 +95,22 @@ const UserDetails = ({ userImages }: UserDetailsProps) => {
                     {user.email}
                   </span>
                 )}
-                <OpenModalButton modalId="chat_modal">
-                  <MessageSquareMoreIcon className="size-10 hover:text-cyan-500" />
-                </OpenModalButton>
+
+                <>
+                  {user.clientStatus &&
+                  user.clientStatus.status === "Active" ? (
+                    <>Coached by {user.clientStatus.users.name}</>
+                  ) : (
+                    <></>
+                  )}
+                </>
+                <button
+                  onClick={coachingInvite}
+                  className={`${currentUser.isCoaching === false || (user && user.clientStatus && user.clientStatus.status === "Pending") || (user && user.clientStatus && user.clientStatus.status === "Active") ? "hidden" : ""} flex flex-row items-center justify-center gap-2 hover:text-cyan-500`}
+                >
+                  Sent a coach invite
+                  <MessageSquareMoreIcon className="size-4" />
+                </button>
               </div>
               <div className="flex w-full flex-col gap-2">
                 <div className="flex w-full flex-col items-center justify-center gap-0.5 bg-gradient-to-r from-zinc-950/0 via-zinc-950 to-zinc-950/0 p-1 text-base tracking-wide">
