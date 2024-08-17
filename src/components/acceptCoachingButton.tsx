@@ -2,6 +2,7 @@
 
 import { acceptCoachingInvite } from "@/lib/actions/user.actions";
 import { CheckIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface UserProps {
   user: User;
@@ -10,6 +11,7 @@ interface UserProps {
 }
 
 const AcceptCoachingButton = ({ user, setOpen, className }: UserProps) => {
+  const router = useRouter();
   const denyInvite = async () => {
     try {
       setOpen(false);
@@ -21,6 +23,7 @@ const AcceptCoachingButton = ({ user, setOpen, className }: UserProps) => {
           status,
           user.clientStatus.users,
         );
+        router.refresh();
       }
     } catch (error) {
       console.log(error);

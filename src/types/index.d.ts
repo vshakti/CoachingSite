@@ -3,6 +3,10 @@ declare type SearchParamProps = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
+declare interface UserProps {
+  user: User;
+}
+
 declare type CoachingStatus = "Inactive" | "Pending" | "Active";
 declare type Gender = "Male" | "Female" | "Other";
 declare type Muscles =
@@ -49,6 +53,7 @@ declare interface User extends Omit<UserAuth, "password">, UserPicture {
   trainingWeek: TrainingWeek[];
   progressionList: ProgressionList[];
   clientStatus: ClientStatus;
+  clients: Clients;
 }
 
 declare interface showUser extends UserPicture {
@@ -119,4 +124,8 @@ declare interface ClientStatus {
   $id: string;
   status: CoachingStatus;
   users: User;
+}
+
+declare interface Clients {
+  users: User[];
 }

@@ -2,13 +2,19 @@
 
 import { useTraining } from "@/lib/context/trainingWeek";
 import Image from "next/image";
+import { useState } from "react";
+import OpenModalButton from "../openModalButton";
+import SendToClientsModal from "./sendToClientsModal";
+import { PlayIcon, ForwardIcon } from "lucide-react";
 
 interface WeeksCollectionProps {
   user: User;
 }
 
 const WeeksCollection = ({ user }: WeeksCollectionProps) => {
-  const { setTrainingWeek } = useTraining();
+  const { setTrainingWeek, trainingWeek } = useTraining();
+  const [openClients, setOpenClients] = useState(false);
+  const [trainingWeekId, setTrainingWeekId] = useState("");
 
   return (
     <div className="remove-scrollbar grid h-[220px] grid-cols-3 gap-3 overflow-auto overscroll-contain md:grid-cols-5 lg:grid-cols-7">
@@ -17,7 +23,7 @@ const WeeksCollection = ({ user }: WeeksCollectionProps) => {
           {user.trainingWeek.map((week: any, i) => (
             <div
               key={i}
-              className="flex w-full flex-col items-center justify-center transition-transform hover:scale-105"
+              className="relative flex w-full flex-col items-center justify-center transition-transform hover:scale-105"
             >
               <div className="flex h-max w-32 flex-col items-center justify-center gap-2">
                 <span className="flex w-full items-center justify-center text-center text-sm font-semibold tracking-wide text-cyan-400">
@@ -26,7 +32,7 @@ const WeeksCollection = ({ user }: WeeksCollectionProps) => {
               </div>
               <button
                 onClick={() => {
-                  setTrainingWeek(user.trainingWeek[i]);
+                  setOpenClients(!openClients);
                 }}
                 className="flex h-40 w-32 flex-col"
               >
@@ -44,6 +50,27 @@ const WeeksCollection = ({ user }: WeeksCollectionProps) => {
                 <div className="black h-1.5 w-full rounded-b-md border border-t-0 border-cyan-400"></div>
                 <div className="black h-1.5 w-full rounded-b-md border border-t-0 border-cyan-400"></div>
               </button>
+              {openClients ? (
+                <div className="absolute bottom-6 flex h-12 w-24 items-center justify-between">
+                  <button
+                    onClick={() => {
+                      setTrainingWeek(user.trainingWeek[i]);
+                    }}
+                  >
+                    <PlayIcon className="size-8 rounded-full border bg-gradient-to-tl from-slate-950 to-violet-950 p-1 text-white" />
+                  </button>
+                  <OpenModalButton
+                    modalId="send_to_clients_modal"
+                    onClick={() => {
+                      setTrainingWeekId(user.trainingWeek[i].$id);
+                    }}
+                  >
+                    <ForwardIcon className="size-8 rounded-full border bg-gradient-to-tl from-slate-950 to-violet-950 p-1 text-white" />
+                  </OpenModalButton>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           ))}
         </>
@@ -53,6 +80,7 @@ const WeeksCollection = ({ user }: WeeksCollectionProps) => {
           section to create a week of training.
         </span>
       )}
+      <SendToClientsModal trainingWeekId={trainingWeekId} currentUser={user} />
     </div>
   );
 };

@@ -1,7 +1,6 @@
 "use client";
 
-import { ShowUserPicture } from "@/lib/actions/user.actions";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
 import { UserRoundIcon } from "lucide-react";
 import { useUserAvatar } from "@/lib/context/userAvatar";
@@ -12,7 +11,6 @@ interface ProfilePicProps {
 
 const ProfilePic = ({ user }: ProfilePicProps) => {
   const { userAvatar, setUserAvatar } = useUserAvatar();
-  console.log(user.isCoaching);
 
   useEffect(() => {
     if (user.pictureUrl) {

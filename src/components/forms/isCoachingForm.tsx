@@ -7,13 +7,7 @@ import { Form, FormControl, FormItem, FormField } from "@/components/ui/form";
 import { useState, useEffect } from "react";
 import Switch from "../ui/switch";
 import { CoachingStatus } from "@/lib/actions/user.actions";
-import { getLoggedInUser } from "@/lib/actions/user.actions";
-import { LoaderCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-
-interface UserProps {
-  user: User;
-}
 
 const IsCoachingForm = ({ user }: UserProps) => {
   const router = useRouter();
@@ -84,11 +78,7 @@ const IsCoachingForm = ({ user }: UserProps) => {
             />
             <span className="flex h-full items-center justify-center text-xl font-medium text-white antialiased">
               <>
-                {!isCoaching ? (
-                  <span>Not coaching </span>
-                ) : (
-                  <span>Coaching </span>
-                )}
+                {!isCoaching ? <span>Coaching </span> : <span>Coaching </span>}
               </>
             </span>
           </form>

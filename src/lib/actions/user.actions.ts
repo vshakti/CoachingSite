@@ -616,6 +616,42 @@ export const CreateTrainingWeek = async (
   }
 };
 
+export const SendTrainingWeek = async (
+  trainingWeekId: string,
+  userId: string,
+) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const client = await database.listDocuments(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      [Query.equal("userId", [userId])],
+    );
+
+    const currentTrainingWeek = client.documents[0].trainingWeek || [];
+
+    const updatedtrainingWeek = [...currentTrainingWeek, trainingWeekId];
+
+    const newUser = await database.updateDocument(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      client.documents[0].$id,
+      {
+        trainingWeek: updatedtrainingWeek,
+      },
+    );
+
+    if (!newUser) throw Error;
+
+    const parsedNewUser = parseStringify(newUser);
+
+    return parsedNewUser;
+  } catch (error: any) {
+    console.error(error);
+  }
+};
+
 export const DeleteTrainingDay = async (TrainingDayId: string) => {
   try {
     const { database } = await createAdminClient();

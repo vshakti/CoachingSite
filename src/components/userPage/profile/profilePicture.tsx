@@ -8,7 +8,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserPictureValidation } from "@/lib/validation";
 import SubmitButton from "@/components/submitButton";
-import { useUser } from "@/lib/context/user";
 import {
   ShowUserPicture,
   UpdateUserProfilePicture,

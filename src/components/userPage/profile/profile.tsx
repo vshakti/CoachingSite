@@ -4,6 +4,7 @@ import UserUpdateModal from "./userUpdateModal";
 import OpenModalButton from "../openModalButton";
 import { PenIcon } from "lucide-react";
 import { calculateAge } from "@/constants";
+import ClientsPicture from "./clientsPic";
 
 const Profile = async () => {
   const userResponse = await getLoggedInUser();
@@ -19,8 +20,41 @@ const Profile = async () => {
               {user.name ? <>{user.name}</> : <>{user.email}</>}
             </h1>
             <div className="flex flex-col items-center gap-y-4 md:items-start">
-              Amigos: [Array de Amigos]{" "}
-              <span>Clientes: [Array de Clientes]</span>
+              {!user.clientStatus ? (
+                <></>
+              ) : (
+                <>
+                  {user.clientStatus.status === "Active" ? (
+                    <span>Coached by {user.clientStatus.users.name}</span>
+                  ) : (
+                    <span>Not coached</span>
+                  )}
+                </>
+              )}
+              {user.clients ? (
+                <div className="flex flex-col items-start justify-start">
+                  <span>Coaching</span>
+                  <div className="flex items-center">
+                    {user.clients.users
+                      .slice(0, 10)
+                      .map((coachedUser, index) => (
+                        <div key={coachedUser.$id}>
+                          <ClientsPicture
+                            user={coachedUser}
+                            className={`${index === 0 ? "ml-0" : "-ml-6"} `}
+                          />
+                        </div>
+                      ))}
+                    {user.clients.users.length > 10 && (
+                      <div className="-ml-6 flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 text-xs text-white">
+                        +{user.clients.users.length - 10}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
 

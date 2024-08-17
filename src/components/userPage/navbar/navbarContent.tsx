@@ -1,5 +1,5 @@
 import { getLoggedInUser, ShowUserPicture } from "@/lib/actions/user.actions";
-import Image from "next/image";
+
 import IsCoachingForm from "../../forms/isCoachingForm";
 import NavbarOptions from "@/components/userPage/navbar/navbarOptions";
 import {
@@ -59,18 +59,6 @@ const NavbarContent = async () => {
         <ul className="flex w-full items-center justify-between gap-y-6 px-3 py-2.5 md:mt-2 md:grid md:justify-center md:px-0 2xl:gap-y-10">
           <NavbarOptions
             user={user}
-            icon={<MessageSquareIcon className="size-5 md:size-7 2xl:size-8" />}
-            text={"Chat"}
-          />
-
-          <NavbarOptions
-            user={user}
-            icon={<UsersRoundIcon className="size-5 md:size-7 2xl:size-8" />}
-            text={"Social"}
-          />
-
-          <NavbarOptions
-            user={user}
             icon={<DumbbellIcon className="size-5 md:size-7 2xl:size-8" />}
             text={"Exercises"}
           />
@@ -85,6 +73,11 @@ const NavbarContent = async () => {
             user={user}
             icon={<BarChart3Icon className="size-5 md:size-7 2xl:size-8" />}
             text={"Progress"}
+          />
+          <NavbarOptions
+            user={user}
+            icon={<UsersRoundIcon className="size-5 md:size-7 2xl:size-8" />}
+            text={"Social"}
           />
 
           <NavbarOptions

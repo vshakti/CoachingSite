@@ -2,6 +2,7 @@
 
 import { denyCoachingInvite } from "@/lib/actions/user.actions";
 import { BanIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface UserProps {
   user: User;
@@ -10,6 +11,7 @@ interface UserProps {
 }
 
 const DenyCoachingButton = ({ user, setOpen, className }: UserProps) => {
+  const router = useRouter();
   const denyInvite = async () => {
     try {
       setOpen(false);
@@ -17,6 +19,7 @@ const DenyCoachingButton = ({ user, setOpen, className }: UserProps) => {
         const status = "Inactive";
 
         const newUser = await denyCoachingInvite(user.clientStatus.$id, status);
+        router.refresh();
       }
     } catch (error) {
       console.log(error);
