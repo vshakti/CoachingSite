@@ -1,10 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import SubmitWeekBtn from "./submitButton";
 import TemplateDaysAdd from "./templateDaysAdd";
-import TemplatesModal from "./templatesModal";
 import { WeekDays } from "@/constants";
+import dynamic from "next/dynamic";
+const TemplatesModal = dynamic(() => import("./templatesModal"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
+const SubmitWeekBtn = dynamic(() => import("./submitButton"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
 
 interface UserProps {
   user: User;

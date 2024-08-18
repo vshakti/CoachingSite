@@ -1,9 +1,18 @@
 import DayTemplates from "./dayTemplates/dayTemplates";
 import ExerciseSelection from "@/components/userPage/exercises/justExercises/exerciseSelection";
-
-import ExerciseCreationModal from "@/components/userPage/exercises/justExercises/exerciseCreationModal";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import WeeklyTemplates from "./weekTemplates/weeklyTemplates";
+import dynamic from "next/dynamic";
+const ExerciseCreationModal = dynamic(
+  () =>
+    import(
+      "@/components/userPage/exercises/justExercises/exerciseCreationModal"
+    ),
+  {
+    loading: () => <p>Loading...</p>,
+    ssr: false,
+  },
+);
 
 const Exercises = async () => {
   const userResponse = await getLoggedInUser();

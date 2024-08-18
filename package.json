@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/nprogress": "^0.2.3",
     "@types/react": "^18",
     "@types/react-avatar-editor": "^13.0.2",
     "@types/react-beautiful-dnd": "^13.1.8",

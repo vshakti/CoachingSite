@@ -33,7 +33,7 @@ const UserSearch = ({ allUsers, userImages, currentUser }: UserSearchProps) => {
     <div className="relative w-full text-white">
       <input
         type="text"
-        placeholder="Search users..."
+        placeholder="Search all users..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         className="w-full rounded bg-transparent p-2"

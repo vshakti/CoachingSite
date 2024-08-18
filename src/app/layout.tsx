@@ -6,7 +6,8 @@ import { UserProvider } from "@/lib/context/user";
 import { ExerciseProvider } from "@/lib/context/exerciseAdd";
 import { TemplateTypeProvider } from "@/lib/context/templateType";
 import { UserAvatarProvider } from "@/lib/context/userAvatar";
-import CoachingInvite from "@/components/coachingInvite";
+import CoachingInvite from "@/components/coachingInvite/coachingInvite";
+import { TrackingExerciseContextProvider } from "@/lib/context/exerciseTracking";
 
 const inter = Inter({ subsets: ["latin"] });
 const orbitron = Orbitron({ subsets: ["latin"], weight: ["400", "700"] });
@@ -29,14 +30,16 @@ export default async function RootLayout({
         <UserAvatarProvider>
           <ExerciseProvider>
             <TemplateTypeProvider>
-              <body
-                className={`remove-scrollbar ${inter.className} bg-gradient-to-br from-neutral-950 to-zinc-950`}
-              >
-                <Headbar />
-                <CoachingInvite />
+              <TrackingExerciseContextProvider>
+                <body
+                  className={`remove-scrollbar ${inter.className} bg-gradient-to-br from-neutral-950 to-zinc-950`}
+                >
+                  <Headbar />
+                  <CoachingInvite />
 
-                {children}
-              </body>
+                  {children}
+                </body>
+              </TrackingExerciseContextProvider>
             </TemplateTypeProvider>
           </ExerciseProvider>
         </UserAvatarProvider>

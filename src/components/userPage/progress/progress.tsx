@@ -1,15 +1,20 @@
 import AverageAndFeedback from "./averageAndFeedback";
 import AverageAndFeedbackStatic from "./averageAndFeedbackStatic";
-import ExerciseChart from "./exerciseChart";
 import ExerciseSelector from "./exerciseSelector";
+import dynamic from "next/dynamic";
+const ExerciseChart = dynamic(() => import("./exerciseChart"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
 
 interface ProgressProps {
   user: User;
+  className: string;
 }
 
-export const Progress = ({ user }: ProgressProps) => {
+export const Progress = ({ user, className }: ProgressProps) => {
   return (
-    <div className="font grid h-screen w-full gap-6 p-6 text-white antialiased lg:ml-6 lg:grid-cols-6 lg:grid-rows-6">
+    <div className={className}>
       <div className="flex flex-col gap-4 lg:col-span-4 lg:row-span-6">
         <div className="bg-gradient-to-r from-slate-950/0 via-violet-950 to-slate-950/10">
           <ExerciseSelector user={user} />

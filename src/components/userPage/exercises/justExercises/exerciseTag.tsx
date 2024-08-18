@@ -7,14 +7,30 @@ import {
   TrashIcon,
 } from "lucide-react";
 import Image from "next/image";
-import ExerciseVideoModal from "./exerciseVideoModal";
 import { useState } from "react";
-import ExerciseUpdateModal from "./exerciseUpdatingModal";
-import ExerciseDescriptionModal from "./exerciseDescriptionModal";
 import { DeleteExercise } from "@/lib/actions/user.actions";
 import { useRouter } from "next/navigation";
-import Toast from "@/components/ui/toast";
 import { useExerciseContext } from "@/lib/context/exerciseAdd";
+import dynamic from "next/dynamic";
+const Toast = dynamic(() => import("@/components/ui/toast"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
+const ExerciseVideoModal = dynamic(() => import("./exerciseVideoModal"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
+const ExerciseUpdateModal = dynamic(() => import("./exerciseUpdatingModal"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
+const ExerciseDescriptionModal = dynamic(
+  () => import("./exerciseDescriptionModal"),
+  {
+    loading: () => <p>Loading...</p>,
+    ssr: false,
+  },
+);
 
 interface ShowToastParams {
   message: React.ReactNode;

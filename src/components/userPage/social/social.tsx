@@ -1,17 +1,23 @@
-import { getLoggedInUser, ShowUserPicture } from "@/lib/actions/user.actions";
+import { ShowUserPicture } from "@/lib/actions/user.actions";
+import dynamic from "next/dynamic";
 
 import UserSearch from "./userSearch";
-import UserDetails from "./userDetails";
+const UserDetails = dynamic(() => import("./userDetails"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
+
+const CoachedUsersList = dynamic(() => import("./coachedUsersList"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
 
 interface SocialProps {
   allUsers: User[];
+  user: User;
 }
 
-const Social = async ({ allUsers }: SocialProps) => {
-  const userResponse = await getLoggedInUser();
-
-  const user: User = userResponse;
-
+const Social = async ({ allUsers, user }: SocialProps) => {
   const userImages = await Promise.all(
     allUsers.map(async (user) => {
       if (user.pictureUrl) {
@@ -50,6 +56,14 @@ const Social = async ({ allUsers }: SocialProps) => {
         </div>
 
         <UserDetails currentUser={user} userImages={imageMap} />
+        <div className="flex w-full flex-col items-center justify-start bg-gradient-to-r from-zinc-950/0 via-violet-950 to-zinc-950/0 py-3">
+          <h1 className="bg-gradient-to-r from-transparent via-zinc-950 to-transparent px-12 py-1 text-3xl antialiased">
+            PERSONAL CLIENTS
+          </h1>
+          <div className="grid h-max w-full gap-4 p-4">
+            <CoachedUsersList currentUser={user} />
+          </div>
+        </div>
       </div>
     </div>
   );

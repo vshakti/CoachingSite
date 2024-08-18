@@ -1,4 +1,4 @@
-import { getLoggedInUser, ShowUserPicture } from "@/lib/actions/user.actions";
+import { getLoggedInUser } from "@/lib/actions/user.actions";
 
 import IsCoachingForm from "../../forms/isCoachingForm";
 import NavbarOptions from "@/components/userPage/navbar/navbarOptions";
@@ -6,13 +6,16 @@ import {
   BarChart3Icon,
   DumbbellIcon,
   LayoutListIcon,
-  MessageSquareIcon,
   UserIcon,
   UserRoundIcon,
   UsersRoundIcon,
 } from "lucide-react";
 import React from "react";
-import ProfilePic from "./profilePic";
+import dynamic from "next/dynamic";
+const ProfilePic = dynamic(() => import("./profilePic"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
 
 const NavbarContent = async () => {
   const userResponse = await getLoggedInUser();
@@ -58,30 +61,25 @@ const NavbarContent = async () => {
       <div className="flex w-full flex-col items-center gap-y-2">
         <ul className="flex w-full items-center justify-between gap-y-6 px-3 py-2.5 md:mt-2 md:grid md:justify-center md:px-0 2xl:gap-y-10">
           <NavbarOptions
-            user={user}
             icon={<DumbbellIcon className="size-5 md:size-7 2xl:size-8" />}
             text={"Exercises"}
           />
 
           <NavbarOptions
-            user={user}
             icon={<UserIcon className="size-5 md:size-7 2xl:size-8" />}
             text={"Profile"}
           />
 
           <NavbarOptions
-            user={user}
             icon={<BarChart3Icon className="size-5 md:size-7 2xl:size-8" />}
             text={"Progress"}
           />
           <NavbarOptions
-            user={user}
             icon={<UsersRoundIcon className="size-5 md:size-7 2xl:size-8" />}
             text={"Social"}
           />
 
           <NavbarOptions
-            user={user}
             icon={<LayoutListIcon className="size-5 md:size-7 2xl:size-8" />}
             text={"Training"}
           />

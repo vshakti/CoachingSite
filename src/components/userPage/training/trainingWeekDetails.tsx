@@ -13,10 +13,13 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { getYouTubeEmbedUrl } from "@/constants";
 import OpenModalButton from "../openModalButton";
-import FinishExerciseModal from "./finishExerciseModal";
+import dynamic from "next/dynamic";
+const FinishExerciseModal = dynamic(() => import("./finishExerciseModal"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
 
 interface TrainingWeekDetailsProps {
   user: User;

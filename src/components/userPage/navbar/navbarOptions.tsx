@@ -7,13 +7,11 @@ import React from "react";
 type NavbarOptionsProps = {
   icon: React.ReactNode;
   text: string;
-  user: User;
 };
 
 const NavbarOptions: React.FC<NavbarOptionsProps> = ({
   icon,
   text,
-  user,
 }: NavbarOptionsProps) => {
   const pathname = usePathname();
 

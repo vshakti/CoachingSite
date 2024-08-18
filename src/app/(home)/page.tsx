@@ -9,7 +9,6 @@ import {
   Star,
   VideoIcon,
 } from "lucide-react";
-import Image from "next/image";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import OpenModalButton from "@/components/userPage/openModalButton";
@@ -26,7 +25,7 @@ export default async function Home() {
   return (
     <div className="flex h-max flex-col items-center justify-start gap-12 bg-gradient-to-br from-slate-950 via-purple-950/50 to-slate-950 text-white">
       <div className="flex flex-col items-center justify-center gap-5 pt-52 md:gap-10 md:pt-40">
-        <h1 className="font-astro pl-3 text-7xl md:text-9xl">NEBULA</h1>
+        <h1 className="pl-3 font-astro text-7xl md:text-9xl">NEBULA</h1>
         <h2 className="text-xl tracking-wider md:text-3xl">
           Your training plataform
         </h2>

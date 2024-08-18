@@ -7,9 +7,12 @@ export const metadata = {
 };
 
 const UserClients = async () => {
-  const userResponse = await getLoggedInUser();
+  const [userResponse, allUsersResponse] = await Promise.all([
+    getLoggedInUser(),
+    getAllUsers(),
+  ]);
+
   const user: User = userResponse;
-  const allUsersResponse = await getAllUsers();
   const allUsers: User[] = allUsersResponse;
 
   if (!user) {
@@ -18,7 +21,7 @@ const UserClients = async () => {
 
   return (
     <div>
-      <Social allUsers={allUsers} />
+      <Social user={user} allUsers={allUsers} />
     </div>
   );
 };

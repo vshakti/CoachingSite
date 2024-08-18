@@ -1,10 +1,15 @@
 "use client";
 import { useTrackingExerciseContext } from "@/lib/context/exerciseTracking";
-import { DumbbellIcon, WeightIcon } from "lucide-react";
-import { useState } from "react";
+import { WeightIcon } from "lucide-react";
 import OpenModalButton from "../openModalButton";
-import SelectorModal from "./selectorModal";
-import AnimatedColoredChevrons from "./chevronsColorful";
+import dynamic from "next/dynamic";
+const SelectorModal = dynamic(() => import("./selectorModal"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
+const AnimatedColoredChevrons = dynamic(() => import("./chevronsColorful"), {
+  ssr: false,
+});
 
 interface ExerciseSelectorProps {
   user: User;

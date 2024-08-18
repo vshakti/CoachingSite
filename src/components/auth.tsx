@@ -11,7 +11,7 @@ export default function Auth() {
   return (
     <dialog id="auth_modal" className="modal">
       <div className="remove-scrollbar fixed inset-0 flex items-center justify-center overflow-auto bg-black/25 backdrop-blur-sm">
-        <div className="flex w-3/4 flex-col items-start justify-center gap-y-3 rounded-md border border-slate-700 bg-gradient-to-tr from-black via-zinc-950 to-black p-2">
+        <div className="flex w-[440px] flex-col items-start justify-center gap-y-3 rounded-md border border-slate-700 bg-gradient-to-tr from-black via-zinc-950 to-black p-2">
           <div className="flex w-full items-center justify-center gap-x-2 rounded-lg">
             <button
               disabled={auth === "Register"}
@@ -41,13 +41,11 @@ export default function Auth() {
           {auth === "Register" ? <RegisterForm /> : <LogInForm />}
 
           <div className="text-14 flex w-full flex-row text-white">
-            <div className="flex items-center justify-between gap-x-3">
+            <div className="flex items-center justify-between gap-x-1">
               <p className="flex items-center justify-center xl:text-left">
                 © {new Date().getFullYear()}
               </p>
-              <span className="flex items-center justify-center font-astro text-xs">
-                Nebula
-              </span>
+              <span className="flex items-center justify-center">Nebula</span>
             </div>
           </div>
         </div>

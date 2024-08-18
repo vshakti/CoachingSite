@@ -4,15 +4,19 @@ import { useTraining } from "@/lib/context/trainingWeek";
 import Image from "next/image";
 import { useState } from "react";
 import OpenModalButton from "../openModalButton";
-import SendToClientsModal from "./sendToClientsModal";
 import { PlayIcon, ForwardIcon } from "lucide-react";
+import dynamic from "next/dynamic";
+const SendToClientsModal = dynamic(() => import("./sendToClientsModal"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
 
 interface WeeksCollectionProps {
   user: User;
 }
 
 const WeeksCollection = ({ user }: WeeksCollectionProps) => {
-  const { setTrainingWeek, trainingWeek } = useTraining();
+  const { setTrainingWeek } = useTraining();
   const [openClients, setOpenClients] = useState(false);
   const [trainingWeekId, setTrainingWeekId] = useState("");
 
@@ -59,14 +63,18 @@ const WeeksCollection = ({ user }: WeeksCollectionProps) => {
                   >
                     <PlayIcon className="size-8 rounded-full border bg-gradient-to-tl from-slate-950 to-violet-950 p-1 text-white" />
                   </button>
-                  <OpenModalButton
-                    modalId="send_to_clients_modal"
-                    onClick={() => {
-                      setTrainingWeekId(user.trainingWeek[i].$id);
-                    }}
-                  >
-                    <ForwardIcon className="size-8 rounded-full border bg-gradient-to-tl from-slate-950 to-violet-950 p-1 text-white" />
-                  </OpenModalButton>
+                  {user.clients ? (
+                    <OpenModalButton
+                      modalId="send_to_clients_modal"
+                      onClick={() => {
+                        setTrainingWeekId(user.trainingWeek[i].$id);
+                      }}
+                    >
+                      <ForwardIcon className="size-8 rounded-full border bg-gradient-to-tl from-slate-950 to-violet-950 p-1 text-white" />
+                    </OpenModalButton>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               ) : (
                 <></>

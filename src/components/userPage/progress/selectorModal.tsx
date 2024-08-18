@@ -14,11 +14,13 @@ const SelectorModal = ({ user }: SelectorModalProps) => {
     setSearchQuery(e.target.value);
   };
 
-  const filteredList = user.progressionList
-    .filter((item) =>
-      item.exerciseName.toLowerCase().includes(searchQuery.toLowerCase()),
-    )
-    .sort((a, b) => a.exerciseName.localeCompare(b.exerciseName));
+  const filteredList = user?.progressionList
+    ? user.progressionList
+        .filter((item) =>
+          item.exerciseName?.toLowerCase().includes(searchQuery.toLowerCase()),
+        )
+        .sort((a, b) => a.exerciseName.localeCompare(b.exerciseName))
+    : [];
 
   return (
     <dialog id="select_tracked_modal" className="modal">
@@ -41,7 +43,8 @@ const SelectorModal = ({ user }: SelectorModalProps) => {
             </form>
           </div>
           <div className="remove-scrollbar flex flex-col gap-3 overflow-auto overscroll-contain">
-            {filteredList.length > 0 &&
+            {filteredList &&
+              filteredList.length > 0 &&
               filteredList
                 .sort((a, b) => a.exerciseName.localeCompare(b.exerciseName))
                 .map((list, i) => (

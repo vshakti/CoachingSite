@@ -6,27 +6,36 @@ import {
   ChevronsRightIcon,
   EraserIcon,
   LockIcon,
-  PlusIcon,
   Trash2Icon,
   XIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { Form } from "@/components/ui/form";
-
 import { useForm } from "react-hook-form";
-import CustomFormField from "@/components/ui/customFormField";
-
-import Toast from "@/components/ui/toast";
-
 import { TemplateDayCreationValidation } from "@/lib/validation";
 import { FormFieldType } from "@/lib/exports/exports";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TemplateDayDefaultValues } from "@/constants";
 import { useRouter } from "next/navigation";
-import SubmitButton from "@/components/submitButton";
 import { TemplateDayCreation } from "@/lib/actions/user.actions";
 import { useExerciseContext } from "@/lib/context/exerciseAdd";
+import dynamic from "next/dynamic";
+const Toast = dynamic(() => import("@/components/ui/toast"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
+const SubmitButton = dynamic(() => import("@/components/submitButton"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
+const CustomFormField = dynamic(
+  () => import("@/components/ui/customFormField"),
+  {
+    loading: () => <p>Loading...</p>,
+    ssr: false,
+  },
+);
 
 interface UserProps {
   user: User;

@@ -1,6 +1,6 @@
 "use server";
 
-import { ID, Query, Role } from "node-appwrite";
+import { ID, Query, OAuthProvider } from "node-appwrite";
 import { InputFile } from "node-appwrite/file";
 import { parseStringify } from "../utils";
 import { createAdminClient, createSessionClient } from "../appwrite.config";
@@ -142,6 +142,42 @@ export const LogIn = async ({ email, password }: UserAuth) => {
     console.log(error);
   }
 };
+
+// const userCache = new Map();
+// const CACHE_DURATION = 5 * 60 * 1000;
+// const now = Date.now();
+//     const cacheKey = 'loggedInUser';
+//     const userInfoCacheKey = 'userInfo';
+
+//     // Check if the cached data is available and valid
+//     if (userCache.has(cacheKey)) {
+//       const { timestamp, data } = userCache.get(cacheKey);
+//       if (now - timestamp < CACHE_DURATION) {
+//         return data;
+//       }
+//     }
+
+//     // Fetch user session and info
+//     const { account } = await createSessionClient();
+//     const result = await account.get();
+//     const userId = result.$id;
+
+//     // Cache user info based on userId
+//     if (userCache.has(userInfoCacheKey)) {
+//       const { timestamp: userInfoTimestamp, data: cachedUserInfo } = userCache.get(userInfoCacheKey);
+//       if (now - userInfoTimestamp < CACHE_DURATION) {
+//         return cachedUserInfo;
+//       }
+//     }
+
+//     const user = await getUserInfo({ userId });
+//     const userData = parseStringify(user);
+
+//     // Cache both user and user info
+//     userCache.set(cacheKey, { timestamp: now, data: userData });
+//     userCache.set(userInfoCacheKey, { timestamp: now, data: userData });
+
+//     return userData;
 
 export async function getLoggedInUser() {
   try {

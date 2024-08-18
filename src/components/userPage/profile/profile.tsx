@@ -1,10 +1,17 @@
 import ProfilePicture from "@/components/userPage/profile/profilePicture";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
-import UserUpdateModal from "./userUpdateModal";
 import OpenModalButton from "../openModalButton";
 import { PenIcon } from "lucide-react";
 import { calculateAge } from "@/constants";
-import ClientsPicture from "./clientsPic";
+import dynamic from "next/dynamic";
+const ClientsPicture = dynamic(() => import("./clientsPic"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
+const UserUpdateModal = dynamic(() => import("./userUpdateModal"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
 
 const Profile = async () => {
   const userResponse = await getLoggedInUser();
@@ -17,7 +24,15 @@ const Profile = async () => {
         <div className="flex flex-col items-center justify-center gap-y-6 py-2 pb-2 md:items-start md:justify-start dark:text-neutral-200">
           <div className="flex flex-col gap-y-4">
             <h1 className="flex items-center justify-center text-center text-3xl md:justify-start md:text-start md:text-5xl">
-              {user.name ? <>{user.name}</> : <>{user.email}</>}
+              {user.name ? (
+                <span className="w-full bg-gradient-to-r from-neutral-950/0 via-neutral-950 to-neutral-950/0 px-4 py-1">
+                  {user.name}
+                </span>
+              ) : (
+                <span className="w-full bg-gradient-to-r from-neutral-950/0 via-neutral-950 to-neutral-950/0 px-4 py-1">
+                  {user.email}
+                </span>
+              )}
             </h1>
             <div className="flex flex-col items-center gap-y-4 md:items-start">
               {!user.clientStatus ? (
@@ -25,15 +40,16 @@ const Profile = async () => {
               ) : (
                 <>
                   {user.clientStatus.status === "Active" ? (
-                    <span>Coached by {user.clientStatus.users.name}</span>
+                    <span className="w-full bg-gradient-to-r from-neutral-950/0 via-neutral-950 to-neutral-950/0 px-4 py-1">
+                      Coached by {user.clientStatus.users.name}
+                    </span>
                   ) : (
-                    <span>Not coached</span>
+                    <></>
                   )}
                 </>
               )}
               {user.clients ? (
-                <div className="flex flex-col items-start justify-start">
-                  <span>Coaching</span>
+                <div className="flex w-full flex-col items-start justify-start bg-gradient-to-r from-neutral-950/0 via-neutral-950 to-neutral-950/0 px-4 py-1">
                   <div className="flex items-center">
                     {user.clients.users
                       .slice(0, 10)

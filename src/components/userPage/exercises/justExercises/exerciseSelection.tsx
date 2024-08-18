@@ -9,8 +9,12 @@ import {
   SearchIcon,
   XIcon,
 } from "lucide-react";
-import ExerciseTag from "./exerciseTag";
 import OpenModalButton from "../../openModalButton";
+import dynamic from "next/dynamic";
+const ExerciseTag = dynamic(() => import("./exerciseTag"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
 
 interface UserProps {
   user: User;
