@@ -61,7 +61,7 @@ const UserForm = ({ user }: UserProps) => {
       const dialog = document.getElementById(
         "user_update_modal",
       ) as HTMLDialogElement;
-      router.refresh();
+
       if (dialog) {
         dialog.close();
       }

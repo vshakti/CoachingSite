@@ -7,16 +7,18 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useRouter } from "next/navigation";
-import { LogIn } from "@/lib/actions/user.actions";
+import { getLoggedInUser, LogIn } from "@/lib/actions/user.actions";
 import { AtSignIcon, LockKeyholeIcon } from "lucide-react";
 import SubmitButton from "@/components/submitButton";
 import CustomFormField from "@/components/ui/customFormField";
 import { UserAuthValidation } from "@/lib/validation";
 import { FormFieldType } from "@/lib/exports/exports";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 
 const LogInForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { setLoggedUser } = useLoggedUser();
 
   const form = useForm<z.infer<typeof UserAuthValidation>>({
     resolver: zodResolver(UserAuthValidation),
@@ -36,7 +38,10 @@ const LogInForm = () => {
       };
       const user = await LogIn(userData);
 
-      if (user) router.push(`/user/profile`);
+      if (user) {
+        const loggedUser = await getLoggedInUser();
+        setLoggedUser(loggedUser);
+      }
     } catch (error) {
       console.log(error);
     } finally {

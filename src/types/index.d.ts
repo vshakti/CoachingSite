@@ -11,6 +11,7 @@ declare type CoachingStatus = "Inactive" | "Pending" | "Active";
 declare type Gender = "Male" | "Female" | "Other";
 declare type Muscles =
   | "Cardio"
+  | "Adductors"
   | "Biceps"
   | "Calves"
   | "Chest"

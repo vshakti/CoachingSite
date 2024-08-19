@@ -14,10 +14,9 @@ const CoachedUsersList = dynamic(() => import("./coachedUsersList"), {
 
 interface SocialProps {
   allUsers: User[];
-  user: User;
 }
 
-const Social = async ({ allUsers, user }: SocialProps) => {
+const Social = async ({ allUsers }: SocialProps) => {
   const userImages = await Promise.all(
     allUsers.map(async (user) => {
       if (user.pictureUrl) {
@@ -48,20 +47,16 @@ const Social = async ({ allUsers, user }: SocialProps) => {
     <div className="flex h-full w-full flex-col p-3 text-white lg:pl-6">
       <div className="flex h-full w-full flex-col gap-6">
         <div className="flex h-16 items-center bg-gradient-to-r from-zinc-950/0 via-violet-950 to-zinc-950/0 p-2">
-          <UserSearch
-            currentUser={user}
-            allUsers={allUsers}
-            userImages={imageMap}
-          />
+          <UserSearch allUsers={allUsers} userImages={imageMap} />
         </div>
 
-        <UserDetails currentUser={user} userImages={imageMap} />
+        <UserDetails userImages={imageMap} />
         <div className="flex w-full flex-col items-center justify-start bg-gradient-to-r from-zinc-950/0 via-violet-950 to-zinc-950/0 py-3">
           <h1 className="bg-gradient-to-r from-transparent via-zinc-950 to-transparent px-12 py-1 text-3xl antialiased">
             PERSONAL CLIENTS
           </h1>
           <div className="grid h-max w-full gap-4 p-4">
-            <CoachedUsersList currentUser={user} />
+            <CoachedUsersList />
           </div>
         </div>
       </div>

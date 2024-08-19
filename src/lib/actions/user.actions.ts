@@ -7,12 +7,12 @@ import { createAdminClient, createSessionClient } from "../appwrite.config";
 import { cookies } from "next/headers";
 
 const {
-  APPWRITE_DATABASE_ID: DATABASE_ID,
-  APPWRITE_USERS_COLLECTION_ID: USERS_COLLECTION_ID,
+  NEXT_PUBLIC_APPWRITE_DATABASE_ID: DATABASE_ID,
+  NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID: USERS_COLLECTION_ID,
   NEXT_PUBLIC_APPWRITE_BUCKET_ID: BUCKET_ID,
   NEXT_PUBLIC_APPWRITE_ENDPOINT: ENDPOINT,
   NEXT_PUBLIC_APPWRITE_PROJECT: PROJECT_ID,
-  APPWRITE_EXERCISES_COLLECTION_ID: EXERCISES_COLLECTION_ID,
+  NEXT_PUBLIC_APPWRITE_EXERCISES_COLLECTION_ID: EXERCISES_COLLECTION_ID,
   APPWRITE_TRAINING_DAYS_COLLECTION_ID: TRAINING_DAYS_COLLECTION_ID,
   APPWRITE_EXERCISE_SPECIFICS_COLLECTION_ID: EXERCISE_SPECIFICS_COLLECTION_ID,
   APPWRITE_TRAINING_WEEK_COLLECTION_ID: TRAINING_WEEK_COLLECTION_ID,
@@ -33,6 +33,7 @@ export const getAllUsers = async () => {
     const result = await database.listDocuments(
       DATABASE_ID!,
       USERS_COLLECTION_ID!,
+      [Query.orderAsc("name")],
     );
 
     return parseStringify(result.documents);
@@ -52,6 +53,22 @@ export const getUserInfo = async ({ userId }: getUserInfo) => {
     );
 
     return parseStringify(user.documents[0]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getExercises = async (userEmail: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const exercises = await database.listDocuments(
+      DATABASE_ID!,
+      EXERCISES_COLLECTION_ID!,
+      [Query.equal("exerciseOwner", [userEmail])],
+    );
+
+    return parseStringify(exercises.documents);
   } catch (error) {
     console.log(error);
   }
@@ -143,42 +160,6 @@ export const LogIn = async ({ email, password }: UserAuth) => {
   }
 };
 
-// const userCache = new Map();
-// const CACHE_DURATION = 5 * 60 * 1000;
-// const now = Date.now();
-//     const cacheKey = 'loggedInUser';
-//     const userInfoCacheKey = 'userInfo';
-
-//     // Check if the cached data is available and valid
-//     if (userCache.has(cacheKey)) {
-//       const { timestamp, data } = userCache.get(cacheKey);
-//       if (now - timestamp < CACHE_DURATION) {
-//         return data;
-//       }
-//     }
-
-//     // Fetch user session and info
-//     const { account } = await createSessionClient();
-//     const result = await account.get();
-//     const userId = result.$id;
-
-//     // Cache user info based on userId
-//     if (userCache.has(userInfoCacheKey)) {
-//       const { timestamp: userInfoTimestamp, data: cachedUserInfo } = userCache.get(userInfoCacheKey);
-//       if (now - userInfoTimestamp < CACHE_DURATION) {
-//         return cachedUserInfo;
-//       }
-//     }
-
-//     const user = await getUserInfo({ userId });
-//     const userData = parseStringify(user);
-
-//     // Cache both user and user info
-//     userCache.set(cacheKey, { timestamp: now, data: userData });
-//     userCache.set(userInfoCacheKey, { timestamp: now, data: userData });
-
-//     return userData;
-
 export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
@@ -238,6 +219,24 @@ export const UpdateUser = async ({
     );
 
     if (!newUser) throw Error;
+
+    // const clients = await database.listDocuments(
+    //   DATABASE_ID!,
+    //   CLIENT_STATUS_COLLECTION_ID!,
+    //   [Query.equal("users", [newUser.$id])],
+    // );
+    // if (clients.documents.length > 0) {
+    //   for (let i = 0; i < clients.documents.length; i++) {
+    //     const updateClient = await database.updateDocument(
+    //       DATABASE_ID!,
+    //       CLIENT_STATUS_COLLECTION_ID!,
+    //       clients.documents[i].$id,
+    //       {
+    //         users: newUser,
+    //       },
+    //     );
+    //   }
+    // }
 
     const parsedNewUser = parseStringify(newUser);
 

@@ -8,14 +8,6 @@ export const metadata = {
 };
 
 const UserProfile = async () => {
-  const userResponse = await getLoggedInUser();
-
-  const user: User = userResponse;
-
-  if (!user) {
-    redirect(`/`);
-  }
-
   return (
     <div className="flex h-full">
       <Profile />

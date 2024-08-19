@@ -2,10 +2,7 @@ import ExerciseCreationForm from "@/components/forms/exerciseCreationForm";
 import { XIcon } from "lucide-react";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 
-const ExerciseCreationModal = async () => {
-  const userResponse = await getLoggedInUser();
-
-  const user: User = userResponse;
+const ExerciseCreationModal = () => {
   return (
     <dialog id="exercise_creation_modal" className="modal">
       <div className="remove-scrollbar fixed inset-0 flex items-center justify-center overflow-auto bg-black/25 backdrop-blur-sm">
@@ -20,7 +17,7 @@ const ExerciseCreationModal = async () => {
               </button>
             </form>
           </div>
-          <ExerciseCreationForm user={user} />
+          <ExerciseCreationForm />
         </div>
       </div>
     </dialog>

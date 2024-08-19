@@ -6,25 +6,28 @@ import { useState } from "react";
 import OpenModalButton from "../openModalButton";
 import { PlayIcon, ForwardIcon } from "lucide-react";
 import dynamic from "next/dynamic";
+import { useLoggedUser } from "@/lib/context/loggedUser";
+import { redirect } from "next/navigation";
 const SendToClientsModal = dynamic(() => import("./sendToClientsModal"), {
   loading: () => <p>Loading...</p>,
   ssr: false,
 });
 
-interface WeeksCollectionProps {
-  user: User;
-}
-
-const WeeksCollection = ({ user }: WeeksCollectionProps) => {
+const WeeksCollection = () => {
   const { setTrainingWeek } = useTraining();
   const [openClients, setOpenClients] = useState(false);
   const [trainingWeekId, setTrainingWeekId] = useState("");
+  const { loggedUser } = useLoggedUser();
+
+  if (!loggedUser) {
+    redirect("/");
+  }
 
   return (
     <div className="remove-scrollbar grid h-[220px] grid-cols-3 gap-3 overflow-auto overscroll-contain md:grid-cols-5 lg:grid-cols-7">
-      {user.trainingWeek && user.trainingWeek.length > 0 ? (
+      {loggedUser!.trainingWeek && loggedUser!.trainingWeek.length > 0 ? (
         <>
-          {user.trainingWeek.map((week: any, i) => (
+          {loggedUser!.trainingWeek.map((week: any, i) => (
             <div
               key={i}
               className="relative flex w-full flex-col items-center justify-center transition-transform hover:scale-105"
@@ -58,16 +61,16 @@ const WeeksCollection = ({ user }: WeeksCollectionProps) => {
                 <div className="absolute bottom-6 flex h-12 w-24 items-center justify-between">
                   <button
                     onClick={() => {
-                      setTrainingWeek(user.trainingWeek[i]);
+                      setTrainingWeek(loggedUser!.trainingWeek[i]);
                     }}
                   >
                     <PlayIcon className="size-8 rounded-full border bg-gradient-to-tl from-slate-950 to-violet-950 p-1 text-white" />
                   </button>
-                  {user.clients ? (
+                  {loggedUser!.clients ? (
                     <OpenModalButton
                       modalId="send_to_clients_modal"
                       onClick={() => {
-                        setTrainingWeekId(user.trainingWeek[i].$id);
+                        setTrainingWeekId(loggedUser!.trainingWeek[i].$id);
                       }}
                     >
                       <ForwardIcon className="size-8 rounded-full border bg-gradient-to-tl from-slate-950 to-violet-950 p-1 text-white" />
@@ -88,7 +91,10 @@ const WeeksCollection = ({ user }: WeeksCollectionProps) => {
           section to create a week of training.
         </span>
       )}
-      <SendToClientsModal trainingWeekId={trainingWeekId} currentUser={user} />
+      <SendToClientsModal
+        trainingWeekId={trainingWeekId}
+        currentUser={loggedUser!}
+      />
     </div>
   );
 };

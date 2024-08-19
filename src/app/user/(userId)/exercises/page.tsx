@@ -6,15 +6,7 @@ export const metadata = {
   title: "Exercises",
 };
 
-const UserExercises = async () => {
-  const userResponse = await getLoggedInUser();
-
-  const user: User = userResponse;
-
-  if (!user) {
-    redirect(`/`);
-  }
-
+const UserExercises = () => {
   return (
     <div>
       <Exercises />

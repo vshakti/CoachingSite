@@ -1,3 +1,6 @@
+"use client";
+
+import { useLoggedUser } from "@/lib/context/loggedUser";
 import AverageAndFeedback from "./averageAndFeedback";
 import AverageAndFeedbackStatic from "./averageAndFeedbackStatic";
 import ExerciseSelector from "./exerciseSelector";
@@ -8,16 +11,22 @@ const ExerciseChart = dynamic(() => import("./exerciseChart"), {
 });
 
 interface ProgressProps {
-  user: User;
+  user?: User;
   className: string;
 }
 
-export const Progress = ({ user, className }: ProgressProps) => {
+export const Progress: React.FC<ProgressProps> = ({
+  user: propUser,
+  className,
+}: ProgressProps) => {
+  const { loggedUser } = useLoggedUser();
+  const user = propUser || loggedUser;
+
   return (
     <div className={className}>
       <div className="flex flex-col gap-4 lg:col-span-4 lg:row-span-6">
         <div className="bg-gradient-to-r from-slate-950/0 via-violet-950 to-slate-950/10">
-          <ExerciseSelector user={user} />
+          <ExerciseSelector user={user!} />
         </div>
         <div className="h-full bg-gradient-to-r from-slate-950/0 via-violet-950 to-slate-950/10">
           <ExerciseChart />

@@ -47,24 +47,23 @@ const SelectorModal = ({ user }: SelectorModalProps) => {
               filteredList.length > 0 &&
               filteredList
                 .sort((a, b) => a.exerciseName.localeCompare(b.exerciseName))
-                .map((list, i) => (
-                  <>
-                    <button
-                      className="w-full truncate bg-gradient-to-r from-neutral-950/0 via-cyan-700 to-neutral-950/0 py-1 hover:via-cyan-600"
-                      onClick={() => {
-                        setTrackedExercise(list);
-                        const dialog = document.getElementById(
-                          "select_tracked_modal",
-                        ) as HTMLDialogElement;
+                .map((list, listIndex) => (
+                  <button
+                    key={listIndex}
+                    className="w-full truncate bg-gradient-to-r from-neutral-950/0 via-cyan-700 to-neutral-950/0 py-1 hover:via-cyan-600"
+                    onClick={() => {
+                      setTrackedExercise(list);
+                      const dialog = document.getElementById(
+                        "select_tracked_modal",
+                      ) as HTMLDialogElement;
 
-                        if (dialog) {
-                          dialog.close();
-                        }
-                      }}
-                    >
-                      {list.exerciseName}
-                    </button>
-                  </>
+                      if (dialog) {
+                        dialog.close();
+                      }
+                    }}
+                  >
+                    {list.exerciseName}
+                  </button>
                 ))}
           </div>
         </div>

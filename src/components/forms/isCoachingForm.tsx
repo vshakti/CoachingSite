@@ -7,13 +7,15 @@ import { Form, FormControl, FormItem, FormField } from "@/components/ui/form";
 import { useState, useEffect } from "react";
 import Switch from "../ui/switch";
 import { CoachingStatus } from "@/lib/actions/user.actions";
-import { useRouter } from "next/navigation";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 
-const IsCoachingForm = ({ user }: UserProps) => {
-  const router = useRouter();
+const IsCoachingForm = () => {
+  const { loggedUser } = useLoggedUser();
   const [isCoaching, setIsCoaching] = useState(() => {
     const storedIsCoaching = localStorage.getItem("isCoaching");
-    return storedIsCoaching ? JSON.parse(storedIsCoaching) : user.isCoaching;
+    return storedIsCoaching
+      ? JSON.parse(storedIsCoaching)
+      : loggedUser!.isCoaching;
   });
 
   const FormSchema = z.object({
@@ -26,14 +28,13 @@ const IsCoachingForm = ({ user }: UserProps) => {
 
   async function onSubmit(values: z.infer<typeof FormSchema>) {
     try {
-      if (user) {
+      if (loggedUser) {
         const userData = {
           isCoaching: values.isCoaching,
-          userId: user?.$id ?? "",
+          userId: loggedUser?.$id ?? "",
         };
 
         const newUser = await CoachingStatus(userData);
-        router.refresh();
       }
     } catch (error) {
       console.log(error);

@@ -12,16 +12,9 @@ import {
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import OpenModalButton from "@/components/userPage/openModalButton";
+import ProfileRedirect from "@/components/profileRedirecter";
 
-export default async function Home() {
-  const userResponse = await getLoggedInUser();
-
-  const user: User = userResponse;
-
-  if (user) {
-    redirect(`/user/profile`);
-  }
-
+export default function Home() {
   return (
     <div className="flex h-max flex-col items-center justify-start gap-12 bg-gradient-to-br from-slate-950 via-purple-950/50 to-slate-950 text-white">
       <div className="flex flex-col items-center justify-center gap-5 pt-52 md:gap-10 md:pt-40">
@@ -31,6 +24,7 @@ export default async function Home() {
         </h2>
       </div>
 
+      <ProfileRedirect />
       <OpenModalButton
         modalId="auth_modal"
         className="rounded-md bg-gradient-to-r from-violet-950/0 via-slate-950 to-violet-950/0 px-10 py-4 text-xl font-black text-white hover:from-violet-900/5 hover:via-purple-950 hover:to-violet-900/5"

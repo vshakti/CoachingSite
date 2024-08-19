@@ -3,23 +3,21 @@
 import { useState } from "react";
 import DenyCoachingButton from "./denyCoachingButton";
 import AcceptCoachingButton from "./acceptCoachingButton";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 
-interface UserProps {
-  user: User;
-}
-
-export const CoachInviteMessage = ({ user }: UserProps) => {
+export const CoachInviteMessage = () => {
   const [open, setOpen] = useState(true);
+  const { loggedUser } = useLoggedUser();
 
   return (
     <>
-      {!user ? (
+      {!loggedUser ? (
         <></>
       ) : (
         <>
-          {user.clientStatus &&
-          user.clientStatus.status === "Pending" &&
-          user.clientStatus.users ? (
+          {loggedUser.clientStatus &&
+          loggedUser.clientStatus.status === "Pending" &&
+          loggedUser.clientStatus.users ? (
             <div
               className={`${!open ? "hidden" : ""} fixed inset-0 z-[100] flex items-center justify-center overscroll-none bg-black/75 backdrop-blur-sm`}
             >
@@ -30,10 +28,10 @@ export const CoachInviteMessage = ({ user }: UserProps) => {
                   <div className="flex flex-col gap-4">
                     <div className="bg-gradient-to-r from-transparent via-violet-950 to-transparent px-8 py-1">
                       <span className="text-cyan-500">
-                        {user.clientStatus.users.name ? (
-                          <>{user.clientStatus.users.name}</>
+                        {loggedUser.clientStatus.users.name ? (
+                          <>{loggedUser.clientStatus.users.name}</>
                         ) : (
-                          <>{user.clientStatus.users.email}</>
+                          <>{loggedUser.clientStatus.users.email}</>
                         )}
                       </span>{" "}
                       invited you to be his client, do you accept?
@@ -42,12 +40,12 @@ export const CoachInviteMessage = ({ user }: UserProps) => {
                       <AcceptCoachingButton
                         className="bg-gradient-to-r from-transparent via-violet-950 to-transparent px-8 py-2 hover:via-violet-900"
                         setOpen={setOpen}
-                        user={user}
+                        user={loggedUser}
                       />
                       <DenyCoachingButton
                         className="bg-gradient-to-r from-transparent via-violet-950 to-transparent px-8 py-2 hover:via-violet-900"
                         setOpen={setOpen}
-                        user={user}
+                        user={loggedUser}
                       />
                     </div>
                     <button

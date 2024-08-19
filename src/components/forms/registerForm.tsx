@@ -12,12 +12,14 @@ import SubmitButton from "../submitButton";
 import { useState } from "react";
 import { UserAuthValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
-import { Register } from "@/lib/actions/user.actions";
+import { getLoggedInUser, Register } from "@/lib/actions/user.actions";
 import { FormFieldType } from "@/lib/exports/exports";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 
 const RegisterForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { setLoggedUser } = useLoggedUser();
 
   const form = useForm<z.infer<typeof UserAuthValidation>>({
     resolver: zodResolver(UserAuthValidation),
@@ -37,7 +39,10 @@ const RegisterForm = () => {
       };
       const user = await Register(userData);
 
-      if (user) router.push(`/user/profile`);
+      if (user) {
+        const loggedUser = await getLoggedInUser();
+        setLoggedUser(loggedUser);
+      }
     } catch (error) {
       console.log(error);
     }

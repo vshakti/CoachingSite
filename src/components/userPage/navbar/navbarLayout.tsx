@@ -7,9 +7,17 @@ import {
   ChevronRightIcon,
   ChevronUpIcon,
 } from "lucide-react";
+import { useLoggedUser } from "@/lib/context/loggedUser";
+import { redirect } from "next/navigation";
+import NavbarContent from "./navbarContent";
 
-const NavbarLayout = ({ children }: { children: ReactNode }) => {
+const NavbarLayout = () => {
   const [showNavbar, setShowNavbar] = useState("HIDE");
+  const { loggedUser } = useLoggedUser();
+
+  if (!loggedUser) {
+    redirect("/");
+  }
 
   return (
     <div
@@ -20,7 +28,7 @@ const NavbarLayout = ({ children }: { children: ReactNode }) => {
       >
         {showNavbar === "SHOW" ? (
           <div className="flex flex-col bg-gradient-to-b from-gray-950/75 via-gray-950/75 to-zinc-950/75 backdrop-blur-lg md:bg-gradient-to-r md:from-zinc-950 md:via-neutral-950 md:to-zinc-950 md:pl-4">
-            {children}
+            <NavbarContent user={loggedUser} />
           </div>
         ) : (
           <></>

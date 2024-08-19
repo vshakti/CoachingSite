@@ -4,13 +4,15 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { LogOut } from "@/lib/actions/user.actions";
 import { LogOutIcon } from "lucide-react";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 
 export const LogOutBtn = () => {
   const router = useRouter();
+  const { cleanUser } = useLoggedUser();
 
   const handleLogOut = async () => {
     await LogOut();
-    router.push("/");
+    await cleanUser();
   };
 
   return (

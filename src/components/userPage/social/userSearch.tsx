@@ -4,15 +4,17 @@ import { useState, useMemo } from "react";
 import { UserRoundIcon } from "lucide-react";
 import Image from "next/image";
 import { useUser } from "@/lib/context/user";
+import { useLoggedUser } from "@/lib/context/loggedUser";
+import { redirect } from "next/navigation";
 
 interface UserSearchProps {
   allUsers: User[];
   userImages: { [key: string]: string };
-  currentUser: User;
 }
 
-const UserSearch = ({ allUsers, userImages, currentUser }: UserSearchProps) => {
+const UserSearch = ({ allUsers, userImages }: UserSearchProps) => {
   const { setUser } = useUser();
+  const { loggedUser } = useLoggedUser();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const filteredUsers = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -26,8 +28,12 @@ const UserSearch = ({ allUsers, userImages, currentUser }: UserSearchProps) => {
           (user.name && user.name.toLowerCase().includes(lowercasedQuery)) ||
           user.email.toLowerCase().includes(lowercasedQuery),
       )
-      .filter((user) => user.$id !== currentUser.$id);
-  }, [searchQuery, allUsers, currentUser]);
+      .filter((user) => user.$id !== loggedUser!.$id);
+  }, [searchQuery, allUsers, loggedUser]);
+
+  if (!loggedUser) {
+    redirect("/");
+  }
 
   return (
     <div className="relative w-full text-white">

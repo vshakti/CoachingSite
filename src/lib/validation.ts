@@ -60,6 +60,7 @@ export const ExerciseCreationValidation = z.object({
   muscles: z.array(
     z.enum([
       "Cardio",
+      "Adductors",
       "Biceps",
       "Calves",
       "Chest",

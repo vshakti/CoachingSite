@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { UserHeadbar } from "./userHeadbar";
-import { UserProvider } from "@/lib/context/user";
 
 const Headbar = () => {
   return (

@@ -8,6 +8,7 @@ import { TemplateTypeProvider } from "@/lib/context/templateType";
 import { UserAvatarProvider } from "@/lib/context/userAvatar";
 import CoachingInvite from "@/components/coachingInvite/coachingInvite";
 import { TrackingExerciseContextProvider } from "@/lib/context/exerciseTracking";
+import { LoggedUserProvider } from "@/lib/context/loggedUser";
 
 const inter = Inter({ subsets: ["latin"] });
 const orbitron = Orbitron({ subsets: ["latin"], weight: ["400", "700"] });
@@ -26,24 +27,26 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <UserProvider>
-        <UserAvatarProvider>
-          <ExerciseProvider>
-            <TemplateTypeProvider>
-              <TrackingExerciseContextProvider>
-                <body
-                  className={`remove-scrollbar ${inter.className} bg-gradient-to-br from-neutral-950 to-zinc-950`}
-                >
-                  <Headbar />
-                  <CoachingInvite />
+      <LoggedUserProvider>
+        <UserProvider>
+          <UserAvatarProvider>
+            <ExerciseProvider>
+              <TemplateTypeProvider>
+                <TrackingExerciseContextProvider>
+                  <body
+                    className={`remove-scrollbar ${inter.className} bg-gradient-to-br from-neutral-950 to-zinc-950`}
+                  >
+                    <Headbar />
+                    <CoachingInvite />
 
-                  {children}
-                </body>
-              </TrackingExerciseContextProvider>
-            </TemplateTypeProvider>
-          </ExerciseProvider>
-        </UserAvatarProvider>
-      </UserProvider>
+                    {children}
+                  </body>
+                </TrackingExerciseContextProvider>
+              </TemplateTypeProvider>
+            </ExerciseProvider>
+          </UserAvatarProvider>
+        </UserProvider>
+      </LoggedUserProvider>
     </html>
   );
 }

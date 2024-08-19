@@ -6,15 +6,7 @@ export const metadata = {
   title: "Training",
 };
 
-const UserTraining = async () => {
-  const userResponse = await getLoggedInUser();
-
-  const user: User = userResponse;
-
-  if (!user) {
-    redirect(`/`);
-  }
-
+const UserTraining = () => {
   return (
     <div>
       <Training />

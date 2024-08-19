@@ -16,22 +16,18 @@ import Image from "next/image";
 import { getYouTubeEmbedUrl } from "@/constants";
 import OpenModalButton from "../openModalButton";
 import dynamic from "next/dynamic";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 const FinishExerciseModal = dynamic(() => import("./finishExerciseModal"), {
   loading: () => <p>Loading...</p>,
   ssr: false,
 });
 
 interface TrainingWeekDetailsProps {
-  user: User;
   children: React.ReactNode;
   index: number;
 }
 
-const TrainingWeekDetails = ({
-  children,
-  index,
-  user,
-}: TrainingWeekDetailsProps) => {
+const TrainingWeekDetails = ({ children, index }: TrainingWeekDetailsProps) => {
   const [showDay, setShowDay] = useState(true);
   const { trainingWeek } = useTraining();
   const [isExerciseOpen, setIsExerciseOpen] = useState(false);
@@ -41,6 +37,7 @@ const TrainingWeekDetails = ({
     [],
   );
   const [isLoading, setIsLoading] = useState(true);
+  const { loggedUser } = useLoggedUser();
 
   useEffect(() => {
     const fetchTrainingDays = async () => {
@@ -146,12 +143,12 @@ const TrainingWeekDetails = ({
             <div className="flex w-full flex-col gap-3 py-3">
               {trainingDaysArray && trainingDaysArray[index] != null ? (
                 trainingDaysArray[index].exerciseSpecifics?.map(
-                  (specifics, specificityIndex) => (
+                  (specifics, s) => (
                     <>
                       {isExerciseOpen &&
                       exerciseName === specifics.exercises[0].name ? (
                         <div
-                          key={specificityIndex}
+                          key={index + s}
                           className="flex flex-col gap-6 p-3 md:flex-row"
                         >
                           <div className="flex w-full flex-col gap-4 rounded-md md:w-1/2">
@@ -159,7 +156,7 @@ const TrainingWeekDetails = ({
                               {specifics.exercises[0].muscles.length > 1 ? (
                                 <div className="flex flex-row gap-2">
                                   {specifics.exercises[0].muscles.map(
-                                    (muscles: string, m: number) => (
+                                    (muscles: string) => (
                                       <>
                                         <Image
                                           src={`/muscles/${muscles}.png`}
@@ -314,7 +311,7 @@ const TrainingWeekDetails = ({
       <FinishExerciseModal
         exerciseId={exerciseId}
         exerciseName={exerciseName}
-        user={user}
+        user={loggedUser!}
       />
     </div>
   );

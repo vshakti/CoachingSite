@@ -1,9 +1,12 @@
+"use client";
 import ProfilePicture from "@/components/userPage/profile/profilePicture";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 import OpenModalButton from "../openModalButton";
 import { PenIcon } from "lucide-react";
 import { calculateAge } from "@/constants";
 import dynamic from "next/dynamic";
+import { useLoggedUser } from "@/lib/context/loggedUser";
+import { redirect } from "next/navigation";
 const ClientsPicture = dynamic(() => import("./clientsPic"), {
   loading: () => <p>Loading...</p>,
   ssr: false,
@@ -13,45 +16,49 @@ const UserUpdateModal = dynamic(() => import("./userUpdateModal"), {
   ssr: false,
 });
 
-const Profile = async () => {
-  const userResponse = await getLoggedInUser();
-  const user: User = userResponse;
+const Profile = () => {
+  const { loggedUser } = useLoggedUser();
+
+  if (!loggedUser) {
+    redirect("/");
+  }
 
   return (
     <div className="flex w-full flex-col gap-y-2 p-4 antialiased lg:gap-y-4">
       <header className="grid justify-evenly gap-x-2 gap-y-6 bg-gradient-to-r from-neutral-950/0 via-violet-950 to-neutral-950/0 px-4 py-4 md:grid-cols-3">
-        <ProfilePicture user={user} />
+        <ProfilePicture user={loggedUser!} />
         <div className="flex flex-col items-center justify-center gap-y-6 py-2 pb-2 md:items-start md:justify-start dark:text-neutral-200">
           <div className="flex flex-col gap-y-4">
             <h1 className="flex items-center justify-center text-center text-3xl md:justify-start md:text-start md:text-5xl">
-              {user.name ? (
+              {loggedUser!.name ? (
                 <span className="w-full bg-gradient-to-r from-neutral-950/0 via-neutral-950 to-neutral-950/0 px-4 py-1">
-                  {user.name}
+                  {loggedUser!.name}
                 </span>
               ) : (
                 <span className="w-full bg-gradient-to-r from-neutral-950/0 via-neutral-950 to-neutral-950/0 px-4 py-1">
-                  {user.email}
+                  {loggedUser!.email}
                 </span>
               )}
             </h1>
             <div className="flex flex-col items-center gap-y-4 md:items-start">
-              {!user.clientStatus ? (
+              {!loggedUser!.clientStatus ? (
                 <></>
               ) : (
                 <>
-                  {user.clientStatus.status === "Active" ? (
+                  {loggedUser!.clientStatus.status === "Active" ? (
                     <span className="w-full bg-gradient-to-r from-neutral-950/0 via-neutral-950 to-neutral-950/0 px-4 py-1">
-                      Coached by {user.clientStatus.users.name}
+                      Coached by {loggedUser!.clientStatus.users.name}
                     </span>
                   ) : (
                     <></>
                   )}
                 </>
               )}
-              {user.clients ? (
+
+              {loggedUser!.clients ? (
                 <div className="flex w-full flex-col items-start justify-start bg-gradient-to-r from-neutral-950/0 via-neutral-950 to-neutral-950/0 px-4 py-1">
                   <div className="flex items-center">
-                    {user.clients.users
+                    {loggedUser!.clients.users
                       .slice(0, 10)
                       .map((coachedUser, index) => (
                         <div key={coachedUser.$id}>
@@ -61,9 +68,9 @@ const Profile = async () => {
                           />
                         </div>
                       ))}
-                    {user.clients.users.length > 10 && (
+                    {loggedUser!.clients.users.length > 10 && (
                       <div className="-ml-6 flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 text-xs text-white">
-                        +{user.clients.users.length - 10}
+                        +{loggedUser!.clients.users.length - 10}
                       </div>
                     )}
                   </div>
@@ -104,8 +111,8 @@ const Profile = async () => {
             <div className="flex flex-col items-center justify-center space-y-1 bg-gradient-to-r from-neutral-950/0 via-violet-950 to-neutral-950/0 px-4 pb-1 tracking-wide">
               <span>Age</span>
 
-              {user.birthDate ? (
-                <span>{calculateAge(user.birthDate)}</span>
+              {loggedUser!.birthDate ? (
+                <span>{calculateAge(loggedUser!.birthDate)}</span>
               ) : (
                 <span className="w-full text-center text-slate-600">
                   You have no public age information
@@ -115,8 +122,8 @@ const Profile = async () => {
 
             <div className="flex flex-col items-center justify-center space-y-1 bg-gradient-to-r from-neutral-950/0 via-violet-950 to-neutral-950/0 px-4 pb-1 tracking-wide">
               <span>Gender</span>
-              {user.gender ? (
-                <span>{user?.gender}</span>
+              {loggedUser!.gender ? (
+                <span>{loggedUser!?.gender}</span>
               ) : (
                 <span className="w-full text-center text-slate-600">
                   You have no public gender information
@@ -126,13 +133,13 @@ const Profile = async () => {
 
             <div className="flex flex-col items-center justify-center space-y-1 bg-gradient-to-r from-neutral-950/0 via-violet-950 to-neutral-950/0 px-4 pb-1 tracking-wide">
               <span>Email</span>
-              <span>{user?.email}</span>
+              <span>{loggedUser!?.email}</span>
             </div>
 
             <div className="flex flex-col items-center justify-center space-y-1 bg-gradient-to-r from-neutral-950/0 via-violet-950 to-neutral-950/0 px-4 pb-1 tracking-wide">
               <span>Phone</span>
-              {user.phone ? (
-                <span>{user?.phone}</span>
+              {loggedUser!.phone ? (
+                <span>{loggedUser!?.phone}</span>
               ) : (
                 <span className="w-full text-center text-slate-600">
                   You have no public phone information
@@ -146,8 +153,8 @@ const Profile = async () => {
           <div className="flex h-full w-full flex-col gap-y-4 bg-gradient-to-r from-neutral-950/0 via-violet-950 to-neutral-950/0 p-2 px-4 text-xs font-medium md:text-xl">
             <div className="flex flex-col items-center justify-center">
               <span>Bio</span>
-              {user.description ? (
-                <span>{user?.description}</span>
+              {loggedUser!.description ? (
+                <span>{loggedUser!?.description}</span>
               ) : (
                 <span className="w-full text-center text-slate-600">
                   You have no public bio
@@ -157,7 +164,7 @@ const Profile = async () => {
           </div>
         </div>
       </div>
-      <UserUpdateModal user={user} />
+      <UserUpdateModal user={loggedUser!} />
     </div>
   );
 };
