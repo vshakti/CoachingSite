@@ -11,3 +11,8 @@ export enum FormFieldType {
   TEMPLATE_DAY = "templateDay",
   TEMPLATE_DAY_VARIABLES = "templateDayVaraibles",
 }
+
+export interface ShowToastParams {
+  message: React.ReactNode;
+  type?: "info" | "success" | "error" | "warning" | "action";
+}

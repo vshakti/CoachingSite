@@ -15,7 +15,7 @@ export async function createSessionClient() {
   client.setSession(session.value);
 
   return {
-    get account() {
+    get acc() {
       return new Account(client);
     },
   };

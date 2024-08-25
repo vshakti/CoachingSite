@@ -38,7 +38,7 @@ const Toast: React.FC<ToastProps> = ({
     >
       <div className="flex items-center justify-between gap-x-8">
         <span
-          className={`${getToastClasses(type)} flex max-w-40 items-center justify-center rounded-l-lg py-2 text-sm font-medium`}
+          className={`${getToastClasses(type)} flex items-center justify-center rounded-l-lg py-2 text-sm font-medium`}
         >
           {message}
         </span>

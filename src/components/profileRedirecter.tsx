@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 
 const ProfileRedirect = () => {
   const { loggedUser } = useLoggedUser();
+
   if (loggedUser) {
     redirect("/user/profile");
   }

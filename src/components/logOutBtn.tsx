@@ -1,18 +1,20 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
 import { LogOut } from "@/lib/actions/user.actions";
 import { LogOutIcon } from "lucide-react";
 import { useLoggedUser } from "@/lib/context/loggedUser";
+import globalAbortController from "@/lib/actions/abortController";
 
 export const LogOutBtn = () => {
-  const router = useRouter();
-  const { cleanUser } = useLoggedUser();
+  const { setLoggedUser } = useLoggedUser();
 
   const handleLogOut = async () => {
+    globalAbortController.abortRequests();
+
     await LogOut();
-    await cleanUser();
+    await setLoggedUser(null);
+    localStorage.removeItem("loggedUser");
   };
 
   return (

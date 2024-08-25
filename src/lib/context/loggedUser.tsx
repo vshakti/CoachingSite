@@ -8,18 +8,15 @@ import React, {
   useEffect,
 } from "react";
 import { Client } from "appwrite";
-import { getLoggedInUser } from "../actions/user.actions";
 
 interface LoggedUserContextType {
   loggedUser: User | null;
   setLoggedUser: (user: User | null) => void;
-  cleanUser: () => void;
 }
 
 const LoggedUserContext = createContext<LoggedUserContextType | undefined>(
   undefined,
 );
-
 const client = new Client()
   .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
   .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
@@ -34,53 +31,43 @@ export const LoggedUserProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   useEffect(() => {
-    const initUser = async () => {
+    try {
       const cachedUser = localStorage.getItem("loggedUser");
       if (cachedUser) {
         setLoggedUserState(JSON.parse(cachedUser));
-      } else {
-        const user = await getLoggedInUser();
-        setLoggedUser(user);
       }
-    };
-    initUser();
+    } catch (error) {
+      console.error("Failed to initialize user:", error);
+    }
   }, []);
 
-  const cleanUser = () => {
-    setLoggedUserState(null);
-    localStorage.removeItem("loggedUser");
-  };
-
   useEffect(() => {
-    if (loggedUser) {
-      const unsubscribe = client.subscribe(
-        `databases.${process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID}.collections.${process.env.NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID}.documents.${loggedUser.$id}`,
-        (response: any) => {
+    if (!loggedUser) return;
+    const unsubscribe = client.subscribe(
+      `databases.${process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID}.collections.${process.env.NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID}.documents.${loggedUser.$id}`,
+      (response: any) => {
+        if (
+          response.events.includes(
+            "databases.*.collections.*.documents.*.update",
+          )
+        ) {
           const updatedFields: Partial<User> = response.payload;
+          const updatedUser: User = {
+            ...loggedUser,
+            ...updatedFields,
+          };
+          setLoggedUser(updatedUser);
+        }
+      },
+    );
 
-          setLoggedUser((prevUser: User) => {
-            if (!prevUser) return null;
-
-            const updatedUser: User = {
-              ...prevUser,
-              ...updatedFields,
-            };
-
-            return updatedUser;
-          });
-        },
-      );
-
-      return () => {
-        unsubscribe();
-      };
-    }
+    return () => {
+      unsubscribe();
+    };
   }, [loggedUser]);
 
   return (
-    <LoggedUserContext.Provider
-      value={{ loggedUser, setLoggedUser, cleanUser }}
-    >
+    <LoggedUserContext.Provider value={{ loggedUser, setLoggedUser }}>
       {children}
     </LoggedUserContext.Provider>
   );

@@ -40,6 +40,7 @@ declare interface getUserInfo {
 
 declare interface User extends Omit<UserAuth, "password">, UserPicture {
   $id?: string;
+  verified: boolean;
   name: string;
   userId: string;
   phone: string;

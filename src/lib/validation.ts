@@ -19,7 +19,23 @@ const Muscle = z.enum([
   "Triceps",
 ]);
 
-export const UserAuthValidation = z.object({
+export const UserAuthValidation = z
+  .object({
+    email: z.string().email("Invalid email address"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .max(50, "Password must be at most 50 characters"),
+    confirmPassword: z
+      .string()
+      .min(8, "Password must be at least 8 characters"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
+  });
+
+export const UserLoginValidation = z.object({
   email: z.string().email("Invalid email address"),
   password: z
     .string()

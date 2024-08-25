@@ -1,6 +1,6 @@
 "use server";
 
-import { ID, Query, OAuthProvider } from "node-appwrite";
+import { Account, Client, ID, Query, Permission, Role } from "node-appwrite";
 import { InputFile } from "node-appwrite/file";
 import { parseStringify } from "../utils";
 import { createAdminClient, createSessionClient } from "../appwrite.config";
@@ -107,23 +107,13 @@ export const CoachingStatus = async ({
 export const Register = async ({ password, email }: UserAuth) => {
   try {
     const { account, database } = await createAdminClient();
+
     const newUserAccount = await account.create(
       ID.unique(),
       email,
       password,
       undefined,
     );
-
-    const newUser = await database.createDocument(
-      DATABASE_ID!,
-      USERS_COLLECTION_ID!,
-      ID.unique(),
-      {
-        email,
-        userId: newUserAccount.$id,
-      },
-    );
-
     const session = await account.createEmailPasswordSession(email, password);
 
     cookies().set("my-custom-session", session.secret, {
@@ -133,9 +123,31 @@ export const Register = async ({ password, email }: UserAuth) => {
       secure: true,
     });
 
+    const { acc } = await createSessionClient();
+    await acc.createVerification("http://localhost:3000/verification");
+
+    const newUser = await database.createDocument(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      ID.unique(),
+      {
+        email,
+        userId: newUserAccount.$id,
+      },
+      [
+        Permission.read(Role.users()),
+        Permission.update(Role.user(newUserAccount.$id)),
+        Permission.delete(Role.user(newUserAccount.$id)),
+        Permission.update(Role.team("admin")),
+        Permission.delete(Role.team("admin")),
+        Permission.read(Role.team("admin")),
+      ],
+    );
+
     return parseStringify(newUser);
   } catch (error: any) {
-    console.error(error);
+    console.error("Error during user registration and verification:", error);
+    throw new Error("Registration failed, please try again later.");
   }
 };
 
@@ -162,8 +174,8 @@ export const LogIn = async ({ email, password }: UserAuth) => {
 
 export async function getLoggedInUser() {
   try {
-    const { account } = await createSessionClient();
-    const result = await account.get();
+    const { acc } = await createSessionClient();
+    const result = await acc.get();
 
     const user = await getUserInfo({ userId: result.$id });
 
@@ -176,10 +188,10 @@ export async function getLoggedInUser() {
 
 export async function LogOut() {
   try {
-    const { account } = await createSessionClient();
+    const { acc } = await createSessionClient();
     cookies().delete("my-custom-session");
 
-    await account.deleteSession("current");
+    await acc.deleteSession("current");
   } catch (error) {
     return null;
   }
@@ -220,23 +232,29 @@ export const UpdateUser = async ({
 
     if (!newUser) throw Error;
 
-    // const clients = await database.listDocuments(
-    //   DATABASE_ID!,
-    //   CLIENT_STATUS_COLLECTION_ID!,
-    //   [Query.equal("users", [newUser.$id])],
-    // );
-    // if (clients.documents.length > 0) {
-    //   for (let i = 0; i < clients.documents.length; i++) {
-    //     const updateClient = await database.updateDocument(
-    //       DATABASE_ID!,
-    //       CLIENT_STATUS_COLLECTION_ID!,
-    //       clients.documents[i].$id,
-    //       {
-    //         users: newUser,
-    //       },
-    //     );
-    //   }
-    // }
+    const parsedNewUser = parseStringify(newUser);
+
+    return parsedNewUser;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const VerifyUser = async (userId: string, verified: boolean) => {
+  try {
+    const { database } = await createAdminClient();
+
+    console.log("id", userId);
+    const newUser = await database.updateDocument(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      userId,
+      {
+        verified,
+      },
+    );
+
+    if (!newUser) throw Error;
 
     const parsedNewUser = parseStringify(newUser);
 

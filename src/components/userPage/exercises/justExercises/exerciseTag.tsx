@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useExerciseContext } from "@/lib/context/exerciseAdd";
 import dynamic from "next/dynamic";
 import { useLoggedUser } from "@/lib/context/loggedUser";
+import { ShowToastParams } from "@/lib/exports/exports";
 const Toast = dynamic(() => import("@/components/ui/toast"), {
   loading: () => <p>Loading...</p>,
   ssr: false,
@@ -32,11 +33,6 @@ const ExerciseDescriptionModal = dynamic(
     ssr: false,
   },
 );
-
-interface ShowToastParams {
-  message: React.ReactNode;
-  type?: "info" | "success" | "error" | "warning" | "action";
-}
 
 interface ExerciseTagProps {
   user: User;

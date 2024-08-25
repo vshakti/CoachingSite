@@ -20,6 +20,7 @@ import CustomFormField from "@/components/ui/customFormField";
 import { UserFormValidation } from "@/lib/validation";
 import { FormFieldType } from "@/lib/exports/exports";
 import { GenderOptions } from "@/constants";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 
 interface UserProps {
   user: User;
@@ -27,6 +28,7 @@ interface UserProps {
 
 const UserForm = ({ user }: UserProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const { setLoggedUser } = useLoggedUser();
   const router = useRouter();
 
   const defaultValues = {

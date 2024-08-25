@@ -6,7 +6,7 @@ import LogInForm from "./forms/loginForm";
 import { XIcon } from "lucide-react";
 
 export default function Auth() {
-  const [auth, setAuth] = useState("Register");
+  const [auth, setAuth] = useState("Login");
 
   return (
     <dialog id="auth_modal" className="modal">
