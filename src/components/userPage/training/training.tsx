@@ -4,11 +4,7 @@ import { WeekDays } from "@/constants";
 import TrainingWeekDetails from "./trainingWeekDetails";
 import { TrainingProvider } from "@/lib/context/trainingWeek";
 
-const Training = async () => {
-  const userResponse = await getLoggedInUser();
-
-  const user: User = userResponse;
-
+const Training = () => {
   return (
     <TrainingProvider>
       <div className="flex h-max w-full flex-col gap-6 p-6 text-white antialiased md:ml-6">
@@ -16,7 +12,7 @@ const Training = async () => {
           <h1 className="flex h-10 w-full items-center justify-center text-xl antialiased md:text-3xl lg:text-4xl">
             COLLECTION OF TRAINING WEEKS
           </h1>
-          <WeeksCollection user={user} />
+          <WeeksCollection />
         </div>
 
         <div className="flex h-max w-full flex-col gap-3 md:pr-5">
@@ -25,7 +21,7 @@ const Training = async () => {
               key={i}
               className="flex h-full w-full bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0"
             >
-              <TrainingWeekDetails user={user} index={i}>
+              <TrainingWeekDetails index={i}>
                 <span>{day}</span>
               </TrainingWeekDetails>
             </div>

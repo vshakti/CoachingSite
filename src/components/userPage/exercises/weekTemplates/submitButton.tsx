@@ -1,6 +1,10 @@
 "use client";
 
-import { CreateTrainingWeek } from "@/lib/actions/user.actions";
+import {
+  CreateTrainingWeek,
+  getLoggedInUser,
+} from "@/lib/actions/user.actions";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 import { useTemplateType } from "@/lib/context/templateType";
 import { LoaderIcon } from "lucide-react";
 
@@ -21,6 +25,7 @@ const SubmitWeekBtn = ({ user, name, setName }: SubmitWeekBtn) => {
   } = useTemplateType();
 
   const [isLoading, setIsLoading] = useState(false);
+  const { setLoggedUser } = useLoggedUser();
 
   async function SubmitWeek() {
     try {
@@ -41,6 +46,8 @@ const SubmitWeekBtn = ({ user, name, setName }: SubmitWeekBtn) => {
       );
       setCompleteCounter(0);
       setName("");
+      const newUser = await getLoggedInUser();
+      setLoggedUser(newUser);
     } catch (error) {
       console.log(error);
     } finally {

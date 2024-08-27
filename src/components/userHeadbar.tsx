@@ -1,19 +1,21 @@
-import Link from "next/link";
-import { getLoggedInUser, LogOut } from "@/lib/actions/user.actions";
-import { LogOutIcon } from "lucide-react";
+"use client";
+
 import { LogOutBtn } from "./logOutBtn";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 
-export const UserHeadbar = async () => {
-  const userResponse = await getLoggedInUser();
-
-  const user: User = userResponse;
+export const UserHeadbar = () => {
+  const { loggedUser } = useLoggedUser();
 
   return (
     <div>
-      {user ? (
+      {loggedUser ? (
         <div className="flex flex-row items-center gap-x-1">
           <p className="font-medium tracking-wide text-white antialiased">
-            {user.name ? <>{user?.name.split(" ")[0]}</> : <>{user.email}</>}
+            {loggedUser.name ? (
+              <>{loggedUser?.name.split(" ")[0]}</>
+            ) : (
+              <>{loggedUser.email}</>
+            )}
           </p>
 
           <LogOutBtn />

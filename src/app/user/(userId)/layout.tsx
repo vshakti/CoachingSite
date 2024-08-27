@@ -8,9 +8,8 @@ export default function UserLayout({
 }>) {
   return (
     <div>
-      <NavbarLayout>
-        <NavbarContent />
-      </NavbarLayout>
+      <NavbarLayout />
+
       {children}
     </div>
   );

@@ -18,9 +18,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TemplateDayDefaultValues } from "@/constants";
 import { useRouter } from "next/navigation";
-import { TemplateDayCreation } from "@/lib/actions/user.actions";
+import {
+  getLoggedInUser,
+  TemplateDayCreation,
+} from "@/lib/actions/user.actions";
 import { useExerciseContext } from "@/lib/context/exerciseAdd";
 import dynamic from "next/dynamic";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 const Toast = dynamic(() => import("@/components/ui/toast"), {
   loading: () => <p>Loading...</p>,
   ssr: false,
@@ -37,16 +41,12 @@ const CustomFormField = dynamic(
   },
 );
 
-interface UserProps {
-  user: User;
-}
-
 interface ShowToastParams {
   message: React.ReactNode;
   type?: "info" | "success" | "error" | "warning" | "action";
 }
 
-const DayTemplates = ({ user }: UserProps) => {
+const DayTemplates = () => {
   const [dayTemplateIsOpen, setDayTemplateIsOpen] = useState(true);
   const {
     exerciseList,
@@ -56,7 +56,7 @@ const DayTemplates = ({ user }: UserProps) => {
     isAdding,
     setIsAdding,
   } = useExerciseContext();
-
+  const { loggedUser, setLoggedUser } = useLoggedUser();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof TemplateDayCreationValidation>>({
@@ -95,14 +95,15 @@ const DayTemplates = ({ user }: UserProps) => {
         type: values.type,
         description: values.description,
         exerciseSpecifics: templateDay.exerciseSpecifics,
-        creator: user.email,
+        creator: loggedUser!.email,
       };
 
-      const userId = user.$id;
+      const userId = loggedUser!.$id;
 
       const dayTemplate = await TemplateDayCreation(templateData, userId!);
 
-      router.refresh();
+      const newUser = await getLoggedInUser();
+      setLoggedUser(newUser);
     } catch (error) {
       console.log(error);
     } finally {

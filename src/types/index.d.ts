@@ -11,6 +11,7 @@ declare type CoachingStatus = "Inactive" | "Pending" | "Active";
 declare type Gender = "Male" | "Female" | "Other";
 declare type Muscles =
   | "Cardio"
+  | "Adductors"
   | "Biceps"
   | "Calves"
   | "Chest"
@@ -39,6 +40,7 @@ declare interface getUserInfo {
 
 declare interface User extends Omit<UserAuth, "password">, UserPicture {
   $id?: string;
+  verified: boolean;
   name: string;
   userId: string;
   phone: string;

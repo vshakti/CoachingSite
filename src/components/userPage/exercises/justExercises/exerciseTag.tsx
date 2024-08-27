@@ -8,10 +8,12 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { DeleteExercise } from "@/lib/actions/user.actions";
+import { DeleteExercise, getLoggedInUser } from "@/lib/actions/user.actions";
 import { useRouter } from "next/navigation";
 import { useExerciseContext } from "@/lib/context/exerciseAdd";
 import dynamic from "next/dynamic";
+import { useLoggedUser } from "@/lib/context/loggedUser";
+import { ShowToastParams } from "@/lib/exports/exports";
 const Toast = dynamic(() => import("@/components/ui/toast"), {
   loading: () => <p>Loading...</p>,
   ssr: false,
@@ -31,11 +33,6 @@ const ExerciseDescriptionModal = dynamic(
     ssr: false,
   },
 );
-
-interface ShowToastParams {
-  message: React.ReactNode;
-  type?: "info" | "success" | "error" | "warning" | "action";
-}
 
 interface ExerciseTagProps {
   user: User;
@@ -72,10 +69,10 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
     return matchesFilter && matchesSearch;
   });
 
-  const router = useRouter();
   const [exerciseVideo, setExerciseVideo] = useState<URL>();
   const [exerciseDescription, setExerciseDescription] = useState("");
   const [exercise, setExercise] = useState<Exercise>();
+  const { setLoggedUser } = useLoggedUser();
 
   const { exerciseList, setExerciseList, setTemplateDay, isAdding } =
     useExerciseContext();
@@ -97,9 +94,15 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
 
   const handleDeletion = async () => {
     if (exercise) {
-      await DeleteExercise(exercise.$id!);
-      router.refresh();
-      setToast({ ...toast, show: false });
+      try {
+        await DeleteExercise(exercise.$id!);
+        const newUser = await getLoggedInUser();
+        setLoggedUser(newUser);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setToast({ ...toast, show: false });
+      }
     }
   };
 
@@ -117,7 +120,7 @@ const ExerciseTag: React.FC<ExerciseTagProps> = ({
             .map((exercise: Exercise, i) => (
               <Piece
                 className={`${isDeleting && exercise.name === targetPiece ? "opacity-30" : ""} ${exerciseList.some((item) => item.name === exercise.name) ? "opacity-40" : ""} flex w-full flex-shrink-0 flex-row items-center justify-between bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0 px-2 py-1`}
-                key={i}
+                key={exercise.$id}
               >
                 <div className="flex w-full flex-row items-center justify-start gap-x-3">
                   <div className="hidden flex-row gap-x-1 md:flex md:flex-row">

@@ -19,16 +19,12 @@ import CustomFormField from "@/components/ui/customFormField";
 import { ExerciseCreationValidation } from "@/lib/validation";
 import { FormFieldType } from "@/lib/exports/exports";
 import { ExerciseFormDefaultValues, MuscleOptions } from "@/constants";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 
-interface ExerciseCreationFormProps {
-  user: User;
-}
-
-const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
-  user,
-}) => {
+const ExerciseCreationForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { loggedUser, setLoggedUser } = useLoggedUser();
 
   const form = useForm<z.infer<typeof ExerciseCreationValidation>>({
     resolver: zodResolver(ExerciseCreationValidation),
@@ -46,18 +42,19 @@ const ExerciseCreationForm: React.FC<ExerciseCreationFormProps> = ({
         muscles: values.muscles,
         video: values.video ? new URL(values.video) : undefined,
         description: values.description,
-        exerciseOwner: user.email,
-        exerciseId: user.$id + user.exercises.length.toString(),
+        exerciseOwner: loggedUser!.email,
+        exerciseId: loggedUser!.$id + loggedUser!.exercises.length.toString(),
       };
 
-      const userId = user.$id;
+      const userId = loggedUser!.$id;
 
       const newUser = await ExerciseCreationFunction(exerciseData, userId!);
+      setLoggedUser(newUser);
 
       const dialog = document.getElementById(
         "exercise_creation_modal",
       ) as HTMLDialogElement;
-      router.refresh();
+
       if (dialog) {
         dialog.close();
       }

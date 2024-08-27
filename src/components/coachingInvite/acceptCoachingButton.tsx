@@ -1,8 +1,11 @@
 "use client";
 
-import { acceptCoachingInvite } from "@/lib/actions/user.actions";
+import {
+  acceptCoachingInvite,
+  getLoggedInUser,
+} from "@/lib/actions/user.actions";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 import { CheckIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 interface UserProps {
   user: User;
@@ -11,7 +14,7 @@ interface UserProps {
 }
 
 const AcceptCoachingButton = ({ user, setOpen, className }: UserProps) => {
-  const router = useRouter();
+  const { setLoggedUser } = useLoggedUser();
   const denyInvite = async () => {
     try {
       setOpen(false);
@@ -23,7 +26,8 @@ const AcceptCoachingButton = ({ user, setOpen, className }: UserProps) => {
           status,
           user.clientStatus.users,
         );
-        router.refresh();
+        const updatedUser = await getLoggedInUser();
+        setLoggedUser(updatedUser);
       }
     } catch (error) {
       console.log(error);

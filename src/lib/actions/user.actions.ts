@@ -1,18 +1,18 @@
 "use server";
 
-import { ID, Query, OAuthProvider } from "node-appwrite";
+import { Account, Client, ID, Query, Permission, Role } from "node-appwrite";
 import { InputFile } from "node-appwrite/file";
 import { parseStringify } from "../utils";
 import { createAdminClient, createSessionClient } from "../appwrite.config";
 import { cookies } from "next/headers";
 
 const {
-  APPWRITE_DATABASE_ID: DATABASE_ID,
-  APPWRITE_USERS_COLLECTION_ID: USERS_COLLECTION_ID,
+  NEXT_PUBLIC_APPWRITE_DATABASE_ID: DATABASE_ID,
+  NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID: USERS_COLLECTION_ID,
   NEXT_PUBLIC_APPWRITE_BUCKET_ID: BUCKET_ID,
   NEXT_PUBLIC_APPWRITE_ENDPOINT: ENDPOINT,
   NEXT_PUBLIC_APPWRITE_PROJECT: PROJECT_ID,
-  APPWRITE_EXERCISES_COLLECTION_ID: EXERCISES_COLLECTION_ID,
+  NEXT_PUBLIC_APPWRITE_EXERCISES_COLLECTION_ID: EXERCISES_COLLECTION_ID,
   APPWRITE_TRAINING_DAYS_COLLECTION_ID: TRAINING_DAYS_COLLECTION_ID,
   APPWRITE_EXERCISE_SPECIFICS_COLLECTION_ID: EXERCISE_SPECIFICS_COLLECTION_ID,
   APPWRITE_TRAINING_WEEK_COLLECTION_ID: TRAINING_WEEK_COLLECTION_ID,
@@ -33,6 +33,7 @@ export const getAllUsers = async () => {
     const result = await database.listDocuments(
       DATABASE_ID!,
       USERS_COLLECTION_ID!,
+      [Query.orderAsc("name")],
     );
 
     return parseStringify(result.documents);
@@ -52,6 +53,22 @@ export const getUserInfo = async ({ userId }: getUserInfo) => {
     );
 
     return parseStringify(user.documents[0]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getExercises = async (userEmail: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const exercises = await database.listDocuments(
+      DATABASE_ID!,
+      EXERCISES_COLLECTION_ID!,
+      [Query.equal("exerciseOwner", [userEmail])],
+    );
+
+    return parseStringify(exercises.documents);
   } catch (error) {
     console.log(error);
   }
@@ -90,23 +107,13 @@ export const CoachingStatus = async ({
 export const Register = async ({ password, email }: UserAuth) => {
   try {
     const { account, database } = await createAdminClient();
+
     const newUserAccount = await account.create(
       ID.unique(),
       email,
       password,
       undefined,
     );
-
-    const newUser = await database.createDocument(
-      DATABASE_ID!,
-      USERS_COLLECTION_ID!,
-      ID.unique(),
-      {
-        email,
-        userId: newUserAccount.$id,
-      },
-    );
-
     const session = await account.createEmailPasswordSession(email, password);
 
     cookies().set("my-custom-session", session.secret, {
@@ -116,9 +123,31 @@ export const Register = async ({ password, email }: UserAuth) => {
       secure: true,
     });
 
+    const { acc } = await createSessionClient();
+    await acc.createVerification("http://localhost:3000/verification");
+
+    const newUser = await database.createDocument(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      ID.unique(),
+      {
+        email,
+        userId: newUserAccount.$id,
+      },
+      [
+        Permission.read(Role.users()),
+        Permission.update(Role.user(newUserAccount.$id)),
+        Permission.delete(Role.user(newUserAccount.$id)),
+        Permission.update(Role.team("admin")),
+        Permission.delete(Role.team("admin")),
+        Permission.read(Role.team("admin")),
+      ],
+    );
+
     return parseStringify(newUser);
   } catch (error: any) {
-    console.error(error);
+    console.error("Error during user registration and verification:", error);
+    throw new Error("Registration failed, please try again later.");
   }
 };
 
@@ -143,46 +172,10 @@ export const LogIn = async ({ email, password }: UserAuth) => {
   }
 };
 
-// const userCache = new Map();
-// const CACHE_DURATION = 5 * 60 * 1000;
-// const now = Date.now();
-//     const cacheKey = 'loggedInUser';
-//     const userInfoCacheKey = 'userInfo';
-
-//     // Check if the cached data is available and valid
-//     if (userCache.has(cacheKey)) {
-//       const { timestamp, data } = userCache.get(cacheKey);
-//       if (now - timestamp < CACHE_DURATION) {
-//         return data;
-//       }
-//     }
-
-//     // Fetch user session and info
-//     const { account } = await createSessionClient();
-//     const result = await account.get();
-//     const userId = result.$id;
-
-//     // Cache user info based on userId
-//     if (userCache.has(userInfoCacheKey)) {
-//       const { timestamp: userInfoTimestamp, data: cachedUserInfo } = userCache.get(userInfoCacheKey);
-//       if (now - userInfoTimestamp < CACHE_DURATION) {
-//         return cachedUserInfo;
-//       }
-//     }
-
-//     const user = await getUserInfo({ userId });
-//     const userData = parseStringify(user);
-
-//     // Cache both user and user info
-//     userCache.set(cacheKey, { timestamp: now, data: userData });
-//     userCache.set(userInfoCacheKey, { timestamp: now, data: userData });
-
-//     return userData;
-
 export async function getLoggedInUser() {
   try {
-    const { account } = await createSessionClient();
-    const result = await account.get();
+    const { acc } = await createSessionClient();
+    const result = await acc.get();
 
     const user = await getUserInfo({ userId: result.$id });
 
@@ -195,10 +188,10 @@ export async function getLoggedInUser() {
 
 export async function LogOut() {
   try {
-    const { account } = await createSessionClient();
+    const { acc } = await createSessionClient();
     cookies().delete("my-custom-session");
 
-    await account.deleteSession("current");
+    await acc.deleteSession("current");
   } catch (error) {
     return null;
   }
@@ -234,6 +227,30 @@ export const UpdateUser = async ({
         gender,
         description,
         phone,
+      },
+    );
+
+    if (!newUser) throw Error;
+
+    const parsedNewUser = parseStringify(newUser);
+
+    return parsedNewUser;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const VerifyUser = async (userId: string, verified: boolean) => {
+  try {
+    const { database } = await createAdminClient();
+
+    console.log("id", userId);
+    const newUser = await database.updateDocument(
+      DATABASE_ID!,
+      USERS_COLLECTION_ID!,
+      userId,
+      {
+        verified,
       },
     );
 

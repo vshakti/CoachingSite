@@ -5,11 +5,15 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomFormField from "@/components/ui/customFormField";
 import { useRouter } from "next/navigation";
-import { ExerciseProgressionUpdate } from "@/lib/actions/user.actions";
+import {
+  ExerciseProgressionUpdate,
+  getLoggedInUser,
+} from "@/lib/actions/user.actions";
 import { ExerciseProgressionValidation } from "@/lib/validation";
 import { FormFieldType } from "@/lib/exports/exports";
 import SubmitButton from "../submitButton";
 import { MinusIcon, PlusIcon } from "lucide-react";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 
 interface ExerciseCompletionProps {
   user: User;
@@ -28,7 +32,7 @@ const CompleteExerciseForm = forwardRef<
   ) => {
     const [sets, setSets] = useState([{ id: Date.now() }]);
     const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter();
+    const { setLoggedUser } = useLoggedUser();
 
     const addSet = () => {
       setSets([...sets, { id: Date.now() }]);
@@ -93,11 +97,12 @@ const CompleteExerciseForm = forwardRef<
           exerciseName,
           exerciseId,
         );
-
+        const newUser = await getLoggedInUser();
+        setLoggedUser(newUser);
         const dialog = document.getElementById(
           "finish_exercise_modal",
         ) as HTMLDialogElement;
-        router.refresh();
+
         handleClose();
         if (dialog) {
           dialog.close();

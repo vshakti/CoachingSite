@@ -1,4 +1,4 @@
-import { getLoggedInUser } from "@/lib/actions/user.actions";
+"use client";
 
 import IsCoachingForm from "../../forms/isCoachingForm";
 import NavbarOptions from "@/components/userPage/navbar/navbarOptions";
@@ -11,16 +11,9 @@ import {
   UsersRoundIcon,
 } from "lucide-react";
 import React from "react";
-import dynamic from "next/dynamic";
-const ProfilePic = dynamic(() => import("./profilePic"), {
-  loading: () => <p>Loading...</p>,
-  ssr: false,
-});
+import ProfilePic from "./profilePic";
 
-const NavbarContent = async () => {
-  const userResponse = await getLoggedInUser();
-  const user: User = userResponse;
-
+const NavbarContent = ({ user }: UserProps) => {
   return (
     <div>
       <div className="flex w-screen items-center justify-center gap-x-10 gap-y-1 pb-2 pt-5 md:w-full md:flex-col md:pl-3">
@@ -29,7 +22,7 @@ const NavbarContent = async () => {
             <>
               {user?.pictureUrl ? (
                 <div className="size-max">
-                  <ProfilePic user={user} />
+                  <ProfilePic />
                 </div>
               ) : (
                 <div
@@ -54,7 +47,7 @@ const NavbarContent = async () => {
             )}
           </span>
 
-          <IsCoachingForm user={user} />
+          <IsCoachingForm />
         </div>
       </div>
 

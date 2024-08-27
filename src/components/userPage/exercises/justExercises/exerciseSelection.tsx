@@ -11,16 +11,14 @@ import {
 } from "lucide-react";
 import OpenModalButton from "../../openModalButton";
 import dynamic from "next/dynamic";
+import { useLoggedUser } from "@/lib/context/loggedUser";
+import { redirect } from "next/navigation";
 const ExerciseTag = dynamic(() => import("./exerciseTag"), {
   loading: () => <p>Loading...</p>,
   ssr: false,
 });
 
-interface UserProps {
-  user: User;
-}
-
-const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
+const ExerciseSelection: React.FC = () => {
   const [select, setSelect] = useState<string>("Search");
   const muscleSelect = select as Muscles;
   const [targetPiece, setTargetPiece] = useState("");
@@ -43,6 +41,11 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
     "Triceps",
   ];
   const [exerciseOpen, setExerciseOpen] = useState(true);
+  const { loggedUser } = useLoggedUser();
+
+  if (!loggedUser) {
+    redirect("/");
+  }
 
   return (
     <>
@@ -97,9 +100,9 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
             <div className="flex h-full w-full flex-col items-center justify-start gap-y-4 px-4 pt-2">
               <div className="flex w-full flex-col items-center justify-center gap-y-2">
                 <div className="relative flex w-full flex-row items-center justify-center bg-gradient-to-r from-slate-950/0 via-violet-950/60 to-slate-950/0">
-                  {user.exercises.length > 0 ? (
+                  {loggedUser!.exercises.length > 0 ? (
                     <span className="absolute left-10 p-1 text-2xl font-medium text-white md:text-2xl xl:text-4xl">
-                      {user.exercises.length}
+                      {loggedUser!.exercises.length}
                     </span>
                   ) : (
                     <></>
@@ -144,7 +147,7 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
                 <ExerciseTag
                   targetPiece={targetPiece}
                   setTargetPiece={setTargetPiece}
-                  user={user}
+                  user={loggedUser!}
                   searchFunction={(exercise) =>
                     exercise.name
                       .toLowerCase()
@@ -203,7 +206,7 @@ const ExerciseSelection: React.FC<UserProps> = ({ user }) => {
                       .toLowerCase()
                       .includes(searchQuery.toLowerCase())
                   }
-                  user={user}
+                  user={loggedUser!}
                 />
               </div>
             </div>

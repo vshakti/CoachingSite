@@ -2,6 +2,7 @@
 
 import { calculateAge } from "@/constants";
 import { inviteForCoaching } from "@/lib/actions/user.actions";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 import { useUser } from "@/lib/context/user";
 import {
   ChevronDownIcon,
@@ -14,12 +15,12 @@ import { useState } from "react";
 
 interface UserDetailsProps {
   userImages: { [key: string]: string };
-  currentUser: User;
 }
 
-const UserDetails = ({ userImages, currentUser }: UserDetailsProps) => {
+const UserDetails = ({ userImages }: UserDetailsProps) => {
   const { user } = useUser();
   const [showDetails, setShowDetails] = useState(true);
+  const { loggedUser } = useLoggedUser();
 
   const coachingInvite = async () => {
     try {
@@ -28,7 +29,7 @@ const UserDetails = ({ userImages, currentUser }: UserDetailsProps) => {
         const selectedUserId = user.userId!;
 
         const newUser = await inviteForCoaching(
-          currentUser,
+          loggedUser!,
           selectedUserId,
           status,
         );
@@ -106,7 +107,7 @@ const UserDetails = ({ userImages, currentUser }: UserDetailsProps) => {
                 </>
                 <button
                   onClick={coachingInvite}
-                  className={`${currentUser.isCoaching === false || (user && user.clientStatus && user.clientStatus.status === "Pending") || (user && user.clientStatus && user.clientStatus.status === "Active") ? "hidden" : ""} flex flex-row items-center justify-center gap-2 hover:text-cyan-500`}
+                  className={`${loggedUser!.isCoaching === false || (user && user.clientStatus && user.clientStatus.status === "Pending") || (user && user.clientStatus && user.clientStatus.status === "Active") ? "hidden" : ""} flex flex-row items-center justify-center gap-2 hover:text-cyan-500`}
                 >
                   Sent a coach invite
                   <MessageSquareMoreIcon className="size-4" />

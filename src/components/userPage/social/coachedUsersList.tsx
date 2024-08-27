@@ -3,6 +3,7 @@ import { useState } from "react";
 import ClientsPicture from "../profile/clientsPic";
 import dynamic from "next/dynamic";
 import { useTrackingExerciseContext } from "@/lib/context/exerciseTracking";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 const CoachedUserProgressionModal = dynamic(
   () => import("./coachedUserProgressionModal"),
   {
@@ -11,13 +12,10 @@ const CoachedUserProgressionModal = dynamic(
   },
 );
 
-interface CoachedUserProps {
-  currentUser: User;
-}
-
-const CoachedUsersList = ({ currentUser }: CoachedUserProps) => {
+const CoachedUsersList = () => {
   const { setTrackedExercise } = useTrackingExerciseContext();
   const [coachedUser, setCoachedUser] = useState<User>();
+  const { loggedUser } = useLoggedUser();
   const selectCoachedUser = async (coachedUser: User) => {
     setTrackedExercise({
       exerciseProgression: [],
@@ -36,9 +34,9 @@ const CoachedUsersList = ({ currentUser }: CoachedUserProps) => {
   return (
     <div>
       <>
-        {currentUser.clients ? (
+        {loggedUser!.clients ? (
           <>
-            {currentUser.clients.users
+            {loggedUser!.clients.users
               .sort((a, b) => {
                 const nameA = a.name || a.email;
                 const nameB = b.name || b.email;

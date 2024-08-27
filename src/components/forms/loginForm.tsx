@@ -5,28 +5,28 @@ import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import { useRouter } from "next/navigation";
-import { LogIn } from "@/lib/actions/user.actions";
+import { getLoggedInUser, LogIn } from "@/lib/actions/user.actions";
 import { AtSignIcon, LockKeyholeIcon } from "lucide-react";
 import SubmitButton from "@/components/submitButton";
 import CustomFormField from "@/components/ui/customFormField";
-import { UserAuthValidation } from "@/lib/validation";
+import { UserLoginValidation } from "@/lib/validation";
 import { FormFieldType } from "@/lib/exports/exports";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 
 const LogInForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
-  const form = useForm<z.infer<typeof UserAuthValidation>>({
-    resolver: zodResolver(UserAuthValidation),
+  const { setLoggedUser } = useLoggedUser();
+
+  const form = useForm<z.infer<typeof UserLoginValidation>>({
+    resolver: zodResolver(UserLoginValidation),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof UserAuthValidation>) {
+  async function onSubmit(values: z.infer<typeof UserLoginValidation>) {
     setIsLoading(true);
 
     try {
@@ -34,9 +34,13 @@ const LogInForm = () => {
         email: values.email,
         password: values.password,
       };
+
       const user = await LogIn(userData);
 
-      if (user) router.push(`/user/profile`);
+      if (user) {
+        const loggedUser = await getLoggedInUser();
+        setLoggedUser(loggedUser);
+      }
     } catch (error) {
       console.log(error);
     } finally {

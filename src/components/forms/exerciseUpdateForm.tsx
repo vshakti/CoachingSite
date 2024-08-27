@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CustomSwitchGroup from "../ui/customSwitch";
 
 import { useRouter } from "next/navigation";
-import { UpdateExercise } from "@/lib/actions/user.actions";
+import { getLoggedInUser, UpdateExercise } from "@/lib/actions/user.actions";
 import { DumbbellIcon, PlayIcon } from "lucide-react";
 import SubmitButton from "@/components/submitButton";
 import CustomFormField from "@/components/ui/customFormField";
@@ -19,6 +19,7 @@ import CustomFormField from "@/components/ui/customFormField";
 import { ExerciseCreationValidation } from "@/lib/validation";
 import { FormFieldType } from "@/lib/exports/exports";
 import { MuscleOptions } from "@/constants";
+import { useLoggedUser } from "@/lib/context/loggedUser";
 
 interface ExerciseUpdateFormProps {
   exercise: Exercise | undefined;
@@ -28,7 +29,7 @@ const ExerciseUpdateForm: React.FC<ExerciseUpdateFormProps> = ({
   exercise,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+  const { setLoggedUser } = useLoggedUser();
 
   const form = useForm<z.infer<typeof ExerciseCreationValidation>>({
     resolver: zodResolver(ExerciseCreationValidation),
@@ -54,10 +55,12 @@ const ExerciseUpdateForm: React.FC<ExerciseUpdateFormProps> = ({
 
         const updateExercise = await UpdateExercise(exerciseData);
 
+        const newUser = await getLoggedInUser();
+        setLoggedUser(newUser);
         const dialog = document.getElementById(
           "exercise_update_modal",
         ) as HTMLDialogElement;
-        router.refresh();
+
         if (dialog) {
           dialog.close();
         }
